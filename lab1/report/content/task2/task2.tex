@@ -77,13 +77,31 @@ L_{i-1} \xrightarrow{K_2} L_i
     \includegraphics[width=0.8\textwidth]{figures/Bombe.png}
 \end{figure}
 我们发现这里面的环，并不是像前面说的明密文交替的，那为什么这样的环也可以呢？他这样不就不是L0,L1这样的结构了吗
-
+画出来长这样
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/draft.png}
+\end{figure}
 冥思苦想之际，同样在维基百科，我看到了这样一句话
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/inverse.png}
 \end{figure}
 这突然使我顿悟，既然如此，交换明密文也是成立的！！
+
+顺手证明一下
+
+\begin{equation*}
+    C_i=S^{-1} \circ R_i^{-1} \circ T \circ R_i \circ S(P_i).
+\end{equation*}
+
+注意这里的反射板有一个性质$T = T^{-1}$
+
+那么
+$$
+P_i = S^{-1} \circ R_i^{-1} \circ T^{-1} R_i \circ S(C_i) = S^{-1} \circ R_i^{-1} \circ T \circ R_i \circ S(C_i)
+$$
+也就是说加密明文得到密文，加密密文得到密文，这其实也有点像festel结构
 
 换而言之，你把上下颠倒，这样成立，其实我们要的就是那个结构信息，亮灯测试我们测的就是那个位置，和明密文无关
 
