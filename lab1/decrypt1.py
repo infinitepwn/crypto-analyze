@@ -111,18 +111,11 @@ def build_graph(c,m):  #邻接表
             graph[u] = []
     # 把(v, l)这个元组添加到u的邻接列表中, 边权l是边的坐标 坐标就是索引，l=0就是c的第一个字母
         graph[u].append((v, l))
-    for l, uv in  enumerate(zip(m,c)):
-        u, v=uv  
-    # 如果u不在字典中, 就创建一个空列表
-        if u not in graph:
-            graph[u] = []
-    # 把(v, l)这个元组添加到u的邻接列表中, 边权l是边的坐标
-        graph[u].append((v, l))
   # 返回字典
     return graph
 
 
-def dfs(graph,pos,st,path,locs): # 从左到右依次为构建的无向图, 输入位置字符, 开始位置字符和坐标, 路径, 记录的环路构成边的坐标
+def dfs(graph,pos,path,locs): # 从左到右依次为构建的无向图, 输入位置字符, 开始位置字符和坐标, 路径, 记录的环路构成边的坐标
     """
         查找crics
         Args:   
@@ -139,10 +132,10 @@ def dfs(graph,pos,st,path,locs): # 从左到右依次为构建的无向图, 输�
     for i,l in graph[pos]:
         if i in path :
             tmp=(path[path.index(i):]+[i],locs[path.index(i):]+[l])
-            if len(set(tmp[1]))>=2 and st[0] not in tmp[0][1:-1] and tmp[1][-1]==st[1]:
+            if len(set(tmp[1]))>=2:
                 ans+=[(tuple(tmp[0]),tuple(tmp[1]))]
             continue
-        ans+=dfs(graph,i,st,path+[i],locs+[l])
+        ans+=dfs(graph,i,path+[i],locs+[l])
     return ans
 def get_keys(d, value):
     return [k for k,v in d.items() if v == value][0]
@@ -167,7 +160,7 @@ if __name__=="__main__":
         for i in range(len(m)):
             if visited[i]==1:
                 continue    
-            ansi=dfs(graph,m[i],(m[i],i),[m[i]],[])
+            ansi=dfs(graph,c[i],[c[i]],[])
             for find_ins in ansi:
                 for loc in find_ins[1]: # 防止重复计算
                     visited[loc]=1    

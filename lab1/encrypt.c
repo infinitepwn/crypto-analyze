@@ -20,10 +20,7 @@ typedef struct{
 
 
 
-void setRotor(
-        Enigma *e,
-        int K2[3]
-)
+void setRotor(Enigma *e,int K2[3])
 {
     for(int i=0;i<3;i++)
         e->offset[i]=K2[i];
