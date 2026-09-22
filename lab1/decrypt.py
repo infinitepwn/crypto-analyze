@@ -1,23 +1,3 @@
-'''
-给定如下明密文数据流, 中的三个转子和反射器的定义不变, 尝试恢复密钥K1和K2。(结果可能不唯一)
-明文:  HELLOWORLD…
-密文: …WELLDONEEFGHIJ…
-
-已知K1中接线板的接线数量最多不超过六条;
-对于K1中没有信息支撑的接线板情况, 可以考虑使用-1表示未知: 
-例如[0,2,1,-1,...]表示A不接线(自身到自身), B与C相连, -1则表示字母D为自由(是否接线且与哪个字母接线未知)。
-
-
-扰频器组合(固定3个转子, 无需从5个中选择3个)
-快速转子I = [0, 18, 24, 12, 10, 20, 8, 6, 14, 2, 11, 15, 22, 3, 25, 7, 17, 13, 5, 1, 23, 9, 16, 21, 19, 4]
-即快速转子的表格中左侧一列为0, 1, 2, …, 25, 右侧一列0, 18, 24, …, 4; 下同
-中速转子II = [0, 10, 4, 2, 8, 1, 18, 20, 22, 19, 13, 6, 17, 5, 9, 3, 24, 14, 12, 25, 21, 11, 7, 16, 15, 23]
-
-反射器
-T = [10, 20, 14, 8, 25, 15, 16, 21, 3, 18, 0, 23, 13, 12, 2, 5, 6, 19, 9, 17, 1, 7, 24, 11, 22, 4]
-即a与k相连, b与u相连, ……
-'''
-
 import string
 from copy import *
 from collections import defaultdict
@@ -25,7 +5,6 @@ from itertools import permutations
 def crypt_once(I, II, III, T, st0, st1, st2, ch):
     """
     在指定三个转子位置下，只加密一个字符。
-    不经过接线板 K1，不自动转动转子。
     Args:
         I: 快速转子
         II:   中速转子
@@ -242,22 +221,22 @@ if __name__=="__main__":
             print("通过环路及与环路相关的接线板设置无冲突, 猜测的K2密钥个数: ",len(guess_K2_K1))
             #带回去推出其他接线板
             final_guess = {}
-            for K2 in guess_K2_K1:
-                for K1 in guess_K2_K1[K2]:
+            for K2 in guess_K2_K1: #固定K2
+                for K1 in guess_K2_K1[K2]:  #从K2中取出K1
                     K1_now = K1.copy()
                     ok = True
                     flag = True
-                    while flag and ok:
+                    while flag and ok: #ok是用来看K1有没有矛盾的，有矛盾直接退出，flag就是看有没有更新状态
                         flag = False
-                        for loc,pair in enumerate(zip(crib,m)):
-                            known = set(pair) & set(K1_now)
-                            if len(known) != 1:
+                        for loc,pair in enumerate(zip(crib,m)):  #明密文对
+                            known = set(pair) & set(K1_now) #取交集，就是找K1里已经有的字母
+                            if len(known) != 1: #pair里面就两个字母，如果不等于1，那就是2，就是说都知道，那就不用回复了
                                 continue
                             known_char = list(known)[0]
-                            unknown_char = pair[0] if pair[1] == known_char else pair[1]
-                            plug = crypt_once(I,II,III,T,K2[0]-(loc%26),K2[1],K2[2],K1_now[known_char])
+                            unknown_char = pair[0] if pair[1] == known_char else pair[1] #看明密文里面那个不知道
+                            plug = crypt_once(I,II,III,T,K2[0]-(loc%26),K2[1],K2[2],K1_now[known_char]) #计算中间状态
                             if unknown_char in K1_now:
-                                if K1_now[unknown_char] != plug:
+                                if K1_now[unknown_char] != plug: #这个中间状态和不知道的那个是相连的，如果不想等，就矛盾
                                     ok = False
                                     break
                             elif plug in K1_now:
@@ -265,13 +244,14 @@ if __name__=="__main__":
                                     ok = False
                                     break
                             else:
-                                K1_now[unknown_char] = plug
+                                K1_now[unknown_char] = plug #如果两个在K1里都没有记录，那就直接添加
                                 K1_now[plug] = unknown_char
-                                flag = True
+                                flag = True  #因为获取了K1的新信息，所以flag=1，需要重新看一遍
+                        #如果没有获取新信息，说明没法再更新了，直接退出
                     if ok:
                         if K2 not in final_guess:
                             final_guess[K2] = []
-                        final_guess[K2].append(K1_now)
+                        final_guess[K2].append(K1_now)  #如果没有矛盾就加进去
             print("通过环路及所有可能的接线板无冲突, 猜测的K2密钥个数: ",len(final_guess))
             print("其中接线板总数不超过6条的密钥为: ")
             for K2 in final_guess:
