@@ -1,29 +1,10 @@
-'''
-给定如下明密文数据流, 中的三个转子和反射器的定义不变, 尝试恢复密钥K1和K2。(结果可能不唯一)
-明文:  HELLOWORLD…
-密文: …WELLDONEEFGHIJ…
-
-已知K1中接线板的接线数量最多不超过六条;
-对于K1中没有信息支撑的接线板情况, 可以考虑使用-1表示未知: 
-例如[0,2,1,-1,...]表示A不接线(自身到自身), B与C相连, -1则表示字母D为自由(是否接线且与哪个字母接线未知)。
-
-
-扰频器组合(固定3个转子, 无需从5个中选择3个)
-快速转子I = [0, 18, 24, 12, 10, 20, 8, 6, 14, 2, 11, 15, 22, 3, 25, 7, 17, 13, 5, 1, 23, 9, 16, 21, 19, 4]
-即快速转子的表格中左侧一列为0, 1, 2, …, 25, 右侧一列0, 18, 24, …, 4; 下同
-中速转子II = [0, 10, 4, 2, 8, 1, 18, 20, 22, 19, 13, 6, 17, 5, 9, 3, 24, 14, 12, 25, 21, 11, 7, 16, 15, 23]
-
-反射器
-T = [10, 20, 14, 8, 25, 15, 16, 21, 3, 18, 0, 23, 13, 12, 2, 5, 6, 19, 9, 17, 1, 7, 24, 11, 22, 4]
-即a与k相连, b与u相连, ……
-'''
-
 import string
 from copy import *
+from collections import defaultdict
+from itertools import permutations
 def crypt_once(I, II, III, T, st0, st1, st2, ch):
     """
     在指定三个转子位置下，只加密一个字符。
-    不经过接线板 K1，不自动转动转子。
     Args:
         I: 快速转子
         II:   中速转子
@@ -32,9 +13,7 @@ def crypt_once(I, II, III, T, st0, st1, st2, ch):
         st0: 快速转子当前位置
         st1: 中速转子当前位置
         st2: 慢速转子当前位置
-
         ch: 输入字符，如 'A'
-
     Return:
         加密后的字符，如 'G'
     """
@@ -146,9 +125,19 @@ def dfs(graph,pos,st,path,locs): # 从左到右依次为构建的无向图, 输�
             continue
         ans+=dfs(graph,i,st,path+[i],locs+[l])
     return ans
-def get_keys(d, value):
-    return [k for k,v in d.items() if v == value][0]
-
+def dec(c, K1, K2, I, II, III, T):
+    result = ""
+    for loc,ch in enumerate(c):
+        if ch not in K1:
+            result += "?"
+            continue
+        trans = K1[ch]
+        trans = crypt_once(I,II,III,T,K2[0]-loc,K2[1],K2[2],trans)
+        if trans not in K1:
+            result += "?"
+            continue
+        result += K1[trans]
+    return result
 
 I = [7, 19, 3, 22, 11, 25, 14, 1, 16, 23, 8, 20, 5, 17, 12, 9, 24, 6, 15, 2, 18, 21, 4, 13, 10, 0]
 II = [0, 10, 4, 2, 8, 1, 18, 20, 22, 19, 13, 6, 17, 5, 9, 3, 24, 14, 12, 25, 21, 11, 7, 16, 15, 23]
@@ -175,95 +164,116 @@ if __name__=="__main__":
                     visited[loc]=1    
             ans|=set(ansi)        
         print("当前crib包含的所有环路有: ", ans)
-        order = {'I':I,'II':II,'III':III}
-        num = 1
-        for I, II, III in [(I, II, III),
-                                 (I, III, II),
-                                 (II, I, III),
-                                 (II, III, I),
-                                 (III, I, II),
-                                 (III, II, I)]:
-            print(f"【{num}】当前扰频器组合为: ", get_keys(order,I), get_keys(order,II), get_keys(order,III))
-            num += 1
+        rotors = {'I': I, 'II': II, 'III': III}
+
+        for num,names in enumerate(permutations(rotors), 1):
+            I, II, III = [rotors[name] for name in names]
+            print(f"【{num}】当前扰频器组合为:", *names)
+            guess = {}
             guess_all_K2 = {(i, j, k) for i in range(26) for j in range(26) for k in range(26)} # 从所有备选中进行筛选
-            guess={}
             for case in ans:
-                guess_case={}
+                guess_case = {} #存放这个case用的K2
                 for i in range(26):
                     for j in range(26):
                         for k in range(26):
-                            #这里要保存所有路径
+                            K2 = (i,j,k) #遍历k2
                             paths = []
-                            for check in string.ascii_uppercase: #枚举所有字母，亮灯
-                                trans=check #注意这个check就是已经过了接线板的
-                                path=[trans]
+                            for check in string.ascii_uppercase:
+                                trans = check
+                                path = [trans]
                                 for z in case[1]:
-                                    trans=crypt_once(I,II,III,T,(i-z)%26,j,k,trans)
-                                    path.append(trans) 
-                                if trans==check:
-                                    paths.append(path)  
-                            if len(paths)>0:
-                                guess_case[(i,j,k)]=paths #保存所有路径，这个path就是[L0,L1,L2,...]
-                guess_all_K2&=set(guess_case) #每个环路会有一个guess_case,得到很多ijk，然后取交集
-                guess[case]=guess_case   #guess[case]是一个字典，guess[case][(i,j,k)]=path
-            print("通过环路猜测的K2密钥个数: ",len(guess_all_K2))    
-                           
-            #每个环都有很多路径，得有回溯搜索
-            def merge_K1(K1, chars, path):
-                """
-                尝试把当前环的 path 合并进 K1
-                有冲突返回 None
-                """
-                new_K1 = deepcopy(K1)
-                for real, pluged in zip(chars, path):
-                    # real -> pluged
-                    if real in new_K1:
-                        if new_K1[real] != pluged:
-                            return None
-                    else:
-                        new_K1[real] = pluged
-                    # pluged -> real
-                    if pluged in new_K1:
-                        if new_K1[pluged] != real:  #矛盾的都排除
-                            return None
-                    else:
-                        new_K1[pluged] = real
-                return new_K1
-            def search_K1(cases, guess, K2, idx=0, K1=None):
-                if K1 is None:
-                    K1 = {}
-                # 所有环都处理完
-                if idx == len(cases):
-                    return [K1]
-                case = cases[idx] #这里case是形如(('T', 'G', 'T'), (19, 2))，这样的数据结构，case[0]就是环路
-                results = []
-                # 当前环可能有多个闭环 path
-                for path in guess[case][K2]: #一个path对应可以找到一个K1的可能性
-                    new_K1 = merge_K1(K1,case[0],path)
-                    if new_K1 is not None:
-                        results += search_K1(cases,guess,K2,idx + 1,new_K1)
-                return results                 
+                                    trans = crypt_once(I, II, III, T, (i-z)%26, j, k, trans)
+                                    path.append(trans)
+                                if trans == check:
+                                    paths.append(path)
+                            if paths:
+                                guess_case[K2] = paths
+                guess_all_K2 &= set(guess_case) #把每次case的K2都取交集
+                guess[case] = guess_case   #记录路径，guess[case][K2]就能查找这个环的路径
+            print("通过环路猜测的K2密钥个数: ",len(guess_all_K2))
             guess_K2_K1 = {}
-            cases = list(ans)
-            for guess_K2 in guess_all_K2:
-                K1_candidates = search_K1(cases,guess,guess_K2)
-                if K1_candidates:
-                    guess_K2_K1[guess_K2] = K1_candidates
-            if len(guess_K2_K1) == 0:
-                print("当前扰频器组合下没有可行的K2和K1\n")
-                continue
-            print("通过环路及与环路相关的接线板设置无冲突, 猜测的K2密钥个数: ",len(guess_K2_K1))    
-              
+            for K2 in guess_all_K2:
+                all_K1 = [{}]   #整体的K1,每个case我们能找到一些K1，相当于先存到这里，然后再下一个case里直接对这个测试
+                for case in ans:  #找环路,要在每个环路里面找K1
+                    possible_K1 = []
+                    for path in guess[case][K2]:   #找L0,L1,..
+                        for K1_now in all_K1: #初始就是{}，空集
+                            flag = True
+                            K1 = K1_now.copy() #我们后面会改K1，这里得copy一下
+                            for real,pluged in zip(case[0],path):
+                                if real not in K1: #如果K1里没有这个明文，就加进去，然后让他和Li连接
+                                    K1[real] = pluged
+                                elif K1[real] != pluged: #如果有了，但是不是Li，那就矛盾了
+                                    flag = False
+                                    break
+                                if pluged not in K1:  #反过来对Li也是一样的
+                                    K1[pluged] = real
+                                elif K1[pluged] != real:
+                                    flag = False
+                                    break
+                            if flag:
+                                possible_K1.append(K1) #找到符合这个环路的K1
+                    all_K1 = possible_K1  #把可能的K1放进去
+                    if len(all_K1) == 0:
+                        break
+                if len(all_K1) > 0:
+                    guess_K2_K1[K2] = all_K1
+            print("通过环路及与环路相关的接线板设置无冲突, 猜测的K2密钥个数: ",len(guess_K2_K1))
+            #带回去推出其他接线板
+            final_guess = {}
+            for K2 in guess_K2_K1: #固定K2
+                for K1 in guess_K2_K1[K2]:  #从K2中取出K1
+                    K1_now = K1.copy()
+                    ok = True
+                    flag = True
+                    while flag and ok: #ok是用来看K1有没有矛盾的，有矛盾直接退出，flag就是看有没有更新状态
+                        flag = False
+                        for loc,pair in enumerate(zip(crib,m)):  #明密文对
+                            known = set(pair) & set(K1_now) #取交集，就是找K1里已经有的字母
+                            if len(known) != 1: #pair里面就两个字母，如果不等于1，那就是2，就是说都知道，那就不用回复了
+                                continue
+                            known_char = list(known)[0]
+                            unknown_char = pair[0] if pair[1] == known_char else pair[1] #看明密文里面那个不知道
+                            plug = crypt_once(I,II,III,T,K2[0]-(loc%26),K2[1],K2[2],K1_now[known_char]) #计算中间状态
+                            if unknown_char in K1_now:
+                                if K1_now[unknown_char] != plug: #这个中间状态和不知道的那个是相连的，如果不想等，就矛盾
+                                    ok = False
+                                    break
+                            elif plug in K1_now:
+                                if K1_now[plug] != unknown_char:
+                                    ok = False
+                                    break
+                            else:
+                                K1_now[unknown_char] = plug #如果两个在K1里都没有记录，那就直接添加
+                                K1_now[plug] = unknown_char
+                                flag = True  #因为获取了K1的新信息，所以flag=1，需要重新看一遍
+                        #如果没有获取新信息，说明没法再更新了，直接退出
+                    if ok:
+                        if K2 not in final_guess:
+                            final_guess[K2] = []
+                        final_guess[K2].append(K1_now)  #如果没有矛盾就加进去
+            print("通过环路及所有可能的接线板无冲突, 猜测的K2密钥个数: ",len(final_guess))
             print("其中接线板总数不超过6条的密钥为: ")
-            for guess in guess_K2_K1:
-                count=0
-                guess_K1=guess_K2_K1[guess][0]  
-                K1=[-1]*26      # -1代表现有信息无法支撑获取该位置的接线板情况
-                for i in guess_K1:
-                    if guess_K1[i]!=i:         
-                        count+=1
-                    K1[ord(i)-ord("A")]=ord(guess_K1[i])-ord("A")
-                if count/2>6:
-                    continue
-                print(guess,K1,"接线板条数",count//2)
-                        
+            for K2 in final_guess:
+                for K1_now in final_guess[K2]:
+                    count = 0
+                    K1 = [-1]*26
+                    for i in K1_now:
+                        if K1_now[i] != i:
+                            count += 1
+                        K1[ord(i)-ord("A")] = ord(K1_now[i])-ord("A")
+                    if count//2 > 6:
+                        continue
+
+                    # 已经确定用了6条线，那么剩下的字母只能是不接线
+                    if count//2 == 6:
+                        for j in range(26):
+                            if K1[j] == -1:
+                                K1[j] = j
+                                ch = chr(j+ord("A"))
+                                K1_now[ch] = ch
+
+                    plaintext = dec(c,K1_now,K2,I,II,III,T)
+                    print(K2,K1,"接线板条数",count//2)
+                    print("解密结果:",plaintext)
+                    print("是否正确:",plaintext == m)

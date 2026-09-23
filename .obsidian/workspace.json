@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "破解Enigma机.md",
+                "file": "线性分析.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "破解Enigma机"
+              "title": "线性分析"
             }
           }
         ]
@@ -176,8 +176,8 @@
             "state": {
               "type": "git-view",
               "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
+              "icon": "lucide-ghost",
+              "title": "git-view"
             }
           }
         ],
@@ -196,46 +196,45 @@
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:新建数据库": false,
-      "obsidian-git:Open Git source control": false
+      "bases:新建数据库": false
     }
   },
   "active": "595a65f9631f0516",
   "lastOpenFiles": [
-    "lab1/enigma_thread.c",
-    "lab1/enigma_m4.c",
-    "lab1/enigma",
-    "lab1/enigma_table.c",
-    "lab1/encrypt",
-    "lab1/encrypt.c",
-    "lab1/report/output/xelatex42886.fls",
-    "lab1/report/output/xelatex42880.fls",
-    "lab1/report/figures/result.png",
-    "lab1/report/output/xelatex36342.fls",
-    "lab1/report/output/xelatex35962.fls",
-    "lab1/report/output/main.toc",
-    "lab1/report/figures/crib.png",
-    "lab1/report/figures/task3_encrypt_efficiency.png",
-    "lab1/report/figures/task1_enigma_encryption.png",
-    "lab1/report/figures/logo_sduWithText.jpg",
-    "lab1/figures/attack_1_result.png",
-    "lab1/figures/logo_sduWithText.jpg",
-    "lab1/figures/result_3.png",
-    "lab1/figures/result_2.png",
-    "lab1/figures/result_.png",
-    "古典密码的安全性分析.md",
-    "计算安全.md",
-    "课程简介.md",
-    "基本假设.md",
-    "README.md",
+    "lab1/report/output/xelatex58064.fls",
+    "lab1/report/output/xelatex58061.fls",
+    "lab1/report/output/xelatex57634.fls",
+    "lab1/report/output/xelatex57425.fls",
+    "lab1/report/output/xelatex56192.fls",
+    "lab1/report/output/xelatex56188.fls",
+    "lab1/report/output/xelatex54799.fls",
+    "lab1/report/output/xelatex54795.fls",
+    "lab1/report/output/xelatex53671.fls",
+    "lab1/report/output/xelatex53144.fls",
+    "lab1/report/output/xelatex52852.fls",
+    "lab1/report/figures/book.png",
+    "lab1/report/figures/9688B3DB1F2C04DD5074FFE8ADD7115C.png",
+    "lab1/report/figures/draft.png",
+    "lab1/report/figures/inverse.png",
+    "lab1/report/figures/result3.png",
+    "lab1/report/figures/loop.png",
+    "lab1/report/figures/result0.png",
+    "lab1/report/figures/Bombe.png",
+    "消息认证码.md",
+    "密码分析学概述.md",
     "破解Enigma机.md",
     "差分攻击.md",
+    "lab1/report/figures/cycle.png",
+    "lab1/report/figures/dfs.png",
     "对称加密算法.md",
-    "攻击思想.md",
-    "密码分析学概述.md",
+    "古典密码的安全性分析.md",
+    "基本假设.md",
     "穷举攻击.md",
-    "线性分析.md",
-    "消息认证码.md",
-    "杂凑函数.md"
+    "课程简介.md",
+    "README.md",
+    "杂凑函数.md",
+    "计算安全.md",
+    "攻击思想.md",
+    "线性分析.md"
   ]
 }
