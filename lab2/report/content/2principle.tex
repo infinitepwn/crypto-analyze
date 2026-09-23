@@ -1,0 +1,26 @@
+\section{实验原理}
+
+\subsection{差分路线}
+$i$轮差分路线是指对输入对$(X,X')$，在$i$轮加密过程中满足对应第$j$轮的一对输出值$(Y,Y')(1
+le j \le i)$，满足$\delta X = X \oplus X' = \beta_0$，$\delta Y =  \oplus Y' = beta_j(1 \le j \le i)$，则称
+$$
+ \beta_0  \to \beta_1 \to \dots \to \beta_i 
+$$
+为一条$i$轮差分路线。假设密码算法的输入$X$和各轮密钥$K_i$的取值是相互独立且均匀分布的，对于满足输入差分为$beta_0$、输出差分为$\beta_i$(显然满足输入差分为$\beta_0$的明文不只一对)的$i$轮差分路线概率为$DP(\beta_0 \to \beta_i)$,其概率为各轮差分路线概率的乘积
+$$
+\text{DP}(\beta_0 \to \beta_1 \to \dots \to \beta_i)  = \prod_{(j=1)}^{i}\text{DP}(\beta_{j-1} \to \beta_j)
+$$
+注意这里差分路线是精确记录了包括起始、最终结果和中间每一种状态的一条路线。影响上述$i$轮差分路线的概率的主要因素是输入差分非零的$S$盒的个数以及输入差分非零的$S$盒对应的输出差分(因为当前轮$S$盒的输出即为下一轮$S$盒的输入)，其中输入非零的$S$盒被称为活跃$S$盒。
+
+\subsection{差分}
+$i$轮差分是指给定了输入差分$\beta_0$和$i$轮加密后的输出差分$\beta_i$，满足上述条件的称为$i$轮差分。与$i$轮差分路线相比，它不指定加密的中间状态。因此，对于$i$轮差分的概率计算如下：假设满足输入差分为$\beta_0$且$i$轮之后
+输出差分为$\beta_i$的$i$轮差分路线共$s$条，则:
+$$
+\begin{aligned}
+    \text{DP}(\beta_0 \xrightarrow{\text{i轮}} \beta_i) &= \sum_{t=1}^s \text{DP}( \beta_0 \xrightarrow{\text{1轮}} \beta_1^t \to \dots \beta_{i-1}^t \xrightarrow{\text{1轮}} \beta_i)\\
+                                                        &= \sum_{t=1}^s (\prod_{j=1}^i \text{DP} (\beta_{j-1}^t \xrightarrow{\text{1轮}} \beta_j^t))
+\end{aligned}
+$$
+也就是说$i$轮差分的概率是由所有满足输入和输出条件的$i$轮差分路线共同组成的，它的概率是要大于等于单条差分路线的概率的，而且想要精确计算差分的概率，还是要回到计算每一条差分路线的概率上去。
+
+\subsection{CipherFour算法}
