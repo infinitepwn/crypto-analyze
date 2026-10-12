@@ -1,0 +1,32 @@
+\section{实验原理}
+\subsection{线性近似表达式}
+针对密码算法$E_K(\cdot)$，对于一对给定的线性掩码$(\alpha,\beta)$可视为$E_K(\cdot)$的一个线性近似，并称
+$$
+\alpha \cdot x \oplus \beta \cdot E_K(x)
+$$
+为$E_K(\cdot)$的一个线性近似表达式，其中$\alpha$和$\beta$分别被称为线性近似的输入掩码和输出掩码。
+
+\subsubsection{线性近似表达式的概率}
+依据上述对线性近似表达式的定义，给定一个线性近似$(\alpha,\beta)$，相应的线性近似表达式的概率$Pr(\alpha,\beta)$为使得线性近似表达式取0的输入
+在整个输入空间中的占比，对应如下计算式子：
+$$
+Pr(\alpha,\beta) = \frac{\# \{ X \in \mathbb{F}_2^n | \alpha \cdot X \oplus \beta \cdot E_K(X) = 0  \}  }{2^n}
+$$
+其中定义线性近似的偏差为线性近似表达式的概率与$1/2$的差值，即
+$$
+\epsilon(\alpha,\beta) = Pr(\alpha,\beta) - \frac{1}{2}
+$$
+
+\subsection{线性路线}
+对于迭代型分组密码算法$E_K(\cdot)$，设 输入和输出掩码分别为$\alpha$、$\beta$，中间状态为
+$Y_1,Y_2,\cdots,Y_{r-1}$处掩码分别为$\alpha_1,\alpha_2,\cdots,\alpha_{r-1}$，则称$(\alpha_1,\alpha_2,\cdots,\alpha_{r-1},\beta)$为$E_K(\cdot)$的一条线性路线。
+注意到这里线性近似与线性路线是不同的概念，其中线性近似中包含有多条线性路线（对应中间状态的不同掩码）。
+
+\subsection{线性近似表}
+线性近似表是记录对于给定$S$盒的所有线性近似的偏差信息，其第$\alpha$行第$\beta$
+列为线性近似掩码为$(\alpha,\beta)$的线性近似值为0的输出个数与$2^{m-1}$的差，其中$m$为S盒的输入位数。具体来说，对于
+$m \times n$的$S$盒，线性近似表为一张包含$2^m$行、$2^n$列的表，表格中第$i$行，第$j$列的元素为
+$$
+\#\{   (x,S(x)) \in \mathbb{F}_2^m \times \mathbb{F}_2^n | i \cdot x \oplus j \cdot S(x) = 0 \} - 2^{m-1}
+$$
+其中将表中元素除以$2^m$即为相应的线性近似的偏差。
