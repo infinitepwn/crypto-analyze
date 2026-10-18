@@ -41,17 +41,34 @@ R'=\operatorname{mulhi}_W(R)\oplus L\oplus K,
 \end{aligned}
 \]
 
-由于输入分支$L$在$\mathbf{F}_2^8$上均匀分布，
-当$\alpha_L\neq\beta_R$时，
-上述线性表达式关于$L$的取值均匀分布于0和1，
-因此对应的线性偏差为0。
-故只需考虑满足
-\(
-\beta_R=\alpha_L
-\)
-的输出掩码。
+现在把L和R分开的，后面的部分只有R,那其实可以写成
+\[
+\begin{aligned}
+&(\alpha_L\oplus\beta_R)\cdot L \oplus f(R,K)
+\end{aligned}
+\]
 
-此时线性近似式化简为
+因为$L,R$是独立的，这样写的好处是我们可以分别讨论了
+
+输入分支$L$在$\mathbf{F}_2^8$上均匀分布，因为输入是随机的嘛
+
+\subsubsection{$\alpha_L\neq\beta_R$}
+
+那么显然
+\[
+\Pr((\alpha_L\oplus\beta_R)\cdot L = 0) = \Pr((\alpha_L\oplus\beta_R)\cdot L = 1) =\frac{1}{2}  
+\]
+然后
+\[
+\Pr(f(R,K) = 0) = \Pr(f(R,K) = 1) =\frac{1}{2}  
+\]
+那么根据堆积引理，最后\(\Pr((\alpha_L\oplus\beta_R)\cdot L \oplus f(R,K) = 0) = \frac{1}{2}\)
+
+也就是说偏差都为0，这种情况是平凡的
+
+\subsubsection{$\alpha_L = \beta_R$}
+
+这个时候我们发现线性近似式和L无关了
 \[
 \alpha_R\cdot R
 \oplus\beta_L\cdot\operatorname{mullo}_W(R)
@@ -59,10 +76,32 @@ R'=\operatorname{mulhi}_W(R)\oplus L\oplus K,
 \oplus\alpha_L\cdot K.
 \]
 
-由于轮密钥$K$只影响线性近似式的常数项，
-不会影响线性偏差的绝对值，因此实验中取$K=0$。
+但是这里还有一个$K$啊，不过$K$是固定的，我们做线性近似表的时候，只有输入在变
 
-计算思路为：
+那所以说$\alpha_L\cdot K$这个在线性近似表的每一项中都是固定的值，要么是0，要么是1
+
+那这其实不会影响线性偏差的绝对值，如果$\alpha_L\cdot K = 0$,
+
+那线性近似式等于0的输入的个数，就相当于使得前面这个式子为0的输入的个数
+
+也就是说$$\text{LAT}(\alpha,\beta)= \#\{R|\alpha_R\cdot R
+\oplus\beta_L\cdot\operatorname{mullo}_W(R)
+\oplus\alpha_L\cdot\operatorname{mulhi}_W(R) = 0\}  - 2^7$$
+
+如果$\alpha_L\cdot K = 1$,
+
+那线性近似式等于0的输入的个数，就相当于使得前面这个式子为1的输入的个数,那就是拿总数$2^8$去减嘛
+
+也就是说$$\text{LAT}(\alpha,\beta)= 2^8 - \#\{R|\alpha_R\cdot R
+\oplus\beta_L\cdot\operatorname{mullo}_W(R)
+\oplus\alpha_L\cdot\operatorname{mulhi}_W(R) = 0\} - 2^7$$
+
+也就是$$\text{LAT}(\alpha,\beta)= 2^7 - \#\{R|\alpha_R\cdot R
+\oplus\beta_L\cdot\operatorname{mullo}_W(R)
+\oplus\alpha_L\cdot\operatorname{mulhi}_W(R) = 0\}$$
+
+这和前面就是加个负号的区别，绝对值是一样的，那为了方便起见，我们就令$\alpha_L\cdot K = 0$
+
 先遍历题目给出的4组输入掩码
 $\alpha=(\alpha_L,\alpha_R)$，
 根据上述条件确定输出掩码右分支
@@ -80,8 +119,9 @@ $\beta_R=\alpha_L$，
 最后将所有输出掩码按照线性偏差的绝对值降序排列，
 选取前5个输出掩码及其偏差。
 
-记$\operatorname{par}(v)$为8比特数$v$中1的个数模2，
-$\land$表示逐位与运算，
+
+记$\operatorname{parity}(v)$为$v$中1的个数的奇偶性，\&表示按位与运算
+
 对应伪代码如算法~\ref{alg:task3-philox}所示。
 
 \begin{algorithm}[H]
@@ -106,9 +146,9 @@ $\land$表示逐位与运算，
                 \For{$R=0,\ldots,255$}
                     \State $H\gets\left\lfloor R\cdot M/2^8\right\rfloor$
                     \State $D\gets(R\cdot M)\bmod 2^8$
-                    \State $p\gets\operatorname{par}(\alpha_R\land R)$
-                    \State $q\gets\operatorname{par}(\beta_L\land D)
-                    \oplus\operatorname{par}(\beta_R\land H)$
+                    \State $p\gets\operatorname{parity}(\alpha_R\land R)$
+                    \State $q\gets\operatorname{parity}(\beta_L\land D)
+                    \oplus\operatorname{parity}(\beta_R\land H)$
 
                     \If{$p=q$}
                         \State $N\gets N+1$
@@ -141,15 +181,3 @@ $0.5$、$0.14453125$、$0.5$和$0.17578125$，
 其对应的输出掩码分别为
 $(0x01,0x00)$、$(0x5A,0x01)$、
 $(0x03,0x00)$和$(0xB6,0x02)$。
-
-其中，输入掩码$(0,1)$和$(0,2)$均存在绝对偏差为$0.5$
-的输出掩码，说明对应线性关系以概率1成立。
-而输入掩码$(1,0)$和$(2,1)$的最大绝对偏差均小于$0.5$，
-表明对应的最佳线性近似存在一定的统计偏差，
-但并非恒成立。
-
-此外，利用PHILOX-2W轮函数的结构性质，
-将输出掩码的搜索范围由$2^{16}$种缩小至$2^8$种，
-并将每组掩码的计算由遍历$2^{16}$个输入状态
-简化为遍历$2^8$个右分支输入，
-在保证计算结果精确性的同时降低了计算复杂度。
