@@ -1,30 +1,123 @@
 \subsection{任务二}
 
-题目要求基于任务一计算得到的S盒线性近似表（LAT），尝试找到一条4轮迭代线性路线并计算其偏差。实验中的CipherFour为16比特分组密码，状态由4个4比特半字节组成，每轮先由4个并行S盒完成非线性替代，再经过16比特的P置换层。由于题目只给出了S盒，未单独列出P层，因此本实验采用课程参考程序中的置换定义，按照从最高有效位到最低有效位的顺序记为
-\[
-P=(0,4,8,12,\,1,5,9,13,\,2,6,10,14,\,3,7,11,15).
-\]
-需要说明的是，课程参考程序中使用的S盒与本次实验表1.1中的S盒不同，因此本实验\textbf{沿用任务一的题目S盒及其LAT}，仅参考该程序的P层定义。
+基于任务一计算得到的S盒线性近似表（LAT），尝试找到一条4轮迭代线性路线并计算其偏差。
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/def1.png}
+\end{figure}
+翻遍课本没找到迭代线性路线的定义，不过类比前面迭代差分路线，迭代的思路就是这一轮的输出要作为下一轮的输入，这样可以不断运作下去
 
-记4比特S盒的输入掩码为$a$、输出掩码为$b$。由任务一中线性近似表的定义，S盒对应的线性相关度（Correlation）为
+所以输入掩码得和输出掩码一样，这样输出掩码又能作为下一轮的输入迭代下去，那4轮的迭代线性路线就是形如
 \[
-C_S(a,b)
-=2\Pr[a\cdot x=b\cdot S(x)]-1
-=\frac{2\,\mathrm{LAT}[a,b]}{2^4}
-=\frac{\mathrm{LAT}[a,b]}{8}.
-\]
-对16比特输入掩码$\alpha=(\alpha_0,\alpha_1,\alpha_2,\alpha_3)$和S层输出掩码$\beta=(\beta_0,\beta_1,\beta_2,\beta_3)$，其中$\alpha_j,\beta_j\in\mathbf F_2^4$，4个并行S盒对应的一轮S层相关度为
-\[
-C(\alpha,\beta)
-=\prod_{j=0}^{3}C_S(\alpha_j,\beta_j)
-=\prod_{j=0}^{3}\frac{\mathrm{LAT}[\alpha_j,\beta_j]}{8}.
+\alpha_1,\alpha_2,\alpha_3,\alpha_4,\alpha_1
 \]
 
-为了寻找能够重复迭代的线性路线，考虑S层输入掩码在经过一整轮的S层和P层后保持不变，即要求
+
+\subsubsection{考量:活跃S盒的个数}
+那这还是一头雾水，主要是CipherFour算法有四个S盒，而又由于P置换这四个S盒的比特会相互影响，
+
+看上去一筹莫展，但是我们的堆积引理和偏差的分析，实际上是建立在Markov假设上面的，那既然如此
+
+我们总是不希望有太多的变量，那样的话独立性就越来越差，具体来说就是ppt这个
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/limit.png}
+    \caption{堆积引理要求}
+    \label{fig:request}
+\end{figure}
+堆积引理用在相关度上就更简洁一点
+
+考虑输入掩码$\alpha=(\alpha_0,\alpha_1,\alpha_2,\alpha_3)$和输出掩码$\beta=(\beta_0,\beta_1,\beta_2,\beta_3)$,4个S盒对应的一轮S层相关度为
 \[
-\boxed{P(\beta)=\alpha.}
+c(\alpha,\beta)
+=\prod_{j=0}^{3}c(\alpha_j,\beta_j)
 \]
-于是，对给定的非零输入掩码$\alpha$，可由P层的逆置换唯一确定S层输出掩码$\beta=P^{-1}(\alpha)$，再利用LAT计算对应的单轮相关度。具体搜索方法为：遍历全部$2^{16}-1$个非零输入掩码，对每个掩码利用逆P置换确定S层输出掩码；将输入与输出掩码分别拆分为4个半字节，从LAT中查找各S盒的相关度并相乘；最后按照相关度绝对值降序排列，选取一条绝对相关度最大的单轮固定点路线，并将其重复4轮。若出现相同的绝对相关度，程序优先选取数值较大的输入掩码。对应伪代码如算法~\ref{alg:task2-trail}所示。
+因为相关度就是偏差的2倍，相关度越大的路线对于线性分析来说就更好
+
+那我们知道\(c(0,0) = 1\)，这就是最大的，那很明显活跃的S盒越少越好，相关度越大，当然不能没有，没有活跃S盒那就没意义了，就是全0
+
+但是这也还是有一些问题，也不只有$c(0,0) = 1$，值得注意的是看前面的LAT
+
+除了0，0是8以外，还有一个我们前面找到的$B \rightarrow 3$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/find1.png}
+    \caption{LAT}
+\end{figure}
+也就是说$c(B,3) = 1$,这个从相关度来说和0,0是一样的,理论上来说也是可以选用，但是咱们这个是经过P层置换的,引入这个会导致我们的分析变得非常复杂
+
+或许交给Agent来说这不过沧海一粟，但人脑的内存还是没有那么大，若无必要勿增实体嘛，那我们还是尽可能走简单的路线，不要给自己找麻烦
+
+既然0，0和B，3的效果是一样的，那们自然是选择0,0来分析
+
+所以说我们只考虑一个活跃S盒
+
+\subsubsection{DFS}
+
+跟差分路线比起来这个更难了，因为线性变换对掩码是有影响的，
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/find2.png}
+\end{figure}
+线性掩码是要经过P置换的，不过我们知道置换就是乘以一个矩阵,在这里不妨就记作P吧
+
+这个P也比较好求，
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/P.png}
+\end{figure}
+那考虑第一轮的输入掩码是\(\alpha_1\),输出掩码是\(\beta_1\)
+
+如果没有这个P置换的话，应该是$\beta_1 = \alpha_2$
+
+但是实际上应该是$\alpha_2 = P\beta_1$
+
+好吧还是太混沌了，让我们来形式推导一下
+
+最开始的状态是\[(\alpha_{11},0,0,0) \xrightarrow{S} (\beta_{11},0,0,0)\xrightarrow{P} (\alpha_{21},\alpha_{22},\alpha_{23},\alpha_{24})\]
+
+那总而言之就是
+\[\alpha_1\xrightarrow{S}\beta_1\xrightarrow{P}
+\alpha_2\xrightarrow{S}\beta_2\xrightarrow{P}
+\alpha_3\xrightarrow{S}\beta_3\xrightarrow{P}
+\alpha_4\xrightarrow{S}\beta_4\xrightarrow{P}
+\alpha_1\]
+
+要写算法肯定要确定性的步骤，我们要找这样一条路线，每一步应该有一个确定性的输出
+
+这里的P就是乘矩阵，已经确定了，那S本身有很多结果，
+
+不知道该选哪一个，我们肯定是想要偏差尽可能大的，所以我们就选择偏差最大的，那这不是贪心算法嘛？关键是题目只要求我们找到一条路线
+
+贪心算法求出的可能不是全局最优解，但至少也是个局部最优解嘛，也算是不错的
+
+其实我们还可以再贪心一点，我们不是嫌P比较麻烦吗，那既然如此我们就找哪个不动点吧。
+
+也就是令$P\beta = \beta$,这个其实就是$(P-I)\beta = 0$,如果这个矩阵不满秩，那就有非零解
+
+希望它不满秩吧，诶，我们注意到前面的矩阵P第一行第一列是1，那减去单位矩阵之后，第一行就是全0了，所以这个矩阵肯定不满秩
+
+所以我们每次就选这样的$\beta$,这样就很好了
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/solution.png}
+\end{figure}
+比如$\beta = 1000000000000000$,也就是\(\beta = (8,0,0,0)\)
+
+但是再细想一下，迭代型的优点不就是可以不断累积嘛，那就没必要找四轮的，直接找一轮的迭代4次不就行了
+
+至此恍然惊醒，那就是
+\[\alpha_1\xrightarrow{S}\beta_1\xrightarrow{P} \alpha_1\]
+
+$P\beta = \beta$还是太保守了，再贪心一点，我们直接让\[P(\beta_1) = \alpha_1\]
+
+\subsubsection{意外之喜}
+
+这样的好处是，$\beta_1$直接被$\alpha_1$确定了，这样我们可以写出非常简洁的算法
+
+我们直接遍历全部$2^{16}-1$个非零\(\alpha\)，可以用\(P^{-1}\)计算\(\beta\),从LAT中查找各S盒的相关度并相乘,找到最大的相关度，然后重复四轮就行了
+
+对应伪代码如算法~\ref{alg:task2-trail}所示。
 
 \begin{algorithm}[H]
     \caption{CipherFour四轮迭代线性路线的搜索}
@@ -62,7 +155,7 @@ C(\alpha,\beta)
     \label{fig:task2-trail}
 \end{figure}
 
-程序共找到$3152$个单轮相关度非零的固定点候选，其中一条绝对相关度最大的路线满足
+程序共找到$3152$个单轮相关度非零的候选，其中一条绝对相关度最大的路线满足
 \[
 \alpha=0x8000,\qquad
 \beta=0x8000,\qquad
@@ -70,10 +163,8 @@ P(0x8000)=0x8000.
 \]
 因此，该路线可迭代4轮，得到
 \[
-\boxed{
 0x8000\longrightarrow0x8000\longrightarrow0x8000
 \longrightarrow0x8000\longrightarrow0x8000.
-}
 \]
 
 对于每一轮，仅第一个S盒的输入、输出掩码非零，分别为$(8,8)$；其余3个S盒的掩码均为$(0,0)$。由任务一所得LAT可知
@@ -95,8 +186,6 @@ C_4=\prod_{i=1}^{4}C_i
 \]
 从而得到不计密钥常数项时的理论偏差
 \[
-\boxed{
 \varepsilon_4=\frac{C_4}{2}=\frac1{32}=0.03125.
-}
 \]
 需要注意，轮密钥异或操作可能改变线性近似的符号，因此对于未知轮密钥，可以确定的是该路线的\textbf{理论绝对偏差}$|\varepsilon_4|=1/32$。此外，本实验计算的是一条四轮线性路线对应的理论贡献，未累加其他相同输入、输出掩码路线的相关度，因此不能将其直接等同于完整4轮密码的线性包络（Linear Hull）偏差。

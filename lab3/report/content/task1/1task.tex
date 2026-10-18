@@ -1,11 +1,22 @@
 \subsection{任务一}
-题目给出的S盒输入大小为$m = 4$bit，输出大小也为$n = m = 4$bit，共$2^4$种不同输入与输出，计算S盒的线性近似表思路为：
-先遍历输入掩码$\alpha \in \mathbf{F}_2^4$，再遍历输出掩码$\beta \in \mathbf{F}_2^4$，再遍历所有$2^4$种输入，对于输入$x$，计算
-对应线性近似式是否为0
+题目给出的S盒输入大小$m = 4$bit，输出大小$n = m = 4$bit
+
+所以S盒的线性近似表大小就是$2^4 \times 2^4$,里面每一项记作$N(\alpha,\beta)$
+
+先遍历输入掩码$\alpha \in \mathbf{F}_2^4$，再遍历输出掩码$\beta \in \mathbf{F}_2^4$，再遍历所有$2^4$种输入$x$，计算
+对应线性近似式
 $$
 \alpha \cdot x \oplus \beta \cdot S(x)
 $$
-统计其中为0的个数$N(\alpha,\beta)$，然后在S盒的LAT中赋值$N(\alpha,\beta) - 2^3$。三层遍历结束后即完成S盒的线性近似表的计算。记$\operatorname{par}(v)$为4比特数$v$中1的个数模2，$\land$表示逐位与运算，对应伪代码如算法~\ref{alg:task1-lat}所示。
+统计其中为0的个数$N(\alpha,\beta)$，然后在S盒的LAT中赋值$N(\alpha,\beta) - 2^3$。
+
+记$\operatorname{parity}(v)$为$v$中1的个数的奇偶性，\&表示按位与运算
+
+这里为什么要用一个$\operatorname{parity}$运算呢，因为实现内积还是挺麻烦的，在我们按位与之后需要把每一位异或起来
+
+不过这里有个trick，内积的结果不是0就是1，既然如此只要统计有多少个1就行了，偶数个1就是0，奇数个1就是1
+
+对应伪代码如算法~\ref{alg:task1-lat}所示。
 
 \begin{algorithm}[H]
     \caption{4比特S盒线性近似表的计算}
@@ -17,8 +28,8 @@ $$
             \For{$\beta=0,\ldots,15$}
                 \State $N\gets 0$
                 \For{$x=0,\ldots,15$}
-                    \State $p\gets\operatorname{par}(\alpha\land x)$
-                    \State $q\gets\operatorname{par}(\beta\land S[x])$
+                    \State $p\gets\operatorname{parity}(\alpha \& x)$
+                    \State $q\gets\operatorname{parity}(\beta \& S[x])$
                     \If{$p=q$}
                         \State $N\gets N+1$
                     \EndIf
@@ -37,3 +48,5 @@ $$
     \caption{任务一计算得到的S盒线性近似表}
     \label{fig:task1-lat}
 \end{figure}
+
+其中偏差最大的就是$0x0B \rightarrow 0x03$
