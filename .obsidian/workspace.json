@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "破解Enigma机.md",
+                "file": "线性分析.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -180,8 +180,7 @@
               "title": "git-view"
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "horizontal",
@@ -201,19 +200,21 @@
   },
   "active": "595a65f9631f0516",
   "lastOpenFiles": [
+    "Pasted image 20260930143304.png",
+    "线性分析.md",
+    "差分攻击.md",
+    "lab2/code/task1",
+    "lab2/code/task1.c",
+    "lab2/report/output/xelatex16008.fls",
+    "lab2/report/output/xelatex7855.fls",
+    "lab2/report/output/xelatex7847.fls",
     "lab2/task3/test_differential_frequency.py",
     "lab2/task3",
     "lab2/task2/find_all_routes.py",
     "lab2/task2",
     "lab2/task1/find_best_route.py",
-    "lab2/task1/find_best_differential.py",
-    "lab2/task1/DDT.py",
-    "lab2/task1",
     "lab2/report/figures/task2_routes.png",
     "lab2/report/figures/task1_diffeientrial.png",
-    "lab2/report/output/xelatex4307.fls",
-    "lab2/report/output/xelatex3709.fls",
-    "lab2/report/output/xelatex3531.fls",
     "lab2/report/figures/task1_enhance.png",
     "lab2/report/figures/task1_result.png",
     "lab2/report/figures/find2.png",
@@ -221,11 +222,9 @@
     "lab2/report/figures/find1.png",
     "lab2/report/figures/draft.png",
     "lab2/report/figures/Bombe.png",
-    "lab2/report/figures/loop.png",
     "消息认证码.md",
     "密码分析学概述.md",
     "破解Enigma机.md",
-    "差分攻击.md",
     "对称加密算法.md",
     "古典密码的安全性分析.md",
     "基本假设.md",
@@ -234,7 +233,6 @@
     "README.md",
     "杂凑函数.md",
     "计算安全.md",
-    "攻击思想.md",
-    "线性分析.md"
+    "攻击思想.md"
   ]
 }
