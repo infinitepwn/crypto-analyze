@@ -1,0 +1,102 @@
+\subsection{任务二}
+
+题目要求基于任务一计算得到的S盒线性近似表（LAT），尝试找到一条4轮迭代线性路线并计算其偏差。实验中的CipherFour为16比特分组密码，状态由4个4比特半字节组成，每轮先由4个并行S盒完成非线性替代，再经过16比特的P置换层。由于题目只给出了S盒，未单独列出P层，因此本实验采用课程参考程序中的置换定义，按照从最高有效位到最低有效位的顺序记为
+\[
+P=(0,4,8,12,\,1,5,9,13,\,2,6,10,14,\,3,7,11,15).
+\]
+需要说明的是，课程参考程序中使用的S盒与本次实验表1.1中的S盒不同，因此本实验\textbf{沿用任务一的题目S盒及其LAT}，仅参考该程序的P层定义。
+
+记4比特S盒的输入掩码为$a$、输出掩码为$b$。由任务一中线性近似表的定义，S盒对应的线性相关度（Correlation）为
+\[
+C_S(a,b)
+=2\Pr[a\cdot x=b\cdot S(x)]-1
+=\frac{2\,\mathrm{LAT}[a,b]}{2^4}
+=\frac{\mathrm{LAT}[a,b]}{8}.
+\]
+对16比特输入掩码$\alpha=(\alpha_0,\alpha_1,\alpha_2,\alpha_3)$和S层输出掩码$\beta=(\beta_0,\beta_1,\beta_2,\beta_3)$，其中$\alpha_j,\beta_j\in\mathbf F_2^4$，4个并行S盒对应的一轮S层相关度为
+\[
+C(\alpha,\beta)
+=\prod_{j=0}^{3}C_S(\alpha_j,\beta_j)
+=\prod_{j=0}^{3}\frac{\mathrm{LAT}[\alpha_j,\beta_j]}{8}.
+\]
+
+为了寻找能够重复迭代的线性路线，考虑S层输入掩码在经过一整轮的S层和P层后保持不变，即要求
+\[
+\boxed{P(\beta)=\alpha.}
+\]
+于是，对给定的非零输入掩码$\alpha$，可由P层的逆置换唯一确定S层输出掩码$\beta=P^{-1}(\alpha)$，再利用LAT计算对应的单轮相关度。具体搜索方法为：遍历全部$2^{16}-1$个非零输入掩码，对每个掩码利用逆P置换确定S层输出掩码；将输入与输出掩码分别拆分为4个半字节，从LAT中查找各S盒的相关度并相乘；最后按照相关度绝对值降序排列，选取一条绝对相关度最大的单轮固定点路线，并将其重复4轮。若出现相同的绝对相关度，程序优先选取数值较大的输入掩码。对应伪代码如算法~\ref{alg:task2-trail}所示。
+
+\begin{algorithm}[H]
+    \caption{CipherFour四轮迭代线性路线的搜索}
+    \label{alg:task2-trail}
+    \begin{algorithmic}[1]
+        \Require 4比特S盒线性近似表$\mathrm{LAT}[0..15,0..15]$，16比特置换$P$
+        \Ensure 四轮迭代线性路线及其理论偏差
+        \State $\alpha^*\gets 0,\ \beta^*\gets 0,\ C^*\gets 0$
+        \For{$\alpha=1,\ldots,2^{16}-1$}
+            \State $\beta\gets P^{-1}(\alpha)$
+            \State $C\gets 1$
+            \For{$j=0,\ldots,3$}
+                \State $a\gets(\alpha\gg 4j)\land 0xF$
+                \State $b\gets(\beta\gg 4j)\land 0xF$
+                \State $C\gets C\cdot\mathrm{LAT}[a,b]/8$
+            \EndFor
+            \If{$|C|>|C^*|$ \textbf{or} $(|C|=|C^*|\ \textbf{and}\ \alpha>\alpha^*)$}
+                \State $\alpha^*\gets\alpha$
+                \State $\beta^*\gets\beta$
+                \State $C^*\gets C$
+            \EndIf
+        \EndFor
+        \State $C_4\gets (C^*)^4$
+        \State $\varepsilon_4\gets C_4/2$
+        \State $T\gets[\alpha^*,\alpha^*,\alpha^*,\alpha^*,\alpha^*]$
+        \State \Return $T,\beta^*,\varepsilon_4$
+    \end{algorithmic}
+\end{algorithm}
+
+代码运行结果如图~\ref{fig:task2-trail}所示。
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/task2.png}
+    \caption{任务二四轮迭代线性路线搜索结果}
+    \label{fig:task2-trail}
+\end{figure}
+
+程序共找到$3152$个单轮相关度非零的固定点候选，其中一条绝对相关度最大的路线满足
+\[
+\alpha=0x8000,\qquad
+\beta=0x8000,\qquad
+P(0x8000)=0x8000.
+\]
+因此，该路线可迭代4轮，得到
+\[
+\boxed{
+0x8000\longrightarrow0x8000\longrightarrow0x8000
+\longrightarrow0x8000\longrightarrow0x8000.
+}
+\]
+
+对于每一轮，仅第一个S盒的输入、输出掩码非零，分别为$(8,8)$；其余3个S盒的掩码均为$(0,0)$。由任务一所得LAT可知
+\[
+\mathrm{LAT}[8,8]=-4,\qquad
+\mathrm{LAT}[0,0]=8.
+\]
+故单轮相关度为
+\[
+C_1
+=\frac{-4}{8}\left(\frac{8}{8}\right)^3
+=-\frac12,
+\]
+相应的单轮偏差为$\varepsilon_1=C_1/2=-1/4$。根据堆积引理（Piling-up Lemma），4轮\textbf{单条线性路线}的相关度为
+\[
+C_4=\prod_{i=1}^{4}C_i
+=\left(-\frac12\right)^4
+=\frac1{16}.
+\]
+从而得到不计密钥常数项时的理论偏差
+\[
+\boxed{
+\varepsilon_4=\frac{C_4}{2}=\frac1{32}=0.03125.
+}
+\]
+需要注意，轮密钥异或操作可能改变线性近似的符号，因此对于未知轮密钥，可以确定的是该路线的\textbf{理论绝对偏差}$|\varepsilon_4|=1/32$。此外，本实验计算的是一条四轮线性路线对应的理论贡献，未累加其他相同输入、输出掩码路线的相关度，因此不能将其直接等同于完整4轮密码的线性包络（Linear Hull）偏差。
