@@ -146,8 +146,8 @@ $\beta_R=\alpha_L$，
                 \For{$R=0,\ldots,255$}
                     \State $H\gets\left\lfloor R\cdot M/2^8\right\rfloor$
                     \State $D\gets(R\cdot M)\bmod 2^8$
-                    \State $p\gets\operatorname{parity}(\alpha_R\land R)$
-                    \State $q\gets\operatorname{parity}(\beta_L\land D)
+                    \State $p\gets\operatorname{parity}(\alpha_R\ \& R)$
+                    \State $q\gets\operatorname{parity}(\beta_L \& D)
                     \oplus\operatorname{parity}(\beta_R\land H)$
 
                     \If{$p=q$}
