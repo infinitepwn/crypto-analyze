@@ -132,8 +132,8 @@ $P\beta = \beta$还是太保守了，再贪心一点，我们直接让\[P(\beta_
             \State $\beta\gets P^{-1}(\alpha)$
             \State $C\gets 1$
             \For{$j=0,\ldots,3$}
-                \State $a\gets(\alpha\gg 4j)\land 0xF$
-                \State $b\gets(\beta\gg 4j)\land 0xF$
+                \State $a\gets(\alpha\gg 4j)\& 0xF$
+                \State $b\gets(\beta\gg 4j)\& 0xF$
                 \State $C\gets C\cdot\mathrm{LAT}[a,b]/8$
             \EndFor
             \If{$|C|>|C^*|$ \textbf{or} $(|C|=|C^*|\ \textbf{and}\ \alpha>\alpha^*)$}

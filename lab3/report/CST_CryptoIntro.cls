@@ -24,7 +24,6 @@
 \RequirePackage{hyperref}
 \RequirePackage{tabularx}
 \RequirePackage{amsmath}
-
 \floatname{algorithm}{算法}
 \algrenewcommand\algorithmicrequire{\textbf{输入：}}
 \algrenewcommand\algorithmicensure{\textbf{输出：}}
