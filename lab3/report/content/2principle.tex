@@ -14,7 +14,7 @@ Pr(\alpha,\beta) = \frac{\# \{ X \in \mathbb{F}_2^n | \alpha \cdot X \oplus \bet
 $$
 其中定义线性近似的偏差为线性近似表达式的概率与$1/2$的差值，即
 $$
-\epsilon(\alpha,\beta) = Pr(\alpha,\beta) - \frac{1}{2}
+\varepsilon(\alpha,\beta) = Pr(\alpha,\beta) - \frac{1}{2}
 $$
 
 \subsection{线性路线}
@@ -25,8 +25,8 @@ $Y_1,Y_2,\cdots,Y_{r-1}$处掩码分别为$\alpha_1,\alpha_2,\cdots,\alpha_{r-1}
 \subsection{线性近似表}
 线性近似表是记录对于给定$S$盒的所有线性近似的偏差信息，其第$\alpha$行第$\beta$
 列为线性近似掩码为$(\alpha,\beta)$的线性近似值为0的输出个数与$2^{m-1}$的差，其中$m$为S盒的输入位数。具体来说，对于
-$m \times n$的$S$盒，线性近似表为一张包含$2^m$行、$2^n$列的表，表格中第$i$行，第$j$列的元素为
+$m \times n$的$S$盒，线性近似表为一张包含$2^m$行、$2^n$列的表，表格中第$\alpha$行，第$\beta$列的元素为
 $$
-\#\{   (x,S(x)) \in \mathbb{F}_2^m \times \mathbb{F}_2^n | i \cdot x \oplus j \cdot S(x) = 0 \} - 2^{m-1}
+\#\{   (x,S(x)) \in \mathbb{F}_2^m \times \mathbb{F}_2^n | \alpha \cdot x \oplus \beta \cdot S(x) = 0 \} - 2^{m-1}
 $$
-其中将表中元素除以$2^m$即为相应的线性近似的偏差。
+其中\(\alpha \in \{0,1,...,2^m-1 \},\beta \in \{0,1,...,2^n-1 \} \),将表中元素除以$2^m$即为相应的线性近似的偏差。
