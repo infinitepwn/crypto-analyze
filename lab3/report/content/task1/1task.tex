@@ -1,8 +1,5 @@
 \subsection{任务一}
-题目给出的S盒输入大小$m = 4$bit，输出大小$n = m = 4$bit
-
-所以S盒的线性近似表大小就是$2^4 \times 2^4$,里面每一项记作$N(\alpha,\beta)$
-
+题目给出的S盒输入大小$m = 4$bit，输出大小$n = m = 4$bit,所以S盒的线性近似表大小就是$2^4 \times 2^4$,里面每一项记作$N(\alpha,\beta)$
 先遍历输入掩码$\alpha \in \mathbf{F}_2^4$，再遍历输出掩码$\beta \in \mathbf{F}_2^4$，再遍历所有$2^4$种输入$x$，计算
 对应线性近似式
 $$
@@ -10,12 +7,8 @@ $$
 $$
 统计其中为0的个数$N(\alpha,\beta)$，然后在S盒的LAT中赋值$N(\alpha,\beta) - 2^3$。
 
-记$\operatorname{parity}(v)$为$v$中1的个数的奇偶性，\&表示按位与运算
-
-这里为什么要用一个$\operatorname{parity}$运算呢，因为实现内积还是挺麻烦的，在我们按位与之后需要把每一位异或起来
-
-不过这里有个trick，内积的结果不是0就是1，既然如此只要统计有多少个1就行了，偶数个1就是0，奇数个1就是1
-
+记$\operatorname{parity}(v)$为$v$中1的个数的奇偶性，\&表示按位与运算,这里之所以要用$\operatorname{parity}$运算，是因为实现内积是计算较为复杂的，在我们按位与之后需要把每一位异或起来。
+这里注意到，内积的结果不是0就是1，因此只要统计有多少个1就行了，即有偶数个1最终异或结果就是0，有奇数个1最终异或结果就是1。
 对应伪代码如算法~\ref{alg:task1-lat}所示。
 
 \begin{algorithm}[H]
@@ -48,5 +41,7 @@ $$
     \caption{任务一计算得到的S盒线性近似表}
     \label{fig:task1-lat}
 \end{figure}
-
-其中偏差最大的就是$\boxed{0x0B \rightarrow 0x03}$
+其中偏差最大的就是$\texttt{0x}0B \rightarrow \texttt{0x}03$，对应偏差为：
+$$
+\varepsilon(\texttt{0x}0B,\texttt{0x}03) = \frac{-8}{16} = - \frac{1}{2}
+$$

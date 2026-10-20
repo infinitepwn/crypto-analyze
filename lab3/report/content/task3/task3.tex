@@ -1,18 +1,12 @@
 \subsection{任务三}
 
-题目给出的PHILOX-2W算法是一种基于Feistel结构的分组密码，
-其左右分支长度均为$W=8$bit，乘法常数为$M=0x9B$。
-实验要求分析输入掩码分别为$(0,1)$、$(1,0)$、$(0,2)$、$(2,1)$
-时的一轮线性掩码传播情况，并找出每组输入掩码对应的
-输出偏差绝对值最大的前5个输出掩码及其偏差。
+题目给出的PHILOX-2W算法是一种基于Feistel结构的分组密码，其左右分支长度均为$W=8$bit，乘法常数为$M=0x9B$。实验要求分析输入掩码分别为$(0,1)$、$(1,0)$、$(0,2)$、$(2,1)$时的一轮线性掩码传播情况，并找出每组输入掩码对应的偏差绝对值最大的前5个输出掩码及其偏差。
 
-根据题目给出的轮函数，设输入状态为$(L,R)$，
-轮密钥为$K$，一轮输出状态为$(L',R')$，则有
+根据题目给出的轮函数，设输入状态为$(L,R)$，轮密钥为$K$，一轮输出状态为$(L',R')$，则有
 \[
-L'=\operatorname{mullo}_W(R),
-\]
-\[
-R'=\operatorname{mulhi}_W(R)\oplus L\oplus K,
+L'=\operatorname{mullo}_W(R)
+\\
+R'=\operatorname{mulhi}_W(R)\oplus L\oplus K
 \]
 其中
 \[
@@ -20,109 +14,75 @@ R'=\operatorname{mulhi}_W(R)\oplus L\oplus K,
 =\left\lfloor\frac{R\cdot M}{2^W}\right\rfloor,
 \qquad
 \operatorname{mullo}_W(R)
-=(R\cdot M)\bmod 2^W.
+=(R\cdot M)\bmod 2^W
 \]
-
-设输入掩码为$\alpha=(\alpha_L,\alpha_R)$，
-输出掩码为$\beta=(\beta_L,\beta_R)$，
-则对应的线性近似式为
+设输入掩码为$\alpha=(\alpha_L,\alpha_R)$，输出掩码为$\beta=(\beta_L,\beta_R)$，则对应的线性近似式为
 \[
 \alpha_L\cdot L\oplus\alpha_R\cdot R
-\oplus\beta_L\cdot L'\oplus\beta_R\cdot R'.
+\oplus\beta_L\cdot L'\oplus\beta_R\cdot R'
 \]
-
 将轮函数代入上述表达式，整理可得
 \[
 \begin{aligned}
 &(\alpha_L\oplus\beta_R)\cdot L
 \oplus\alpha_R\cdot R\oplus\beta_L\cdot\operatorname{mullo}_W(R)
 \oplus\beta_R\cdot\operatorname{mulhi}_W(R)
-\oplus\beta_R\cdot K.
+\oplus\beta_R\cdot K
 \end{aligned}
 \]
-
-现在把L和R分开的，后面的部分只有R,那其实可以写成
+将含L的项与其余项分离，并将后者记为$f(R,K)$，则线性近似式可写为
 \[
 \begin{aligned}
 &(\alpha_L\oplus\beta_R)\cdot L \oplus f(R,K)
 \end{aligned}
 \]
-
-因为$L,R$是独立的，这样写的好处是我们可以分别讨论了
-
-输入分支$L$在$\mathbf{F}_2^8$上均匀分布，因为输入是随机的嘛
+其中
+$$
+f(R,K) = \alpha_R\cdot R\oplus\beta_L\cdot\operatorname{mullo}_W(R)
+\oplus\beta_R\cdot\operatorname{mulhi}_W(R)
+\oplus\beta_R\cdot K
+$$
+由于$L,R$相互独立，可以分别讨论不同掩码关系下的情形。输入随机时，分支$L$在$\mathbb{F}_2^8$上均匀分布。
 
 \subsubsection{$\alpha_L\neq\beta_R$}
 
-那么显然
+此时有
 \[
 \Pr((\alpha_L\oplus\beta_R)\cdot L = 0) = \Pr((\alpha_L\oplus\beta_R)\cdot L = 1) =\frac{1}{2}  
 \]
-然后
+于是
 \[
 \Pr(f(R,K) = 0) = \Pr(f(R,K) = 1) =\frac{1}{2}  
 \]
-那么根据堆积引理，最后\(\Pr((\alpha_L\oplus\beta_R)\cdot L \oplus f(R,K) = 0) = \frac{1}{2}\)
-
-也就是说偏差都为0，这种情况是平凡的
+根据堆积引理，可得\(\Pr((\alpha_L\oplus\beta_R)\cdot L \oplus f(R,K) = 0) = \frac{1}{2}\)。因此，该情况下的线性偏差为0，属于平凡情况。
 
 \subsubsection{$\alpha_L = \beta_R$}
-
-这个时候我们发现线性近似式和L无关了
+此时，线性近似式与L无关，可化为
 \[
 \alpha_R\cdot R
 \oplus\beta_L\cdot\operatorname{mullo}_W(R)
 \oplus\alpha_L\cdot\operatorname{mulhi}_W(R)
-\oplus\alpha_L\cdot K.
+\oplus\alpha_L\cdot K
 \]
-
-但是这里还有一个$K$啊，不过$K$是固定的，我们做线性近似表的时候，只有输入在变
-
-那所以说$\alpha_L\cdot K$这个在线性近似表的每一项中都是固定的值，要么是0，要么是1
-
-那这其实不会影响线性偏差的绝对值，如果$\alpha_L\cdot K = 0$,
-
-那线性近似式等于0的输入的个数，就相当于使得前面这个式子为0的输入的个数
-
-也就是说$$\text{LAT}(\alpha,\beta)= \#\{R|\alpha_R\cdot R
+该式仍包含密钥$K$。在计算固定密钥下的线性近似表时，仅输入发生变化，因此$\alpha_L\cdot K$在线性近似表的每一项中均为常量，只可能取0或1，不影响线性偏差的绝对值。若$\alpha_L\cdot K = 0$，则线性近似式取0的输入个数，等于去掉常数项后表达式取0的输入个数，即
+$$\text{LAT}(\alpha,\beta)= \#\{R|\alpha_R\cdot R
 \oplus\beta_L\cdot\operatorname{mullo}_W(R)
 \oplus\alpha_L\cdot\operatorname{mulhi}_W(R) = 0\}  - 2^7$$
-
-如果$\alpha_L\cdot K = 1$,
-
-那线性近似式等于0的输入的个数，就相当于使得前面这个式子为1的输入的个数,那就是拿总数$2^8$去减嘛
-
-也就是说$$\text{LAT}(\alpha,\beta)= 2^8 - \#\{R|\alpha_R\cdot R
+若$\alpha_L\cdot K = 1$，则线性近似式取0的输入个数，等于去掉常数项后表达式取1的输入个数。因此，可用输入总数$2^8$减去该表达式取0的输入个数，得到
+$$\text{LAT}(\alpha,\beta)= 2^8 - \#\{R|\alpha_R\cdot R
 \oplus\beta_L\cdot\operatorname{mullo}_W(R)
 \oplus\alpha_L\cdot\operatorname{mulhi}_W(R) = 0\} - 2^7$$
-
-也就是$$\text{LAT}(\alpha,\beta)= 2^7 - \#\{R|\alpha_R\cdot R
+整理得$$\text{LAT}(\alpha,\beta)= 2^7 - \#\{R|\alpha_R\cdot R
 \oplus\beta_L\cdot\operatorname{mullo}_W(R)
 \oplus\alpha_L\cdot\operatorname{mulhi}_W(R) = 0\}$$
+与前一情形相比，表项仅相差一个符号，其绝对值相同。因此，为便于计算，以下取$\alpha_L\cdot K = 0$。
 
-这和前面就是加个负号的区别，绝对值是一样的，那为了方便起见，我们就令$\alpha_L\cdot K = 0$
-
-先遍历题目给出的4组输入掩码
-$\alpha=(\alpha_L,\alpha_R)$，
-根据上述条件确定输出掩码右分支
-$\beta_R=\alpha_L$，
-再遍历全部$2^8$种输出左分支掩码$\beta_L$。
-对于每组输入、输出掩码，遍历全部$2^8$种右分支输入$R$，
-计算对应线性近似式是否为0。
-统计其中为0的个数$N(\alpha,\beta)$，
-并计算线性偏差
+程序首先遍历题目给出的4组输入掩码$\alpha=(\alpha_L,\alpha_R)$，根据上述条件确定输出掩码右分支$\beta_R=\alpha_L$，再遍历全部$2^8$种输出左分支掩码$\beta_L$。对于每组输入、输出掩码，遍历全部$2^8$种右分支输入$R$，统计对应线性近似式取0的输入个数$N(\alpha,\beta)$，并计算线性偏差
 \[
 \varepsilon(\alpha,\beta)
 =\frac{N(\alpha,\beta)}{2^8}-\frac12.
 \]
-
-最后将所有输出掩码按照线性偏差的绝对值降序排列，
-选取前5个输出掩码及其偏差。
-
-
-记$\operatorname{parity}(v)$为$v$中1的个数的奇偶性，\&表示按位与运算
-
-对应伪代码如算法~\ref{alg:task3-philox}所示。
+最后将所有输出掩码按照线性偏差的绝对值降序排列，选取前5个输出掩码及其偏差。记$\operatorname{parity}(v)$为$v$的二进制表示中1的个数模2，\&表示按位与运算，对应伪代码如算法~\ref{alg:task3-philox}所示。
 
 \begin{algorithm}[H]
     \caption{PHILOX-2W一轮线性掩码传播分析}
@@ -175,7 +135,7 @@ $\beta_R=\alpha_L$，
     \caption{PHILOX-2W一轮线性掩码传播分析结果}
     \label{fig:task3-philox}
 \end{figure}
-结果如下
+具体结果如表~\ref{tab:philox_linear}所示。
 \begin{table}[H]
     \centering
     \caption{PHILOX-2W 一轮线性掩码传播分析结果}
@@ -214,4 +174,4 @@ $\beta_R=\alpha_L$，
         \bottomrule
     \end{tabular}
 \end{table}
-值得注意的是，偏差为0.5,意味着就是必然事件了，那这就是一个非常好的区分器
+偏差为0.5意味着相应线性近似式取0的概率为1，即该关系必然成立，因此可用作有效的区分器。
