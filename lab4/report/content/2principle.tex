@@ -1,0 +1,122 @@
+\section{实验原理}
+\subsection{one-hot法}
+\paragraph{基本原理}
+
+One-hot（独热编码）法的核心思想是：为每一个合法的输入输出差分对引入一个二进制选择变量，通过约束所有选择变量之和为 $1$，保证恰好选中一个合法差分对，再利用坐标等式将选中的差分对映射到原始变量，从而实现对合法差分传播集合的精确刻画。
+
+\paragraph{数学建模}
+
+对于一个 $4$ bit 输入、$4$ bit 输出的 S 盒，根据差分分布表（DDT），定义所有合法差分对构成的集合为
+\[
+V=\left\{
+(\Delta_{\mathrm{in}},\Delta_{\mathrm{out}})
+\;\middle|\;
+\operatorname{DDT}[\Delta_{\mathrm{in}}][\Delta_{\mathrm{out}}]>0
+\right\}.
+\]
+
+将每个合法差分对展开为 $8$ bit 的二进制向量，记
+\[
+V=\left\{
+v^{(1)},v^{(2)},\ldots,v^{(m)}
+\right\}
+\subseteq \{0,1\}^{8},
+\]
+其中 $m=|V|$ 为合法差分对的数量，且
+\[
+v^{(i)}=
+\left(v_1^{(i)},v_2^{(i)},\ldots,v_8^{(i)}\right).
+\]
+
+对于集合 $V$ 中的每个合法点 $v^{(i)}$，引入一个二进制选择变量
+\[
+\lambda_i\in\{0,1\},
+\qquad i=1,2,\ldots,m.
+\]
+
+首先，要求所有选择变量之和为 $1$：
+\[
+\boxed{
+\sum_{i=1}^{m}\lambda_i=1
+}
+\]
+由于 $\lambda_i$ 均为二进制变量，因此上述约束保证有且仅有一个 $\lambda_i=1$，即恰好选中一个合法差分对。
+
+其次，定义原始差分变量
+\[
+x=(x_1,x_2,\ldots,x_8)\in\{0,1\}^{8},
+\]
+并通过坐标等式将其与选择变量关联：
+\[
+\boxed{
+x_j=\sum_{i=1}^{m}v_j^{(i)}\lambda_i,
+\qquad j=1,2,\ldots,8.
+}
+\]
+
+由于 $v_j^{(i)}$ 均为已知的二进制常数，上式是关于变量 $x_j$ 和 $\lambda_i$ 的线性等式。
+
+综上，One-hot 法建立的 MILP 约束模型为
+\[
+\boxed{
+\begin{cases}
+\displaystyle\sum_{i=1}^{m}\lambda_i=1,\\[6pt]
+\displaystyle x_j=\sum_{i=1}^{m}v_j^{(i)}\lambda_i,
+& j=1,2,\ldots,8,\\[6pt]
+\lambda_i\in\{0,1\},
+& i=1,2,\ldots,m,\\[4pt]
+x_j\in\{0,1\},
+& j=1,2,\ldots,8.
+\end{cases}
+}
+\]
+
+\paragraph{正确性分析}
+
+由于所有选择变量均为二进制变量，且满足
+\[
+\sum_{i=1}^{m}\lambda_i=1,
+\]
+因此必然存在唯一的 $k\in\{1,\ldots,m\}$，使得
+\[
+\lambda_k=1,\qquad
+\lambda_i=0\quad(i\ne k).
+\]
+
+代入坐标等式，可得
+\[
+x_j
+=\sum_{i=1}^{m}v_j^{(i)}\lambda_i
+=v_j^{(k)},
+\qquad j=1,\ldots,8.
+\]
+
+因此
+\[
+x=v^{(k)}\in V,
+\]
+说明模型不会产生非法差分对。
+
+反之，对于任意合法点 $v^{(k)}\in V$，令
+\[
+\lambda_k=1,\qquad
+\lambda_i=0\quad(i\ne k),
+\]
+即可满足全部约束，并得到 $x=v^{(k)}$。
+
+因此，该模型在原始变量 $x$ 上的全部可行解恰好构成集合 $V$，即
+\[
+\boxed{
+\left\{
+x\in\{0,1\}^{8}
+\;\middle|\;
+\exists\,\lambda\in\{0,1\}^{m}
+\text{ 满足上述约束}
+\right\}=V.
+}
+\]
+
+
+\subsection{逐点排除法}
+\subsection{逻辑化简法}
+\subsection{凸包法}
