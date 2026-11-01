@@ -1,0 +1,101 @@
+\subsection{凸包法}
+\label{subsec:lab4-convex-hull}
+
+\paragraph{基本原理}
+
+凸包法把合法的二进制点集$V$看作实数空间中的点集，先求出其凸包，再用凸包的线性不等式和等式描述传播关系。由于最终仍要求原始变量取二进制值，完整H表示在这些变量上的可行点集恰好为$V$。
+
+\paragraph{凸包与H表示}
+
+设$V=\{v^{(1)},\ldots,v^{(N)}\}\subseteq\{0,1\}^{8}$，其凸包定义为
+\[
+P=\operatorname{conv}(V)
+=\left\{\sum_{i=1}^{N}\theta_i v^{(i)}\ \middle|\
+\theta_i\ge0,\ \sum_{i=1}^{N}\theta_i=1\right\}.
+\]
+其中$\theta_i$为非负实数，此处仅用于给出凸包定义。将合法点作为顶点输入SageMath等工具，可得到$P$的H表示：
+\[
+P=\left\{z\in\mathbb R^{8}\ \middle|\
+\begin{aligned}
+&(a^{(k)})^{\mathsf T}z+\beta_k\ge0,
+&&k\in K,\\
+&(e^{(\ell)})^{\mathsf T}z+\gamma_\ell=0,
+&&\ell\in E
+\end{aligned}
+\right\}.
+\]
+这里$K$、$E$分别为不等式和等式的索引集合，系数均为已知常数。当凸包不是满维时，H表示可能包含等式，读取结果时需要保留这些等式。为避免系数舍入改变可行点集，可使用精确有理数计算，并通过乘以正的公分母将约束整理成整数系数形式。
+
+讲义通过\texttt{Polyhedron(vertices=V)}从点集构造多面体，并用\texttt{inequalities\_list()}读取系数。本实验每个点应为八位向量，因此输出的一行系数写成$q=(c_0,c_1,\ldots,c_8)$，对应
+\[
+h_q(z)=c_0+\sum_{j=1}^{8}c_jz_j\ge0.
+\]
+其中第一项$c_0$是常数项，不是第一个坐标的系数。等式系数需要另外读取，并以$h_q(z)=0$加入模型；不能仅提取不等式而丢弃等式条件。
+
+由此得到完整凸包模型
+\begin{equation}
+\boxed{
+\begin{aligned}
+&(a^{(k)})^{\mathsf T}z+\beta_k\ge0,
+&&k\in K,\\
+&(e^{(\ell)})^{\mathsf T}z+\gamma_\ell=0,
+&&\ell\in E,\\
+&z_j\in\{0,1\},
+&&j=1,\ldots,8.
+\end{aligned}
+}
+\label{eq:lab4-full-hull-model}
+\end{equation}
+
+\paragraph{完整模型的正确性}
+
+首先，任意$v\in V$都属于其凸包，故满足全部H表示约束。反过来，若二进制向量$z\in P$，则存在非负系数$\theta_i$，使$z=\sum_i\theta_i v^{(i)}$且$\sum_i\theta_i=1$。
+
+当$z_j=0$时，所有$\theta_i>0$的点在第$j$个坐标都必须为$0$；当$z_j=1$时，这些点在第$j$个坐标都必须为$1$，否则加权平均会小于$1$。因此，所有正系数对应的点都与$z$逐坐标相同，必有$z\in V$。于是
+\[
+P\cap\{0,1\}^{8}=V,
+\]
+说明式\eqref{eq:lab4-full-hull-model}恰好描述合法点集。
+
+\paragraph{基于非法点覆盖的贪心筛选}
+
+完整H表示可能包含较多约束，而本实验只要求二进制可行点准确。因此，可以按照每条不等式排除非法点的能力进行筛选。设$U=\{0,1\}^{8}\setminus V$，对每个$k\in K$定义
+\[
+R_k=\{u\in U\mid (a^{(k)})^{\mathsf T}u+\beta_k<0\}.
+\]
+保留全部等式，并记等式已经排除的非法点集为
+\[
+R_E=\{u\in U\mid
+\exists\ell\in E,\ (e^{(\ell)})^{\mathsf T}u+\gamma_\ell\ne0\}.
+\]
+初始化尚未排除的点集$U_0=U\setminus R_E$，选中的不等式索引集合$K_0=\varnothing$。只要$U_t\ne\varnothing$，便选择
+\[
+k_t\in\underset{k\in K\setminus K_t}{\operatorname{arg\,max}}
+\ |R_k\cap U_t|,
+\]
+并更新
+\[
+K_{t+1}=K_t\cup\{k_t\},
+\qquad
+U_{t+1}=U_t\setminus R_{k_t}.
+\]
+若多个候选约束覆盖相同数量的点，可约定按固定的系数顺序选择，以便复现筛选过程。由于完整H表示能够排除每个非法二进制点，只要仍有点未被排除，就应存在能够覆盖其中至少一点的候选约束。
+
+这对应讲义中的三个列表：\texttt{remaining}保存尚未排除的非法点，\texttt{pool}保存未选中的候选不等式，\texttt{chosen}保存已经保留的不等式。选中一条约束后，只从\texttt{remaining}中删除违反它的点，仍满足它的点继续留在列表中；同时将该约束从候选列表移至保留列表。若剩余点非空而最佳候选不能再排除任何点，应检查H表示、位序或系数读取，不能继续把该过程当作有效约简。
+
+当剩余点集为空时，记最终选中的索引集合为$K_*$，保留的模型为
+\[
+\boxed{
+\begin{aligned}
+&(a^{(k)})^{\mathsf T}z+\beta_k\ge0,
+&&k\in K_*,\\
+&(e^{(\ell)})^{\mathsf T}z+\gamma_\ell=0,
+&&\ell\in E,\\
+&z_j\in\{0,1\},
+&&j=1,\ldots,8.
+\end{aligned}
+}
+\]
+所有保留的约束均来自原H表示，因此不会排除合法点；筛选结束又保证每个非法点至少违反一个保留约束，故约简模型的二进制可行点集仍恰好为$V$。
+
+这里的约简是相对于二进制点集而言的：约简后的连续可行区域可能大于原凸包，且贪心选择不保证约束数量全局最少。差分传播时取$V=V_{\mathrm D}$，线性传播时取$V=V_{\mathrm L}$，分别计算H表示并独立进行筛选。

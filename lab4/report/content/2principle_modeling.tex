@@ -1,0 +1,55 @@
+% 本文件作为当前原理章节的入口；原有 content/2principle.tex 保持不变。
+\section{实验原理}
+
+%  本节参考课程讲义《密码分析的自动化搜索模型》中关于非零位置点集的建模方法。\footnote{胡凯：《密码分析的自动化搜索模型》，2026年10月20日，Part 1，第10--27页；线性掩码传播参见第45--46页。}讲义以三位S盒$\chi_3$说明方法，本实验则按实验指导书使用四位CipherFour S盒；两者的建模步骤相同，但点的维数、具体系数和实验结果需要分别确定。
+
+\input{content/21DDT_LAT.tex}
+
+\subsection{S盒传播的统一建模约定}
+\label{subsec:lab4-modeling-conventions}
+
+本实验使用$4$比特输入、$4$比特输出的S盒。对于输入、输出差分对或掩码对$(a,b)$，将两者分别按最高位到最低位展开，再按输入在前、输出在后的顺序拼接为
+\[
+\operatorname{enc}(a,b)
+=(a_3,a_2,a_1,a_0,b_3,b_2,b_1,b_0)\in\{0,1\}^{8},
+\]
+其中$a=\sum_{i=0}^{3}2^i a_i$，$b=\sum_{i=0}^{3}2^i b_i$。据此，分别定义差分传播和线性掩码传播的合法点集为
+\begin{align*}
+V_{\mathrm D}
+&=\{\operatorname{enc}(a,b)\mid
+  a,b\in\{0,\ldots,15\},\ \operatorname{DDT}[a][b]>0\},\\
+V_{\mathrm L}
+&=\{\operatorname{enc}(a,b)\mid
+  a,b\in\{0,\ldots,15\},\ \operatorname{LAT}[a][b]\ne0\}.
+\end{align*}
+
+本报告的DDT与LAT均按输入在行、输出在列存储；讲义中的传播矩阵按输出在行、输入在列记作$M[b,a]$或$C[b,a]$。对于本实验的四位S盒，两种记法的对应关系为
+\[
+M[b,a]=\frac{\operatorname{DDT}[a][b]}{16},
+\qquad
+C[b,a]=\frac{\operatorname{LAT}[a][b]}{8}.
+\]
+其中$C$为相关度矩阵，LAT沿用前文的计数减半定义。矩阵转置的存储约定和非零缩放均不改变同一对$(a,b)$是否属于合法集合，但提取点集时必须保持输入、输出顺序一致。
+
+LAT中的负数表示负偏差，仍属于非零相关的合法掩码对，因此构造$V_{\mathrm L}$时不能只保留正数表项。两个集合均保留$(a,b)=(0,0)$对应的全零向量，以描述未活跃S盒的传播。
+
+下面统一用$V$表示$V_{\mathrm D}$或$V_{\mathrm L}$，用$z=(z_1,\ldots,z_8)$表示待约束的二进制变量。建模要求是：约束在这八个原始变量上的可行点集恰好为$V$；如果引入辅助变量，则取全部可行解在$z$上的投影。四种方法分别对两个集合应用相同的构造规则，仅刻画传播的可行性，不额外编码具体的概率或相关度权重。
+
+\input{content/22one_hot.tex}
+\input{content/23point_exclusion.tex}
+\input{content/24logic_minimization.tex}
+\input{content/25convex_hull.tex}
+
+\subsection{全解枚举与等价性验证}
+
+按照讲义的验证方法，模型建立后将目标函数设为常数$0$，仅枚举满足约束的全部二进制解，不按概率或相关度大小筛选。Gurobi的\texttt{PoolSearchMode=2}用于系统搜索多个解，\texttt{PoolSolutions}指定希望收集的解数。原始变量只有八位，取值空间为$\{0,1\}^{8}$；对于上述四种模型，one-hot的选择变量由合法点唯一确定，其余模型不含辅助变量，因此模型的不同完整解也不超过原始八位点的取值总数。将解池容量设为严格大于这一上界，并在求解以\texttt{OPTIMAL}状态结束且解池未满时，才确认全部解已收集。超时或中断时只记录已有解，不据此声称枚举完成。
+
+读取解池时，逐个设置\texttt{SolutionNumber}，再获取该解中各原始变量的值。讲义使用\texttt{Xn}属性，新版本Gurobi也提供\texttt{PoolNX}属性。对one-hot模型，还应核对恰有一个选择变量取$1$，且该选择变量对应的点与原始八位变量相同。
+
+记枚举结果在原始变量上的投影集合为$S_{\mathrm{enum}}$，则分别计算
+\[
+V\setminus S_{\mathrm{enum}},
+\qquad
+S_{\mathrm{enum}}\setminus V.
+\]
+前者表示漏掉的合法点，后者表示多出的非法点。只有枚举已经完成且两个差集均为空，才说明模型的二进制解恰好为$V$。差分与线性两类点集需要分别进行验证；解数相同只是必要条件，还需逐点比较。实际约束系数、条数、枚举结果及求解状态在实验内容部分记录。

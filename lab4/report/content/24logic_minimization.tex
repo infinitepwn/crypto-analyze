@@ -1,0 +1,68 @@
+\subsection{逻辑化简法}
+\label{subsec:lab4-logic-minimization}
+
+\paragraph{基本原理}
+
+逐点排除法对每个非法点分别建立约束，而非法点之间可能共享部分坐标。逻辑化简法将这些点作为布尔函数的取值为$1$的输入，通过Espresso等工具合并为cube，再对每个cube建立一条排除约束。一条这样的约束可以同时排除该cube覆盖的全部非法点。
+
+\paragraph{非法点的布尔表示}
+
+设$U=\{0,1\}^{8}\setminus V$，定义非法点指示函数
+\[
+f_{\mathrm{bad}}(z)=
+\begin{cases}
+1,&z\in U,\\
+0,&z\in V.
+\end{cases}
+\]
+将该函数的真值表或积之和表达式交给逻辑化简工具，得到cube集合$\mathcal C$。每个cube写成
+\[
+c=(c_1,\ldots,c_8)\in\{0,1,-\}^{8},
+\]
+其中$0$、$1$表示该坐标固定，$-$表示该坐标不限。记
+\[
+I_0(c)=\{j\mid c_j=0\},
+\qquad
+I_1(c)=\{j\mid c_j=1\},
+\]
+则该cube覆盖的二进制点集为
+\[
+B(c)=\{z\in\{0,1\}^{8}\mid
+z_j=0\ (j\in I_0(c)),\ z_j=1\ (j\in I_1(c))\}.
+\]
+精确化简要求覆盖关系满足
+\begin{equation}
+\bigcup_{c\in\mathcal C}B(c)=U.
+\label{eq:lab4-cube-cover}
+\end{equation}
+该等式既要求所有非法点都被覆盖，也要求没有合法点落入任何cube。构造输入真值表时，合法点应明确标为$0$，不能将其当作无关项；cube中的$-$仅表示化简后该坐标不受限制。
+
+讲义使用\texttt{espresso-logic}读取PLA格式的非法点列表：本实验应声明八个输入、一个输出，输入标签按$a_3,a_2,a_1,a_0,b_3,b_2,b_1,b_0$排列，每个非法点的输出标为$1$，未列出的点按对应PLA输入模式解释为输出$0$，不能当作任意取值。读取化简结果时，逐行提取输出为$1$的cube；其中的\texttt{-}表示该位不限，\texttt{.p}字段表示输出的cube数量。无论采用讲义中的\texttt{-Dexact}方式，还是通过其他接口调用Espresso，后续线性化都依赖式\eqref{eq:lab4-cube-cover}所要求的精确覆盖关系。
+
+\paragraph{cube的线性约束}
+
+为了排除$B(c)$，要求$z$至少有一个固定坐标不同于$c$，得到
+\begin{equation}
+\boxed{
+\begin{aligned}
+&\sum_{j\in I_0(c)}z_j
++\sum_{j\in I_1(c)}(1-z_j)\ge1,
+&&c\in\mathcal C,\\
+&z_j\in\{0,1\},
+&&j=1,\ldots,8.
+\end{aligned}
+}
+\label{eq:lab4-cube-model}
+\end{equation}
+整理常数项后，每条约束可写为
+\[
+\sum_{j\in I_0(c)}z_j-\sum_{j\in I_1(c)}z_j
+\ge1-|I_1(c)|.
+\]
+cube中取值为$-$的坐标不出现在不等式中；若一个cube的全部坐标都固定，上式便退化为逐点排除约束。
+
+\paragraph{正确性分析}
+
+对于给定的$c$，若$z\in B(c)$，则所有固定坐标均与$c$一致，式\eqref{eq:lab4-cube-model}中对应排除不等式的左端为$0$，从而该点被排除。若$z\notin B(c)$，则至少一个固定坐标不同，左端至少为$1$，满足对应不等式。因此，每条不等式恰好排除一个cube覆盖的点集。
+
+结合式\eqref{eq:lab4-cube-cover}可知，全部约束恰好排除$U$，留下的二进制可行点集就是$V$。用于差分传播时，对DDT零位置化简；用于线性传播时，对LAT零位置化简。化简后的约束只涉及原始变量，但启发式化简并不保证得到全局最少的cube，仍需核对覆盖关系是否精确。
