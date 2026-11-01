@@ -1,1 +1,85 @@
-\subsection{任务一}
+\subsection{任务一：DDT与LAT的建模及求解}
+\label{subsec:lab4-task1}
+
+本任务针对CipherFour的4比特S盒，分别采用one-hot法、逐点排除法、逻辑化简法和凸包法建立混合整数线性规划模型，并枚举各模型的全部二进制解。首先直接计算S盒的DDT和LAT，再以表中的非零位置为参照，检查四种模型得到的输入输出对是否一致。DDT中的$(a,b)$表示输入差分和输出差分，LAT中的$(a,b)$表示输入掩码和输出掩码。% \footnote{本任务的代码实现与报告文字整理使用了AI辅助，实验结果以程序实际运行输出及其与DDT、LAT的核对为依据。}
+
+\paragraph{公共DDT、LAT的计算}
+
+四种方法共用\texttt{ddt\_lat.py}中的表格计算函数。对于DDT，遍历输入差分$a$和输入$x$，计算$S(x)\oplus S(x\oplus a)$，并在对应输出差分的位置累计计数。关键代码如下：
+\begin{lstlisting}
+for a in range(SIZE):
+    for x in range(SIZE):
+        b = SBOX[x] ^ SBOX[x ^ a]
+        table[a][b] += 1
+\end{lstlisting}
+
+对于LAT，遍历输入、输出掩码$a,b$，统计$a\cdot x=b\cdot S(x)$成立的输入个数，再减去8。程序通过按位与和\texttt{bit\_count()}计算模2内积，其核心代码为：
+\begin{lstlisting}
+equal_count = 0
+for x in range(SIZE):
+    input_parity = (a & x).bit_count() & 1
+    output_parity = (b & SBOX[x]).bit_count() & 1
+    if input_parity == output_parity:
+        equal_count += 1
+table[a][b] = equal_count - SIZE // 2
+\end{lstlisting}
+
+运行遍历计算得到图~\ref{fig:lab4-task1-ddt-lat}中的两张表。行下标表示输入，列下标表示输出，均使用十六进制。DDT共有72个非零项，LAT共有122个非零项。因此，差分模型应保留72个合法点，线性模型应保留122个合法点。% LAT中的负值同样表示非零偏差，在提取合法点时使用\texttt{!= 0}判断；两种模型均保留$(0,0)$。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.90\textwidth]{figures/task1/DDT_LAT.png}
+    \caption{直接遍历计算得到的S盒DDT与LAT}
+    \label{fig:lab4-task1-ddt-lat}
+\end{figure}
+
+\paragraph{统一的编码与枚举方式}
+
+程序将每个输入输出对编码为八位向量
+\[
+z=(a_3,a_2,a_1,a_0,b_3,b_2,b_1,b_0),
+\]
+其中输入、输出均按高位在前的顺序排列。四种方法使用相同的位序，以便直接对照求解结果。
+
+为枚举所有合法点，各模型的目标函数均设为常数0，并启用系统性解池搜索：
+\begin{lstlisting}
+model.setObjective(0, gp.GRB.MINIMIZE)
+model.Params.PoolSearchMode = 2
+capacity = 2**8 + 1
+model.Params.PoolSolutions = capacity
+model.Params.MIPGap = 0
+model.Params.MIPGapAbs = 0
+model.optimize()
+\end{lstlisting}
+
+八位坐标共有$2^8=256$种取值，合法点与完整变量赋值一一对应，因此将解池容量设为257。程序在确认求解达到最优且解池未满后，逐个读取解池中的解，按统一位序还原输入输出，并以十六进制排序打印。每个解表示表中的一个非零位置，其具体计数或偏差仍由图~\ref{fig:lab4-task1-ddt-lat}给出。
+
+\input{content/task1/one_hot.tex}
+\input{content/task1/point_exclusion.tex}
+\input{content/task1/logic_minimization.tex}
+\input{content/task1/convex_hull.tex}
+
+\clearpage
+\subsubsection{四种方法的结果对比}
+
+将四种方法的模型规模和枚举结果汇总，如表~\ref{tab:lab4-task1-comparison}所示。表中的约束数统计显式添加的线性约束，二进制变量的取值范围单独计入变量类型；凸包法使用贪心筛选后实际加入Gurobi的约束数。
+
+\begin{table}[H]
+    \centering
+    \caption{四种方法的模型规模与全解枚举结果}
+    \label{tab:lab4-task1-comparison}
+    \begin{tabular}{lrrrrrr}
+        \toprule
+        \multirow{2}{*}{方法} & \multicolumn{3}{c}{DDT模型} & \multicolumn{3}{c}{LAT模型} \\
+        \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+        & 变量数 & 约束数 & 解数 & 变量数 & 约束数 & 解数 \\
+        \midrule
+        one-hot法 & 80 & 9 & 72 & 130 & 9 & 122 \\
+        逐点排除法 & 8 & 184 & 72 & 8 & 134 & 122 \\
+        逻辑化简法 & 8 & 36 & 72 & 8 & 38 & 122 \\
+        凸包法 & 8 & 32 & 72 & 8 & 28 & 122 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+四种方法均准确复现DDT的72个与LAT的122个非零位置，说明二进制解集一致。one-hot法通过增加选择变量减少线性约束条数，其9条约束均为等式；其余三种方法均使用8个变量，其中本次凸包贪心模型的约束数最少。表中反映的是模型规模，约束条数不能直接代替求解时间比较；Espresso化简和贪心筛选的结果也不保证约束数量全局最少。

@@ -1,0 +1,57 @@
+\subsection{one-hot法}
+\label{subsec:lab4-one-hot}
+
+\paragraph{基本原理}
+
+One-hot（独热编码）法按讲义中的三个步骤建立模型：先列出合法点并为每个点引入一个选择变量，再要求恰好选中一个点，最后按坐标恢复被选中点的值。该方法直接使用点集，不需要先计算凸包或进行逻辑化简。
+
+\paragraph{数学建模}
+
+沿用第\ref{subsec:lab4-modeling-conventions}节的统一记号，将合法点集写为
+\[
+V=\{v^{(1)},\ldots,v^{(N)}\},
+\qquad
+v^{(i)}=(v^{(i)}_1,\ldots,v^{(i)}_8),
+\]
+其中$N=|V|$。将各点作为列向量排成常数矩阵$A=(v^{(1)},\ldots,v^{(N)})$，并令$\lambda=(\lambda_1,\ldots,\lambda_N)^{\mathsf T}$，则唯一选择和坐标恢复分别写为
+\[
+\boldsymbol{1}^{\mathsf T}\lambda=1,
+\qquad
+z=A\lambda.
+\]
+逐坐标展开，并明确原始变量与选择变量的二进制取值，得到模型
+\begin{equation}
+\boxed{
+\begin{aligned}
+&\sum_{i=1}^{N}\lambda_i=1,\\
+&z_j=\sum_{i=1}^{N}v^{(i)}_j\lambda_i,
+&&j=1,\ldots,8,\\
+&\lambda_i\in\{0,1\},
+&&i=1,\ldots,N,\\
+&z_j\in\{0,1\},
+&&j=1,\ldots,8.
+\end{aligned}
+}
+\label{eq:lab4-one-hot-model}
+\end{equation}
+
+其中，第一项约束保证唯一选择，第二项约束负责逐坐标恢复该合法点。由于$v^{(i)}_j$均为已知的$0/1$常数，第$j$个坐标也可稀疏地写成
+\[
+z_j=\sum_{i:\,v^{(i)}_j=1}\lambda_i.
+\]
+因此，程序只需累加在该坐标取$1$的点对应的选择变量；若没有这样的点，则该坐标等于$0$。所有等式都不含变量之间的乘积，仍为线性约束。模型中的原始变量与辅助选择变量应分别统计，不能把选择变量数当作模型的总变量数。
+
+\paragraph{正确性分析}
+
+对于模型的任意可行解，由$\lambda_i$的二进制取值及其和为$1$可知，存在唯一的$k$使得$\lambda_k=1$，其余选择变量均为$0$。代入坐标等式，得到$z_j=v^{(k)}_j$，从而$z=v^{(k)}\in V$。因此，模型不会引入非法点。
+
+反过来，任取合法点$v^{(k)}\in V$，令$z=v^{(k)}$、$\lambda_k=1$，其余$\lambda_i=0$，即可满足全部约束。因此，每个合法点都能由模型表示。综上，
+\[
+\left\{z\in\{0,1\}^{8}\mid
+\exists\lambda\in\{0,1\}^{N}\text{满足式}\eqref{eq:lab4-one-hot-model}
+\right\}=V.
+\]
+
+\paragraph{用于差分与线性传播}
+
+差分建模时取$V=V_{\mathrm D}$，每个选择变量对应一个DDT非零位置；线性建模时取$V=V_{\mathrm L}$，每个选择变量对应一个LAT非零位置。也可以直接用$(a,b)$给选择变量编号，记作$\lambda_{(a,b)}$，从而与原表中的位置一一对应。两类模型分别建立各自的选择变量，坐标约束形式保持一致；全零点的选择变量也需要保留，以表示未活跃S盒。表项的具体数值不作为这里的优化目标，枚举结果应覆盖全部合法点。
