@@ -1,0 +1,385 @@
+%----------------------------------------------------------------
+% Cipher Name: Cipherfour_6R_Linear
+% Attack Mode: _LINEAR_PATH
+% Start  Time: 2026-11-01 09:53:21.303
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 1
+% Start Time: 2026-11-01 09:53:21.322
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-64...
+STATUS     : YES.
+LINEAR CORELATION: 2^-41.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0xE	node_0_1_1 : 0x3	node_0_1_2 : 0x3	node_0_1_3 : 0x5	
+node_0_2_0 : 0x9	node_0_2_1 : 0x4	node_0_2_2 : 0xF	node_0_2_3 : 0x6	
+node_0_3_0 : 0b1	node_0_3_1 : 0b0	node_0_3_2 : 0b0	node_0_3_3 : 0b1	node_0_3_4 : 0b0	node_0_3_5 : 0b1	node_0_3_6 : 0b0	node_0_3_7 : 0b0	node_0_3_8 : 0b1	node_0_3_9 : 0b1	node_0_3_10 : 0b1	node_0_3_11 : 0b1	node_0_3_12 : 0b0	node_0_3_13 : 0b1	node_0_3_14 : 0b1	node_0_3_15 : 0b0	
+node_0_4_0 : 0b1	node_0_4_1 : 0b0	node_0_4_2 : 0b1	node_0_4_3 : 0b0	node_0_4_4 : 0b0	node_0_4_5 : 0b1	node_0_4_6 : 0b1	node_0_4_7 : 0b1	node_0_4_8 : 0b0	node_0_4_9 : 0b0	node_0_4_10 : 0b1	node_0_4_11 : 0b1	node_0_4_12 : 0b1	node_0_4_13 : 0b0	node_0_4_14 : 0b1	node_0_4_15 : 0b0	
+ROUND: 1
+node_1_1_0 : 0xA	node_1_1_1 : 0x7	node_1_1_2 : 0x3	node_1_1_3 : 0xA	
+node_1_2_0 : 0x6	node_1_2_1 : 0xF	node_1_2_2 : 0x7	node_1_2_3 : 0x4	
+node_1_3_0 : 0b0	node_1_3_1 : 0b1	node_1_3_2 : 0b1	node_1_3_3 : 0b0	node_1_3_4 : 0b1	node_1_3_5 : 0b1	node_1_3_6 : 0b1	node_1_3_7 : 0b1	node_1_3_8 : 0b0	node_1_3_9 : 0b1	node_1_3_10 : 0b1	node_1_3_11 : 0b1	node_1_3_12 : 0b0	node_1_3_13 : 0b1	node_1_3_14 : 0b0	node_1_3_15 : 0b0	
+node_1_4_0 : 0b0	node_1_4_1 : 0b1	node_1_4_2 : 0b0	node_1_4_3 : 0b0	node_1_4_4 : 0b1	node_1_4_5 : 0b1	node_1_4_6 : 0b1	node_1_4_7 : 0b1	node_1_4_8 : 0b1	node_1_4_9 : 0b1	node_1_4_10 : 0b1	node_1_4_11 : 0b0	node_1_4_12 : 0b0	node_1_4_13 : 0b1	node_1_4_14 : 0b1	node_1_4_15 : 0b0	
+ROUND: 2
+node_2_1_0 : 0x4	node_2_1_1 : 0xF	node_2_1_2 : 0xE	node_2_1_3 : 0x6	
+node_2_2_0 : 0x1	node_2_2_1 : 0x7	node_2_2_2 : 0xC	node_2_2_3 : 0x5	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b1	node_2_3_4 : 0b0	node_2_3_5 : 0b1	node_2_3_6 : 0b1	node_2_3_7 : 0b1	node_2_3_8 : 0b1	node_2_3_9 : 0b1	node_2_3_10 : 0b0	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b1	node_2_3_14 : 0b0	node_2_3_15 : 0b1	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b1	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b1	node_2_4_6 : 0b1	node_2_4_7 : 0b1	node_2_4_8 : 0b0	node_2_4_9 : 0b1	node_2_4_10 : 0b0	node_2_4_11 : 0b0	node_2_4_12 : 0b1	node_2_4_13 : 0b1	node_2_4_14 : 0b0	node_2_4_15 : 0b1	
+ROUND: 3
+node_3_1_0 : 0x2	node_3_1_1 : 0x7	node_3_1_2 : 0x4	node_3_1_3 : 0xD	
+node_3_2_0 : 0xE	node_3_2_1 : 0xA	node_3_2_2 : 0xE	node_3_2_3 : 0xA	
+node_3_3_0 : 0b1	node_3_3_1 : 0b1	node_3_3_2 : 0b1	node_3_3_3 : 0b0	node_3_3_4 : 0b1	node_3_3_5 : 0b0	node_3_3_6 : 0b1	node_3_3_7 : 0b0	node_3_3_8 : 0b1	node_3_3_9 : 0b1	node_3_3_10 : 0b1	node_3_3_11 : 0b0	node_3_3_12 : 0b1	node_3_3_13 : 0b0	node_3_3_14 : 0b1	node_3_3_15 : 0b0	
+node_3_4_0 : 0b1	node_3_4_1 : 0b1	node_3_4_2 : 0b1	node_3_4_3 : 0b1	node_3_4_4 : 0b1	node_3_4_5 : 0b0	node_3_4_6 : 0b1	node_3_4_7 : 0b0	node_3_4_8 : 0b1	node_3_4_9 : 0b1	node_3_4_10 : 0b1	node_3_4_11 : 0b1	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b0	
+ROUND: 4
+node_4_1_0 : 0xF	node_4_1_1 : 0xA	node_4_1_2 : 0xF	node_4_1_3 : 0x0	
+node_4_2_0 : 0x7	node_4_2_1 : 0xD	node_4_2_2 : 0x5	node_4_2_3 : 0x0	
+node_4_3_0 : 0b0	node_4_3_1 : 0b1	node_4_3_2 : 0b1	node_4_3_3 : 0b1	node_4_3_4 : 0b1	node_4_3_5 : 0b1	node_4_3_6 : 0b0	node_4_3_7 : 0b1	node_4_3_8 : 0b0	node_4_3_9 : 0b1	node_4_3_10 : 0b0	node_4_3_11 : 0b1	node_4_3_12 : 0b0	node_4_3_13 : 0b0	node_4_3_14 : 0b0	node_4_3_15 : 0b0	
+node_4_4_0 : 0b0	node_4_4_1 : 0b1	node_4_4_2 : 0b0	node_4_4_3 : 0b0	node_4_4_4 : 0b1	node_4_4_5 : 0b1	node_4_4_6 : 0b1	node_4_4_7 : 0b0	node_4_4_8 : 0b1	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b0	node_4_4_12 : 0b1	node_4_4_13 : 0b1	node_4_4_14 : 0b1	node_4_4_15 : 0b0	
+ROUND: 5
+node_5_1_0 : 0x4	node_5_1_1 : 0xE	node_5_1_2 : 0x8	node_5_1_3 : 0xE	
+node_5_2_0 : 0xD	node_5_2_1 : 0x5	node_5_2_2 : 0xE	node_5_2_3 : 0xC	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:21.767
+% Used Time: 0
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 2
+% Start Time: 2026-11-01 09:53:21.767
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-40...
+STATUS     : YES.
+LINEAR CORELATION: 2^-12.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0x2	node_0_1_1 : 0x0	node_0_1_2 : 0x0	node_0_1_3 : 0x2	
+node_0_2_0 : 0x8	node_0_2_1 : 0x0	node_0_2_2 : 0x0	node_0_2_3 : 0x8	
+node_0_3_0 : 0b1	node_0_3_1 : 0b0	node_0_3_2 : 0b0	node_0_3_3 : 0b0	node_0_3_4 : 0b0	node_0_3_5 : 0b0	node_0_3_6 : 0b0	node_0_3_7 : 0b0	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b1	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b0	
+node_0_4_0 : 0b1	node_0_4_1 : 0b0	node_0_4_2 : 0b0	node_0_4_3 : 0b1	node_0_4_4 : 0b0	node_0_4_5 : 0b0	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b0	node_0_4_9 : 0b0	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b0	node_0_4_13 : 0b0	node_0_4_14 : 0b0	node_0_4_15 : 0b0	
+ROUND: 1
+node_1_1_0 : 0x9	node_1_1_1 : 0x0	node_1_1_2 : 0x0	node_1_1_3 : 0x0	
+node_1_2_0 : 0x1	node_1_2_1 : 0x0	node_1_2_2 : 0x0	node_1_2_3 : 0x0	
+node_1_3_0 : 0b0	node_1_3_1 : 0b0	node_1_3_2 : 0b0	node_1_3_3 : 0b1	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b0	node_1_3_10 : 0b0	node_1_3_11 : 0b0	node_1_3_12 : 0b0	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b0	
+node_1_4_0 : 0b0	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b0	node_1_4_4 : 0b0	node_1_4_5 : 0b0	node_1_4_6 : 0b0	node_1_4_7 : 0b0	node_1_4_8 : 0b0	node_1_4_9 : 0b0	node_1_4_10 : 0b0	node_1_4_11 : 0b0	node_1_4_12 : 0b1	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b0	
+ROUND: 2
+node_2_1_0 : 0x0	node_2_1_1 : 0x0	node_2_1_2 : 0x0	node_2_1_3 : 0x8	
+node_2_2_0 : 0x0	node_2_2_1 : 0x0	node_2_2_2 : 0x0	node_2_2_3 : 0x2	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b0	node_2_3_4 : 0b0	node_2_3_5 : 0b0	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b0	node_2_3_9 : 0b0	node_2_3_10 : 0b0	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b1	node_2_3_15 : 0b0	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b0	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b0	node_2_4_6 : 0b0	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b0	node_2_4_11 : 0b1	node_2_4_12 : 0b0	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b0	
+ROUND: 3
+node_3_1_0 : 0x0	node_3_1_1 : 0x0	node_3_1_2 : 0x1	node_3_1_3 : 0x0	
+node_3_2_0 : 0x0	node_3_2_1 : 0x0	node_3_2_2 : 0xE	node_3_2_3 : 0x0	
+node_3_3_0 : 0b0	node_3_3_1 : 0b0	node_3_3_2 : 0b0	node_3_3_3 : 0b0	node_3_3_4 : 0b0	node_3_3_5 : 0b0	node_3_3_6 : 0b0	node_3_3_7 : 0b0	node_3_3_8 : 0b1	node_3_3_9 : 0b1	node_3_3_10 : 0b1	node_3_3_11 : 0b0	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b0	
+node_3_4_0 : 0b0	node_3_4_1 : 0b0	node_3_4_2 : 0b1	node_3_4_3 : 0b0	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b1	node_3_4_7 : 0b0	node_3_4_8 : 0b0	node_3_4_9 : 0b0	node_3_4_10 : 0b1	node_3_4_11 : 0b0	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b0	
+ROUND: 4
+node_4_1_0 : 0x2	node_4_1_1 : 0x2	node_4_1_2 : 0x2	node_4_1_3 : 0x0	
+node_4_2_0 : 0x8	node_4_2_1 : 0x2	node_4_2_2 : 0x2	node_4_2_3 : 0x0	
+node_4_3_0 : 0b1	node_4_3_1 : 0b0	node_4_3_2 : 0b0	node_4_3_3 : 0b0	node_4_3_4 : 0b0	node_4_3_5 : 0b0	node_4_3_6 : 0b1	node_4_3_7 : 0b0	node_4_3_8 : 0b0	node_4_3_9 : 0b0	node_4_3_10 : 0b1	node_4_3_11 : 0b0	node_4_3_12 : 0b0	node_4_3_13 : 0b0	node_4_3_14 : 0b0	node_4_3_15 : 0b0	
+node_4_4_0 : 0b1	node_4_4_1 : 0b0	node_4_4_2 : 0b0	node_4_4_3 : 0b0	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b0	node_4_4_8 : 0b0	node_4_4_9 : 0b1	node_4_4_10 : 0b1	node_4_4_11 : 0b0	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b0	
+ROUND: 5
+node_5_1_0 : 0x8	node_5_1_1 : 0x0	node_5_1_2 : 0x6	node_5_1_3 : 0x0	
+node_5_2_0 : 0x8	node_5_2_1 : 0x0	node_5_2_2 : 0x2	node_5_2_3 : 0x0	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:22.126
+% Used Time: 1
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 3
+% Start Time: 2026-11-01 09:53:22.126
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-11...
+STATUS     : YES.
+LINEAR CORELATION: 2^-11.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0x2	node_0_1_1 : 0x1	node_0_1_2 : 0x0	node_0_1_3 : 0x0	
+node_0_2_0 : 0x4	node_0_2_1 : 0x4	node_0_2_2 : 0x0	node_0_2_3 : 0x0	
+node_0_3_0 : 0b0	node_0_3_1 : 0b1	node_0_3_2 : 0b0	node_0_3_3 : 0b0	node_0_3_4 : 0b0	node_0_3_5 : 0b1	node_0_3_6 : 0b0	node_0_3_7 : 0b0	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b0	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b0	
+node_0_4_0 : 0b0	node_0_4_1 : 0b0	node_0_4_2 : 0b0	node_0_4_3 : 0b0	node_0_4_4 : 0b1	node_0_4_5 : 0b1	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b0	node_0_4_9 : 0b0	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b0	node_0_4_13 : 0b0	node_0_4_14 : 0b0	node_0_4_15 : 0b0	
+ROUND: 1
+node_1_1_0 : 0x0	node_1_1_1 : 0xC	node_1_1_2 : 0x0	node_1_1_3 : 0x0	
+node_1_2_0 : 0x0	node_1_2_1 : 0x2	node_1_2_2 : 0x0	node_1_2_3 : 0x0	
+node_1_3_0 : 0b0	node_1_3_1 : 0b0	node_1_3_2 : 0b0	node_1_3_3 : 0b0	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b1	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b0	node_1_3_10 : 0b0	node_1_3_11 : 0b0	node_1_3_12 : 0b0	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b0	
+node_1_4_0 : 0b0	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b0	node_1_4_4 : 0b0	node_1_4_5 : 0b0	node_1_4_6 : 0b0	node_1_4_7 : 0b0	node_1_4_8 : 0b0	node_1_4_9 : 0b1	node_1_4_10 : 0b0	node_1_4_11 : 0b0	node_1_4_12 : 0b0	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b0	
+ROUND: 2
+node_2_1_0 : 0x0	node_2_1_1 : 0x0	node_2_1_2 : 0x4	node_2_1_3 : 0x0	
+node_2_2_0 : 0x0	node_2_2_1 : 0x0	node_2_2_2 : 0x2	node_2_2_3 : 0x0	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b0	node_2_3_4 : 0b0	node_2_3_5 : 0b0	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b0	node_2_3_9 : 0b0	node_2_3_10 : 0b1	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b0	node_2_3_15 : 0b0	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b0	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b0	node_2_4_6 : 0b0	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b1	node_2_4_11 : 0b0	node_2_4_12 : 0b0	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b0	
+ROUND: 3
+node_3_1_0 : 0x0	node_3_1_1 : 0x0	node_3_1_2 : 0x2	node_3_1_3 : 0x0	
+node_3_2_0 : 0x0	node_3_2_1 : 0x0	node_3_2_2 : 0x4	node_3_2_3 : 0x0	
+node_3_3_0 : 0b0	node_3_3_1 : 0b0	node_3_3_2 : 0b0	node_3_3_3 : 0b0	node_3_3_4 : 0b0	node_3_3_5 : 0b0	node_3_3_6 : 0b0	node_3_3_7 : 0b0	node_3_3_8 : 0b0	node_3_3_9 : 0b1	node_3_3_10 : 0b0	node_3_3_11 : 0b0	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b0	
+node_3_4_0 : 0b0	node_3_4_1 : 0b0	node_3_4_2 : 0b0	node_3_4_3 : 0b0	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b1	node_3_4_7 : 0b0	node_3_4_8 : 0b0	node_3_4_9 : 0b0	node_3_4_10 : 0b0	node_3_4_11 : 0b0	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b0	
+ROUND: 4
+node_4_1_0 : 0x0	node_4_1_1 : 0x2	node_4_1_2 : 0x0	node_4_1_3 : 0x0	
+node_4_2_0 : 0x0	node_4_2_1 : 0x8	node_4_2_2 : 0x0	node_4_2_3 : 0x0	
+node_4_3_0 : 0b0	node_4_3_1 : 0b0	node_4_3_2 : 0b0	node_4_3_3 : 0b0	node_4_3_4 : 0b1	node_4_3_5 : 0b0	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b0	node_4_3_9 : 0b0	node_4_3_10 : 0b0	node_4_3_11 : 0b0	node_4_3_12 : 0b0	node_4_3_13 : 0b0	node_4_3_14 : 0b0	node_4_3_15 : 0b0	
+node_4_4_0 : 0b0	node_4_4_1 : 0b1	node_4_4_2 : 0b0	node_4_4_3 : 0b0	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b0	node_4_4_8 : 0b0	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b0	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b0	
+ROUND: 5
+node_5_1_0 : 0x4	node_5_1_1 : 0x0	node_5_1_2 : 0x0	node_5_1_3 : 0x0	
+node_5_2_0 : 0x2	node_5_2_1 : 0x0	node_5_2_2 : 0x0	node_5_2_3 : 0x0	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:22.663
+% Used Time: 0
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 4
+% Start Time: 2026-11-01 09:53:22.663
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-10...
+STATUS     : YES.
+LINEAR CORELATION: 2^-8.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0x0	node_0_1_1 : 0x2	node_0_1_2 : 0x0	node_0_1_3 : 0x0	
+node_0_2_0 : 0x0	node_0_2_1 : 0x2	node_0_2_2 : 0x0	node_0_2_3 : 0x0	
+node_0_3_0 : 0b0	node_0_3_1 : 0b0	node_0_3_2 : 0b0	node_0_3_3 : 0b0	node_0_3_4 : 0b0	node_0_3_5 : 0b0	node_0_3_6 : 0b1	node_0_3_7 : 0b0	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b0	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b0	
+node_0_4_0 : 0b0	node_0_4_1 : 0b0	node_0_4_2 : 0b0	node_0_4_3 : 0b0	node_0_4_4 : 0b0	node_0_4_5 : 0b0	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b0	node_0_4_9 : 0b1	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b0	node_0_4_13 : 0b0	node_0_4_14 : 0b0	node_0_4_15 : 0b0	
+ROUND: 1
+node_1_1_0 : 0x0	node_1_1_1 : 0x0	node_1_1_2 : 0x4	node_1_1_3 : 0x0	
+node_1_2_0 : 0x0	node_1_2_1 : 0x0	node_1_2_2 : 0x2	node_1_2_3 : 0x0	
+node_1_3_0 : 0b0	node_1_3_1 : 0b0	node_1_3_2 : 0b0	node_1_3_3 : 0b0	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b0	node_1_3_10 : 0b1	node_1_3_11 : 0b0	node_1_3_12 : 0b0	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b0	
+node_1_4_0 : 0b0	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b0	node_1_4_4 : 0b0	node_1_4_5 : 0b0	node_1_4_6 : 0b0	node_1_4_7 : 0b0	node_1_4_8 : 0b0	node_1_4_9 : 0b0	node_1_4_10 : 0b1	node_1_4_11 : 0b0	node_1_4_12 : 0b0	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b0	
+ROUND: 2
+node_2_1_0 : 0x0	node_2_1_1 : 0x0	node_2_1_2 : 0x2	node_2_1_3 : 0x0	
+node_2_2_0 : 0x0	node_2_2_1 : 0x0	node_2_2_2 : 0x4	node_2_2_3 : 0x0	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b0	node_2_3_4 : 0b0	node_2_3_5 : 0b0	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b0	node_2_3_9 : 0b1	node_2_3_10 : 0b0	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b0	node_2_3_15 : 0b0	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b0	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b0	node_2_4_6 : 0b1	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b0	node_2_4_11 : 0b0	node_2_4_12 : 0b0	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b0	
+ROUND: 3
+node_3_1_0 : 0x0	node_3_1_1 : 0x2	node_3_1_2 : 0x0	node_3_1_3 : 0x0	
+node_3_2_0 : 0x0	node_3_2_1 : 0x8	node_3_2_2 : 0x0	node_3_2_3 : 0x0	
+node_3_3_0 : 0b0	node_3_3_1 : 0b0	node_3_3_2 : 0b0	node_3_3_3 : 0b0	node_3_3_4 : 0b1	node_3_3_5 : 0b0	node_3_3_6 : 0b0	node_3_3_7 : 0b0	node_3_3_8 : 0b0	node_3_3_9 : 0b0	node_3_3_10 : 0b0	node_3_3_11 : 0b0	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b0	
+node_3_4_0 : 0b0	node_3_4_1 : 0b1	node_3_4_2 : 0b0	node_3_4_3 : 0b0	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b0	node_3_4_7 : 0b0	node_3_4_8 : 0b0	node_3_4_9 : 0b0	node_3_4_10 : 0b0	node_3_4_11 : 0b0	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b0	
+ROUND: 4
+node_4_1_0 : 0x4	node_4_1_1 : 0x0	node_4_1_2 : 0x0	node_4_1_3 : 0x0	
+node_4_2_0 : 0x2	node_4_2_1 : 0x0	node_4_2_2 : 0x0	node_4_2_3 : 0x0	
+node_4_3_0 : 0b0	node_4_3_1 : 0b0	node_4_3_2 : 0b1	node_4_3_3 : 0b0	node_4_3_4 : 0b0	node_4_3_5 : 0b0	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b0	node_4_3_9 : 0b0	node_4_3_10 : 0b0	node_4_3_11 : 0b0	node_4_3_12 : 0b0	node_4_3_13 : 0b0	node_4_3_14 : 0b0	node_4_3_15 : 0b0	
+node_4_4_0 : 0b0	node_4_4_1 : 0b0	node_4_4_2 : 0b0	node_4_4_3 : 0b0	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b0	node_4_4_8 : 0b1	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b0	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b0	
+ROUND: 5
+node_5_1_0 : 0x0	node_5_1_1 : 0x0	node_5_1_2 : 0x8	node_5_1_3 : 0x0	
+node_5_2_0 : 0x0	node_5_2_1 : 0x0	node_5_2_2 : 0x8	node_5_2_3 : 0x0	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:23.046
+% Used Time: 1
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 5
+% Start Time: 2026-11-01 09:53:23.046
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-7...
+STATUS     : YES.
+LINEAR CORELATION: 2^-7.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0x4	node_0_1_1 : 0x0	node_0_1_2 : 0x0	node_0_1_3 : 0x0	
+node_0_2_0 : 0x2	node_0_2_1 : 0x0	node_0_2_2 : 0x0	node_0_2_3 : 0x0	
+node_0_3_0 : 0b0	node_0_3_1 : 0b0	node_0_3_2 : 0b1	node_0_3_3 : 0b0	node_0_3_4 : 0b0	node_0_3_5 : 0b0	node_0_3_6 : 0b0	node_0_3_7 : 0b0	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b0	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b0	
+node_0_4_0 : 0b0	node_0_4_1 : 0b0	node_0_4_2 : 0b0	node_0_4_3 : 0b0	node_0_4_4 : 0b0	node_0_4_5 : 0b0	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b1	node_0_4_9 : 0b0	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b0	node_0_4_13 : 0b0	node_0_4_14 : 0b0	node_0_4_15 : 0b0	
+ROUND: 1
+node_1_1_0 : 0x0	node_1_1_1 : 0x0	node_1_1_2 : 0x8	node_1_1_3 : 0x0	
+node_1_2_0 : 0x0	node_1_2_1 : 0x0	node_1_2_2 : 0x2	node_1_2_3 : 0x0	
+node_1_3_0 : 0b0	node_1_3_1 : 0b0	node_1_3_2 : 0b0	node_1_3_3 : 0b0	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b0	node_1_3_10 : 0b1	node_1_3_11 : 0b0	node_1_3_12 : 0b0	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b0	
+node_1_4_0 : 0b0	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b0	node_1_4_4 : 0b0	node_1_4_5 : 0b0	node_1_4_6 : 0b0	node_1_4_7 : 0b0	node_1_4_8 : 0b0	node_1_4_9 : 0b0	node_1_4_10 : 0b1	node_1_4_11 : 0b0	node_1_4_12 : 0b0	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b0	
+ROUND: 2
+node_2_1_0 : 0x0	node_2_1_1 : 0x0	node_2_1_2 : 0x2	node_2_1_3 : 0x0	
+node_2_2_0 : 0x0	node_2_2_1 : 0x0	node_2_2_2 : 0x2	node_2_2_3 : 0x0	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b0	node_2_3_4 : 0b0	node_2_3_5 : 0b0	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b0	node_2_3_9 : 0b0	node_2_3_10 : 0b1	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b0	node_2_3_15 : 0b0	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b0	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b0	node_2_4_6 : 0b0	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b1	node_2_4_11 : 0b0	node_2_4_12 : 0b0	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b0	
+ROUND: 3
+node_3_1_0 : 0x0	node_3_1_1 : 0x0	node_3_1_2 : 0x2	node_3_1_3 : 0x0	
+node_3_2_0 : 0x0	node_3_2_1 : 0x0	node_3_2_2 : 0x8	node_3_2_3 : 0x0	
+node_3_3_0 : 0b0	node_3_3_1 : 0b0	node_3_3_2 : 0b0	node_3_3_3 : 0b0	node_3_3_4 : 0b0	node_3_3_5 : 0b0	node_3_3_6 : 0b0	node_3_3_7 : 0b0	node_3_3_8 : 0b1	node_3_3_9 : 0b0	node_3_3_10 : 0b0	node_3_3_11 : 0b0	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b0	
+node_3_4_0 : 0b0	node_3_4_1 : 0b0	node_3_4_2 : 0b1	node_3_4_3 : 0b0	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b0	node_3_4_7 : 0b0	node_3_4_8 : 0b0	node_3_4_9 : 0b0	node_3_4_10 : 0b0	node_3_4_11 : 0b0	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b0	
+ROUND: 4
+node_4_1_0 : 0x2	node_4_1_1 : 0x0	node_4_1_2 : 0x0	node_4_1_3 : 0x0	
+node_4_2_0 : 0x2	node_4_2_1 : 0x0	node_4_2_2 : 0x0	node_4_2_3 : 0x0	
+node_4_3_0 : 0b0	node_4_3_1 : 0b0	node_4_3_2 : 0b1	node_4_3_3 : 0b0	node_4_3_4 : 0b0	node_4_3_5 : 0b0	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b0	node_4_3_9 : 0b0	node_4_3_10 : 0b0	node_4_3_11 : 0b0	node_4_3_12 : 0b0	node_4_3_13 : 0b0	node_4_3_14 : 0b0	node_4_3_15 : 0b0	
+node_4_4_0 : 0b0	node_4_4_1 : 0b0	node_4_4_2 : 0b0	node_4_4_3 : 0b0	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b0	node_4_4_8 : 0b1	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b0	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b0	
+ROUND: 5
+node_5_1_0 : 0x0	node_5_1_1 : 0x0	node_5_1_2 : 0x8	node_5_1_3 : 0x0	
+node_5_2_0 : 0x0	node_5_2_1 : 0x0	node_5_2_2 : 0x8	node_5_2_3 : 0x0	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:23.510
+% Used Time: 0
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 6
+% Start Time: 2026-11-01 09:53:23.510
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-6...
+STATUS     : YES.
+LINEAR CORELATION: 2^-6.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0x0	node_0_1_1 : 0xA	node_0_1_2 : 0x0	node_0_1_3 : 0x6	
+node_0_2_0 : 0x0	node_0_2_1 : 0xC	node_0_2_2 : 0x0	node_0_2_3 : 0xA	
+node_0_3_0 : 0b0	node_0_3_1 : 0b0	node_0_3_2 : 0b0	node_0_3_3 : 0b0	node_0_3_4 : 0b1	node_0_3_5 : 0b1	node_0_3_6 : 0b0	node_0_3_7 : 0b0	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b1	node_0_3_13 : 0b0	node_0_3_14 : 0b1	node_0_3_15 : 0b0	
+node_0_4_0 : 0b0	node_0_4_1 : 0b1	node_0_4_2 : 0b0	node_0_4_3 : 0b1	node_0_4_4 : 0b0	node_0_4_5 : 0b1	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b0	node_0_4_9 : 0b0	node_0_4_10 : 0b0	node_0_4_11 : 0b1	node_0_4_12 : 0b0	node_0_4_13 : 0b0	node_0_4_14 : 0b0	node_0_4_15 : 0b0	
+ROUND: 1
+node_1_1_0 : 0x5	node_1_1_1 : 0x4	node_1_1_2 : 0x1	node_1_1_3 : 0x0	
+node_1_2_0 : 0x6	node_1_2_1 : 0x8	node_1_2_2 : 0xF	node_1_2_3 : 0x0	
+node_1_3_0 : 0b0	node_1_3_1 : 0b1	node_1_3_2 : 0b1	node_1_3_3 : 0b0	node_1_3_4 : 0b1	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b1	node_1_3_9 : 0b1	node_1_3_10 : 0b1	node_1_3_11 : 0b1	node_1_3_12 : 0b0	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b0	
+node_1_4_0 : 0b0	node_1_4_1 : 0b1	node_1_4_2 : 0b1	node_1_4_3 : 0b0	node_1_4_4 : 0b1	node_1_4_5 : 0b0	node_1_4_6 : 0b1	node_1_4_7 : 0b0	node_1_4_8 : 0b1	node_1_4_9 : 0b0	node_1_4_10 : 0b1	node_1_4_11 : 0b0	node_1_4_12 : 0b0	node_1_4_13 : 0b0	node_1_4_14 : 0b1	node_1_4_15 : 0b0	
+ROUND: 2
+node_2_1_0 : 0x6	node_2_1_1 : 0xA	node_2_1_2 : 0xA	node_2_1_3 : 0x2	
+node_2_2_0 : 0xA	node_2_2_1 : 0xC	node_2_2_2 : 0xC	node_2_2_3 : 0x2	
+node_2_3_0 : 0b1	node_2_3_1 : 0b0	node_2_3_2 : 0b1	node_2_3_3 : 0b0	node_2_3_4 : 0b1	node_2_3_5 : 0b1	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b1	node_2_3_9 : 0b1	node_2_3_10 : 0b0	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b1	node_2_3_15 : 0b0	
+node_2_4_0 : 0b1	node_2_4_1 : 0b1	node_2_4_2 : 0b1	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b1	node_2_4_6 : 0b1	node_2_4_7 : 0b0	node_2_4_8 : 0b1	node_2_4_9 : 0b0	node_2_4_10 : 0b0	node_2_4_11 : 0b1	node_2_4_12 : 0b0	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b0	
+ROUND: 3
+node_3_1_0 : 0xE	node_3_1_1 : 0x6	node_3_1_2 : 0x9	node_3_1_3 : 0x0	
+node_3_2_0 : 0x1	node_3_2_1 : 0xA	node_3_2_2 : 0xB	node_3_2_3 : 0x0	
+node_3_3_0 : 0b0	node_3_3_1 : 0b0	node_3_3_2 : 0b0	node_3_3_3 : 0b1	node_3_3_4 : 0b1	node_3_3_5 : 0b0	node_3_3_6 : 0b1	node_3_3_7 : 0b0	node_3_3_8 : 0b1	node_3_3_9 : 0b0	node_3_3_10 : 0b1	node_3_3_11 : 0b1	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b0	
+node_3_4_0 : 0b0	node_3_4_1 : 0b1	node_3_4_2 : 0b1	node_3_4_3 : 0b0	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b0	node_3_4_7 : 0b0	node_3_4_8 : 0b0	node_3_4_9 : 0b1	node_3_4_10 : 0b1	node_3_4_11 : 0b0	node_3_4_12 : 0b1	node_3_4_13 : 0b0	node_3_4_14 : 0b1	node_3_4_15 : 0b0	
+ROUND: 4
+node_4_1_0 : 0x6	node_4_1_1 : 0x0	node_4_1_2 : 0x6	node_4_1_3 : 0xA	
+node_4_2_0 : 0xA	node_4_2_1 : 0x0	node_4_2_2 : 0xA	node_4_2_3 : 0xC	
+node_4_3_0 : 0b1	node_4_3_1 : 0b0	node_4_3_2 : 0b1	node_4_3_3 : 0b0	node_4_3_4 : 0b0	node_4_3_5 : 0b0	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b1	node_4_3_9 : 0b0	node_4_3_10 : 0b1	node_4_3_11 : 0b0	node_4_3_12 : 0b1	node_4_3_13 : 0b1	node_4_3_14 : 0b0	node_4_3_15 : 0b0	
+node_4_4_0 : 0b1	node_4_4_1 : 0b0	node_4_4_2 : 0b1	node_4_4_3 : 0b1	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b1	node_4_4_8 : 0b1	node_4_4_9 : 0b0	node_4_4_10 : 0b1	node_4_4_11 : 0b0	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b0	
+ROUND: 5
+node_5_1_0 : 0xB	node_5_1_1 : 0x1	node_5_1_2 : 0xA	node_5_1_3 : 0x0	
+node_5_2_0 : 0x3	node_5_2_1 : 0xF	node_5_2_2 : 0xC	node_5_2_3 : 0x0	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:24.764
+% Used Time: 1
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 7
+% Start Time: 2026-11-01 09:53:24.764
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-5...
+STATUS     : YES.
+LINEAR CORELATION: 2^-5.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0xD	node_0_1_1 : 0x0	node_0_1_2 : 0xD	node_0_1_3 : 0xD	
+node_0_2_0 : 0x9	node_0_2_1 : 0x0	node_0_2_2 : 0x9	node_0_2_3 : 0x9	
+node_0_3_0 : 0b1	node_0_3_1 : 0b0	node_0_3_2 : 0b0	node_0_3_3 : 0b1	node_0_3_4 : 0b0	node_0_3_5 : 0b0	node_0_3_6 : 0b0	node_0_3_7 : 0b0	node_0_3_8 : 0b1	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b1	node_0_3_12 : 0b1	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b1	
+node_0_4_0 : 0b1	node_0_4_1 : 0b0	node_0_4_2 : 0b1	node_0_4_3 : 0b1	node_0_4_4 : 0b0	node_0_4_5 : 0b0	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b0	node_0_4_9 : 0b0	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b1	node_0_4_13 : 0b0	node_0_4_14 : 0b1	node_0_4_15 : 0b1	
+ROUND: 1
+node_1_1_0 : 0xB	node_1_1_1 : 0x0	node_1_1_2 : 0x0	node_1_1_3 : 0xB	
+node_1_2_0 : 0x3	node_1_2_1 : 0x0	node_1_2_2 : 0x0	node_1_2_3 : 0x3	
+node_1_3_0 : 0b0	node_1_3_1 : 0b0	node_1_3_2 : 0b1	node_1_3_3 : 0b1	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b0	node_1_3_10 : 0b0	node_1_3_11 : 0b0	node_1_3_12 : 0b0	node_1_3_13 : 0b0	node_1_3_14 : 0b1	node_1_3_15 : 0b1	
+node_1_4_0 : 0b0	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b0	node_1_4_4 : 0b0	node_1_4_5 : 0b0	node_1_4_6 : 0b0	node_1_4_7 : 0b0	node_1_4_8 : 0b1	node_1_4_9 : 0b0	node_1_4_10 : 0b0	node_1_4_11 : 0b1	node_1_4_12 : 0b1	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b1	
+ROUND: 2
+node_2_1_0 : 0x0	node_2_1_1 : 0x0	node_2_1_2 : 0x9	node_2_1_3 : 0x9	
+node_2_2_0 : 0x0	node_2_2_1 : 0x0	node_2_2_2 : 0x1	node_2_2_3 : 0xB	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b0	node_2_3_4 : 0b0	node_2_3_5 : 0b0	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b0	node_2_3_9 : 0b0	node_2_3_10 : 0b0	node_2_3_11 : 0b1	node_2_3_12 : 0b1	node_2_3_13 : 0b0	node_2_3_14 : 0b1	node_2_3_15 : 0b1	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b0	node_2_4_3 : 0b1	node_2_4_4 : 0b0	node_2_4_5 : 0b0	node_2_4_6 : 0b0	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b0	node_2_4_11 : 0b1	node_2_4_12 : 0b0	node_2_4_13 : 0b0	node_2_4_14 : 0b1	node_2_4_15 : 0b1	
+ROUND: 3
+node_3_1_0 : 0x1	node_3_1_1 : 0x0	node_3_1_2 : 0x1	node_3_1_3 : 0x3	
+node_3_2_0 : 0xF	node_3_2_1 : 0x0	node_3_2_2 : 0xF	node_3_2_3 : 0x1	
+node_3_3_0 : 0b1	node_3_3_1 : 0b1	node_3_3_2 : 0b1	node_3_3_3 : 0b1	node_3_3_4 : 0b0	node_3_3_5 : 0b0	node_3_3_6 : 0b0	node_3_3_7 : 0b0	node_3_3_8 : 0b1	node_3_3_9 : 0b1	node_3_3_10 : 0b1	node_3_3_11 : 0b1	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b1	
+node_3_4_0 : 0b1	node_3_4_1 : 0b0	node_3_4_2 : 0b1	node_3_4_3 : 0b0	node_3_4_4 : 0b1	node_3_4_5 : 0b0	node_3_4_6 : 0b1	node_3_4_7 : 0b0	node_3_4_8 : 0b1	node_3_4_9 : 0b0	node_3_4_10 : 0b1	node_3_4_11 : 0b0	node_3_4_12 : 0b1	node_3_4_13 : 0b0	node_3_4_14 : 0b1	node_3_4_15 : 0b1	
+ROUND: 4
+node_4_1_0 : 0xA	node_4_1_1 : 0xA	node_4_1_2 : 0xA	node_4_1_3 : 0xB	
+node_4_2_0 : 0xC	node_4_2_1 : 0xC	node_4_2_2 : 0xC	node_4_2_3 : 0x3	
+node_4_3_0 : 0b1	node_4_3_1 : 0b1	node_4_3_2 : 0b0	node_4_3_3 : 0b0	node_4_3_4 : 0b1	node_4_3_5 : 0b1	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b1	node_4_3_9 : 0b1	node_4_3_10 : 0b0	node_4_3_11 : 0b0	node_4_3_12 : 0b0	node_4_3_13 : 0b0	node_4_3_14 : 0b1	node_4_3_15 : 0b1	
+node_4_4_0 : 0b1	node_4_4_1 : 0b1	node_4_4_2 : 0b1	node_4_4_3 : 0b0	node_4_4_4 : 0b1	node_4_4_5 : 0b1	node_4_4_6 : 0b1	node_4_4_7 : 0b0	node_4_4_8 : 0b0	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b1	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b1	
+ROUND: 5
+node_5_1_0 : 0xE	node_5_1_1 : 0xE	node_5_1_2 : 0x1	node_5_1_3 : 0x1	
+node_5_2_0 : 0x8	node_5_2_1 : 0x5	node_5_2_2 : 0xF	node_5_2_3 : 0xF	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:25.965
+% Used Time: 1
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 8
+% Start Time: 2026-11-01 09:53:25.965
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-4...
+STATUS     : YES.
+LINEAR CORELATION: 2^-4.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0xB	node_0_1_1 : 0xB	node_0_1_2 : 0x0	node_0_1_3 : 0xD	
+node_0_2_0 : 0x3	node_0_2_1 : 0x3	node_0_2_2 : 0x0	node_0_2_3 : 0x9	
+node_0_3_0 : 0b0	node_0_3_1 : 0b0	node_0_3_2 : 0b1	node_0_3_3 : 0b1	node_0_3_4 : 0b0	node_0_3_5 : 0b0	node_0_3_6 : 0b1	node_0_3_7 : 0b1	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b1	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b1	
+node_0_4_0 : 0b0	node_0_4_1 : 0b0	node_0_4_2 : 0b0	node_0_4_3 : 0b1	node_0_4_4 : 0b0	node_0_4_5 : 0b0	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b1	node_0_4_9 : 0b1	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b1	node_0_4_13 : 0b1	node_0_4_14 : 0b0	node_0_4_15 : 0b1	
+ROUND: 1
+node_1_1_0 : 0x1	node_1_1_1 : 0x0	node_1_1_2 : 0xC	node_1_1_3 : 0xD	
+node_1_2_0 : 0xF	node_1_2_1 : 0x0	node_1_2_2 : 0x6	node_1_2_3 : 0x9	
+node_1_3_0 : 0b1	node_1_3_1 : 0b1	node_1_3_2 : 0b1	node_1_3_3 : 0b1	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b1	node_1_3_10 : 0b1	node_1_3_11 : 0b0	node_1_3_12 : 0b1	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b1	
+node_1_4_0 : 0b1	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b1	node_1_4_4 : 0b1	node_1_4_5 : 0b0	node_1_4_6 : 0b1	node_1_4_7 : 0b0	node_1_4_8 : 0b1	node_1_4_9 : 0b0	node_1_4_10 : 0b1	node_1_4_11 : 0b0	node_1_4_12 : 0b1	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b1	
+ROUND: 2
+node_2_1_0 : 0x9	node_2_1_1 : 0xA	node_2_1_2 : 0xA	node_2_1_3 : 0x9	
+node_2_2_0 : 0x1	node_2_2_1 : 0xC	node_2_2_2 : 0xC	node_2_2_3 : 0x1	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b1	node_2_3_4 : 0b1	node_2_3_5 : 0b1	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b1	node_2_3_9 : 0b1	node_2_3_10 : 0b0	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b0	node_2_3_15 : 0b1	
+node_2_4_0 : 0b0	node_2_4_1 : 0b1	node_2_4_2 : 0b1	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b1	node_2_4_6 : 0b1	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b0	node_2_4_11 : 0b0	node_2_4_12 : 0b1	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b1	
+ROUND: 3
+node_3_1_0 : 0x6	node_3_1_1 : 0x6	node_3_1_2 : 0x0	node_3_1_3 : 0x9	
+node_3_2_0 : 0xA	node_3_2_1 : 0xA	node_3_2_2 : 0x0	node_3_2_3 : 0xB	
+node_3_3_0 : 0b1	node_3_3_1 : 0b0	node_3_3_2 : 0b1	node_3_3_3 : 0b0	node_3_3_4 : 0b1	node_3_3_5 : 0b0	node_3_3_6 : 0b1	node_3_3_7 : 0b0	node_3_3_8 : 0b0	node_3_3_9 : 0b0	node_3_3_10 : 0b0	node_3_3_11 : 0b0	node_3_3_12 : 0b1	node_3_3_13 : 0b0	node_3_3_14 : 0b1	node_3_3_15 : 0b1	
+node_3_4_0 : 0b1	node_3_4_1 : 0b1	node_3_4_2 : 0b0	node_3_4_3 : 0b1	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b0	node_3_4_7 : 0b0	node_3_4_8 : 0b1	node_3_4_9 : 0b1	node_3_4_10 : 0b0	node_3_4_11 : 0b1	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b1	
+ROUND: 4
+node_4_1_0 : 0xD	node_4_1_1 : 0x0	node_4_1_2 : 0xD	node_4_1_3 : 0x1	
+node_4_2_0 : 0x9	node_4_2_1 : 0x0	node_4_2_2 : 0x9	node_4_2_3 : 0xF	
+node_4_3_0 : 0b1	node_4_3_1 : 0b0	node_4_3_2 : 0b0	node_4_3_3 : 0b1	node_4_3_4 : 0b0	node_4_3_5 : 0b0	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b1	node_4_3_9 : 0b0	node_4_3_10 : 0b0	node_4_3_11 : 0b1	node_4_3_12 : 0b1	node_4_3_13 : 0b1	node_4_3_14 : 0b1	node_4_3_15 : 0b1	
+node_4_4_0 : 0b1	node_4_4_1 : 0b0	node_4_4_2 : 0b1	node_4_4_3 : 0b1	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b1	node_4_4_8 : 0b0	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b1	node_4_4_12 : 0b1	node_4_4_13 : 0b0	node_4_4_14 : 0b1	node_4_4_15 : 0b1	
+ROUND: 5
+node_5_1_0 : 0xB	node_5_1_1 : 0x1	node_5_1_2 : 0x1	node_5_1_3 : 0xB	
+node_5_2_0 : 0x3	node_5_2_1 : 0xF	node_5_2_2 : 0xF	node_5_2_3 : 0x3	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:27.253
+% Used Time: 2
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 9
+% Start Time: 2026-11-01 09:53:27.253
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-3...
+STATUS     : YES.
+LINEAR CORELATION: 2^-3.
+PATH       :
+ROUND: 0
+node_0_1_0 : 0xD	node_0_1_1 : 0xD	node_0_1_2 : 0x0	node_0_1_3 : 0xD	
+node_0_2_0 : 0x9	node_0_2_1 : 0x9	node_0_2_2 : 0x0	node_0_2_3 : 0x9	
+node_0_3_0 : 0b1	node_0_3_1 : 0b0	node_0_3_2 : 0b0	node_0_3_3 : 0b1	node_0_3_4 : 0b1	node_0_3_5 : 0b0	node_0_3_6 : 0b0	node_0_3_7 : 0b1	node_0_3_8 : 0b0	node_0_3_9 : 0b0	node_0_3_10 : 0b0	node_0_3_11 : 0b0	node_0_3_12 : 0b1	node_0_3_13 : 0b0	node_0_3_14 : 0b0	node_0_3_15 : 0b1	
+node_0_4_0 : 0b1	node_0_4_1 : 0b1	node_0_4_2 : 0b0	node_0_4_3 : 0b1	node_0_4_4 : 0b0	node_0_4_5 : 0b0	node_0_4_6 : 0b0	node_0_4_7 : 0b0	node_0_4_8 : 0b0	node_0_4_9 : 0b0	node_0_4_10 : 0b0	node_0_4_11 : 0b0	node_0_4_12 : 0b1	node_0_4_13 : 0b1	node_0_4_14 : 0b0	node_0_4_15 : 0b1	
+ROUND: 1
+node_1_1_0 : 0xD	node_1_1_1 : 0x0	node_1_1_2 : 0x0	node_1_1_3 : 0xD	
+node_1_2_0 : 0x9	node_1_2_1 : 0x0	node_1_2_2 : 0x0	node_1_2_3 : 0x9	
+node_1_3_0 : 0b1	node_1_3_1 : 0b0	node_1_3_2 : 0b0	node_1_3_3 : 0b1	node_1_3_4 : 0b0	node_1_3_5 : 0b0	node_1_3_6 : 0b0	node_1_3_7 : 0b0	node_1_3_8 : 0b0	node_1_3_9 : 0b0	node_1_3_10 : 0b0	node_1_3_11 : 0b0	node_1_3_12 : 0b1	node_1_3_13 : 0b0	node_1_3_14 : 0b0	node_1_3_15 : 0b1	
+node_1_4_0 : 0b1	node_1_4_1 : 0b0	node_1_4_2 : 0b0	node_1_4_3 : 0b1	node_1_4_4 : 0b0	node_1_4_5 : 0b0	node_1_4_6 : 0b0	node_1_4_7 : 0b0	node_1_4_8 : 0b0	node_1_4_9 : 0b0	node_1_4_10 : 0b0	node_1_4_11 : 0b0	node_1_4_12 : 0b1	node_1_4_13 : 0b0	node_1_4_14 : 0b0	node_1_4_15 : 0b1	
+ROUND: 2
+node_2_1_0 : 0x9	node_2_1_1 : 0x0	node_2_1_2 : 0x0	node_2_1_3 : 0x9	
+node_2_2_0 : 0x1	node_2_2_1 : 0x0	node_2_2_2 : 0x0	node_2_2_3 : 0x1	
+node_2_3_0 : 0b0	node_2_3_1 : 0b0	node_2_3_2 : 0b0	node_2_3_3 : 0b1	node_2_3_4 : 0b0	node_2_3_5 : 0b0	node_2_3_6 : 0b0	node_2_3_7 : 0b0	node_2_3_8 : 0b0	node_2_3_9 : 0b0	node_2_3_10 : 0b0	node_2_3_11 : 0b0	node_2_3_12 : 0b0	node_2_3_13 : 0b0	node_2_3_14 : 0b0	node_2_3_15 : 0b1	
+node_2_4_0 : 0b0	node_2_4_1 : 0b0	node_2_4_2 : 0b0	node_2_4_3 : 0b0	node_2_4_4 : 0b0	node_2_4_5 : 0b0	node_2_4_6 : 0b0	node_2_4_7 : 0b0	node_2_4_8 : 0b0	node_2_4_9 : 0b0	node_2_4_10 : 0b0	node_2_4_11 : 0b0	node_2_4_12 : 0b1	node_2_4_13 : 0b0	node_2_4_14 : 0b0	node_2_4_15 : 0b1	
+ROUND: 3
+node_3_1_0 : 0x0	node_3_1_1 : 0x0	node_3_1_2 : 0x0	node_3_1_3 : 0x9	
+node_3_2_0 : 0x0	node_3_2_1 : 0x0	node_3_2_2 : 0x0	node_3_2_3 : 0x1	
+node_3_3_0 : 0b0	node_3_3_1 : 0b0	node_3_3_2 : 0b0	node_3_3_3 : 0b0	node_3_3_4 : 0b0	node_3_3_5 : 0b0	node_3_3_6 : 0b0	node_3_3_7 : 0b0	node_3_3_8 : 0b0	node_3_3_9 : 0b0	node_3_3_10 : 0b0	node_3_3_11 : 0b0	node_3_3_12 : 0b0	node_3_3_13 : 0b0	node_3_3_14 : 0b0	node_3_3_15 : 0b1	
+node_3_4_0 : 0b0	node_3_4_1 : 0b0	node_3_4_2 : 0b0	node_3_4_3 : 0b0	node_3_4_4 : 0b0	node_3_4_5 : 0b0	node_3_4_6 : 0b0	node_3_4_7 : 0b0	node_3_4_8 : 0b0	node_3_4_9 : 0b0	node_3_4_10 : 0b0	node_3_4_11 : 0b0	node_3_4_12 : 0b0	node_3_4_13 : 0b0	node_3_4_14 : 0b0	node_3_4_15 : 0b1	
+ROUND: 4
+node_4_1_0 : 0x0	node_4_1_1 : 0x0	node_4_1_2 : 0x0	node_4_1_3 : 0x1	
+node_4_2_0 : 0x0	node_4_2_1 : 0x0	node_4_2_2 : 0x0	node_4_2_3 : 0xF	
+node_4_3_0 : 0b0	node_4_3_1 : 0b0	node_4_3_2 : 0b0	node_4_3_3 : 0b0	node_4_3_4 : 0b0	node_4_3_5 : 0b0	node_4_3_6 : 0b0	node_4_3_7 : 0b0	node_4_3_8 : 0b0	node_4_3_9 : 0b0	node_4_3_10 : 0b0	node_4_3_11 : 0b0	node_4_3_12 : 0b1	node_4_3_13 : 0b1	node_4_3_14 : 0b1	node_4_3_15 : 0b1	
+node_4_4_0 : 0b0	node_4_4_1 : 0b0	node_4_4_2 : 0b0	node_4_4_3 : 0b1	node_4_4_4 : 0b0	node_4_4_5 : 0b0	node_4_4_6 : 0b0	node_4_4_7 : 0b1	node_4_4_8 : 0b0	node_4_4_9 : 0b0	node_4_4_10 : 0b0	node_4_4_11 : 0b1	node_4_4_12 : 0b0	node_4_4_13 : 0b0	node_4_4_14 : 0b0	node_4_4_15 : 0b1	
+ROUND: 5
+node_5_1_0 : 0x1	node_5_1_1 : 0x1	node_5_1_2 : 0x1	node_5_1_3 : 0x1	
+node_5_2_0 : 0xF	node_5_2_1 : 0xF	node_5_2_2 : 0xF	node_5_2_3 : 0xF	
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:28.405
+% Used Time: 1
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+% Iteration : 10
+% Start Time: 2026-11-01 09:53:28.405
+%----------------------------------------------------------------
+Checking the path with correlation of 2^-2...
+STATUS     : No.
+%----------------------------------------------------------------
+% End Time : 2026-11-01 09:53:29.702
+% Used Time: 1
+%----------------------------------------------------------------
