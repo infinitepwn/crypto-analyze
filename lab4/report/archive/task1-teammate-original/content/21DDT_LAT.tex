@@ -1,0 +1,26 @@
+\subsection{DDT与LAT}
+根据课程所学的差分分析和线性分析，这里简单复述一下S盒的差分分布表(DDT)和线性分布表(LAT)。
+
+\subsubsection{DDT}
+对于一个$m \times n$的S盒，即映射$S:\mathbb{F}_2^m \to \mathbb{F}_2^n$，记满足输入差分$\alpha$、输出差分$\beta$的输入集合为
+$$
+IN_S(\alpha ,\beta) = \{X \in \mathbb{F}_2^m :S(X) \oplus S(X \oplus \alpha) = \beta\}.
+$$
+DDT中的表项为该集合的元素个数，即
+$$
+\operatorname{DDT}[\alpha][\beta] = \# IN_S(\alpha,\beta).
+$$
+
+\subsubsection{LAT}
+
+对于同一个$m \times n$的S盒，LAT是一个$2^m \times 2^n$的表，其中第$\alpha$行第$\beta$列的表项为
+$$
+\operatorname{LAT}[\alpha][\beta]
+=\#\{x\in\mathbb{F}_2^m\mid \alpha\cdot x\oplus\beta\cdot S(x)=0\}-2^{m-1}.
+$$
+这里$\cdot$表示模$2$内积。该表项是输入、输出掩码为$\alpha,\beta$时，使线性表达式$\alpha\cdot x\oplus\beta\cdot S(x)$等于$0$的输入个数与$2^{m-1}$的差，其值与输入总数$2^m$的比值恰好为线性近似的偏差：
+$$
+\epsilon(\alpha,\beta)
+=\Pr[\alpha\cdot x=\beta\cdot S(x)]-\frac{1}{2}
+=\frac{\operatorname{LAT}[\alpha][\beta]}{2^m}.
+$$

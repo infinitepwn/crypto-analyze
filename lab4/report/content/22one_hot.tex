@@ -3,57 +3,36 @@
 
 \paragraph{基本原理}
 
-一个最直接的想法就是，我们直接就给所有点一个变量，集合的属于其实就是0,1关系嘛，0就是不属于，1就是属于
-
-所以说我们给每个点一个0,1变量,记作$\lambda_{(a,b)}$，如果点$(a,b)$属于点集,那么$\lambda_{(a,b)}=1$，否则$\lambda_{(a,b)}=0$
-
-那你求点集里的点，其实就是\(\lambda_{(a,b)}=1\),然后其他都是0
-
-所以约束条件就出来了，\[
-\sum_{(a,b)\in V}\lambda_{(a,b)}=1,
-\]
+one-hot法为传播点集中的每个合法点设置一个二进制选择变量。变量取1表示当前解选择该点，取0表示当前解不选择该点。要求全部选择变量之和为1，即可保证每个可行解恰好对应一个传播点。
 
 \paragraph{数学建模}
+
+设合法点集为$V$，每个点$(a,b)\in V$按公共位序编码为$\operatorname{bits}(a,b)\in\{0,1\}^8$。对每个点引入选择变量$\lambda_{(a,b)}$，并以$x\in\{0,1\}^8$表示八个传播坐标，则模型为
 \begin{equation}
 \begin{aligned}
 \min\quad &0\\
 \text{s.t.}\quad
-&\sum_{(a,b)\in V}\lambda_{(a,b)}=1\\
-&x=\sum_{(a,b)\in V}\lambda_{(a,b)}\operatorname{bits}(a,b)\\
-&\lambda_{(a,b)}\in\{0,1\},\forall(a,b)\in V
+&\sum_{(a,b)\in V}\lambda_{(a,b)}=1,\\
+&x=\sum_{(a,b)\in V}\lambda_{(a,b)}\operatorname{bits}(a,b),\\
+&\lambda_{(a,b)}\in\{0,1\},
+&&\forall(a,b)\in V,\\
+&x\in\{0,1\}^8.
 \end{aligned}
 \label{eq:lab4-one-hot-model}
 \end{equation}
 
+第一条约束保证恰好选择一个点；第二条约束将该点的八个坐标赋给原始传播变量。由于每个坐标都是已知的0或1常数，坐标恢复关系为线性等式。
 
 \paragraph{正确性分析}
 
-对于模型的任意可行解，由 $\lambda_{(a,b)}\in\{0,1\}$ 以及
+对模型的任意可行解，由于$\lambda_{(a,b)}$均为二进制变量且其和为1，存在唯一的$(a^*,b^*)\in V$使得$\lambda_{(a^*,b^*)}=1$，其余选择变量均为0。代入坐标等式可得
 \[
-\sum_{(a,b)\in V}\lambda_{(a,b)}=1
+x=\operatorname{bits}(a^*,b^*),
 \]
-可知，存在唯一的 $(a^*,b^*)\in V$，使得
-$\lambda_{(a^*,b^*)}=1$，其余选择变量均为 $0$
+因此模型不会产生$V$之外的点。
 
-将其代入坐标约束
-\[
-x_j=\sum_{(a,b)\in V}
-\operatorname{bits}(a,b)_j\lambda_{(a,b)}
-\]
-可得
-\[
-x_j=\operatorname{bits}(a^*,b^*)_j,
-\quad j=0,1,\ldots,7.
-\]
-因此，$x=\operatorname{bits}(a^*,b^*)$，即 $x$ 对应于 $V$ 中的点，不会有不可达的点
-
-反过来，任取 $(a,b)\in V$，令
-\[
-x=\operatorname{bits}(a,b),\qquad
-\lambda_{(a,b)}=1,
-\]
-其余选择变量均为 $0$，则显然满足模型中的全部约束
+反过来，对任意$(a,b)\in V$，令$x=\operatorname{bits}(a,b)$、$\lambda_{(a,b)}=1$，并令其余选择变量为0，即可满足全部约束。因此，每个合法点都对应一个模型可行解，模型在$x$上的投影恰好为$V$。
 
 \paragraph{用于差分与线性传播}
 
-差分建模时取$V=V_{\mathrm D}$，每个选择变量对应一个DDT非零位置；线性建模时取$V=V_{\mathrm L}$，每个选择变量对应一个LAT非零位置。也可以直接用$(a,b)$给选择变量编号，记作$\lambda_{(a,b)}$，从而与原表中的位置一一对应。两类模型分别建立各自的选择变量，坐标约束形式保持一致；全零点的选择变量也需要保留，以表示未活跃S盒。表项的具体数值不作为这里的优化目标，枚举结果应覆盖全部可达点。
+差分模型取$V=V_{\mathrm D}$，选择变量分别对应DDT的非零位置；线性模型取$V=V_{\mathrm L}$，选择变量分别对应LAT的非零位置。两种模型使用相同的坐标恢复约束，但各自建立独立的选择变量。全零点$(0,0)$的选择变量也应保留，以表示未激活的 S 盒传播；表项的具体计数或偏差不作为本模型的优化目标。

@@ -2,11 +2,11 @@
 \subsubsection{凸包法}
 \label{subsubsec:lab4-task1-convex-hull}
 
-\paragraph{使用SageMath建立完整凸包}
+\paragraph{利用SageMath构造完整凸包}
 
-实验分为建立凸包和求解两个步骤：\texttt{build\_hull.py}在WSL Arch中使用SageMath计算约束，\texttt{convex\_hull.py}在Windows的\texttt{uv}环境中读取约束并调用Gurobi。
+凸包法包括凸包构造和约束求解两个阶段。构造脚本\texttt{build\_hull.py}从DDT或LAT的非零位置提取传播点，在八维空间中构造凸包并生成H表示；求解脚本\texttt{convex\_hull.py}读取这些约束，建立二进制模型并枚举可行点。
 
-建立凸包时，程序将合法输入输出对编码为八位向量，使用\texttt{QQ}进行精确有理数计算，并分别提取不等式和等式：
+构造阶段将每个合法输入输出对按公共位序编码为八位向量，并在有理数域$\mathbb Q$上进行精确计算。程序分别提取凸包的不等式和等式：
 \begin{lstlisting}
 points = [bits(a, b) for a in range(SIZE) for b in range(SIZE)
           if table[a][b] != 0]
@@ -20,13 +20,13 @@ hrep = {
 }
 \end{lstlisting}
 
-Sage输出的每行系数按$[c_0,c_1,\ldots,c_8]$排列，第一项为常数，对应$c_0+\sum_{j=0}^{7}c_{j+1}x_j\ge0$，等式使用相同的系数顺序。\footnote{SageMath多面体构造与H表示说明：\url{https://doc.sagemath.org/html/en/reference/discrete_geometry/sage/geometry/polyhedron/constructor.html}。}为便于JSON保存和后续整数计算，\texttt{integer\_row()}先乘以各系数分母的最小公倍数，再约去整数系数的最大公因数。整个过程使用正数缩放，保持不等式方向。
+SageMath输出的每行系数按$[c_0,c_1,\ldots,c_8]$排列，其中$c_0$为常数项，对应的不等式为$c_0+\sum_{j=0}^{7}c_{j+1}x_j\ge0$；等式采用相同的系数顺序。\footnote{SageMath多面体构造与H表示说明：\url{https://doc.sagemath.org/html/en/reference/discrete_geometry/sage/geometry/polyhedron/constructor.html}。}为将系数保存为整数，\texttt{integer\_row()}先乘以分母的最小公倍数，再除以整数系数的最大公因数。缩放因子为正数，因此不等式方向保持不变。
 
-两组完整H表示保存在\texttt{hull\_constraints.json}中，顶层键为\texttt{DDT}和\texttt{LAT}，各自包含\texttt{inequalities}与\texttt{equations}两个系数数组。由于文件位于Windows工作目录，WSL通过\texttt{/mnt/d/}访问并生成文件后，Windows端可以直接读取相同数据。
+完整H表示保存在\texttt{hull\_constraints.json}中。JSON文件以\texttt{DDT}和\texttt{LAT}为顶层键，每组包含\texttt{inequalities}和\texttt{equations}两个系数数组。文件位于Windows工作目录，WSL通过\texttt{/mnt/d/}路径访问并生成数据，Windows端随后读取同一文件。
 
-\paragraph{贪心筛选与Gurobi建模}
+\paragraph{贪心筛选与模型求解}
 
-完整H表示可以准确描述凸包，但本任务最终只检查二进制点，因此进一步按每条不等式排除非法点的能力进行筛选。程序保留全部等式，将仍满足等式的非法点编号存入\texttt{remaining}，再用\texttt{pool}记录每条候选不等式能够排除的点集。贪心选择的核心循环为：
+完整H表示准确描述凸包，但本任务关注其二进制可行点，因此在保留全部等式的前提下，进一步筛选能够排除非法二进制点的不等式。程序先将不满足等式的非法点移出待覆盖集合\texttt{remaining}，再由\texttt{pool}记录每条候选不等式所能排除的点。每轮选择覆盖当前最多剩余非法点的不等式，并从\texttt{remaining}中移除已排除点，直至待覆盖集合为空。核心循环如下：
 \par\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}
 while remaining:
@@ -39,30 +39,28 @@ while remaining:
 \end{lstlisting}
 \end{minipage}\par
 
-其中\texttt{linear\_form(row,point)}计算该行系数在指定点上的值。值小于0表示点违反该不等式，因而可以被排除。候选系数按字典序排列，所以并列时选择顺序固定。每次保留的不等式均来自完整凸包，且筛选结束时所有非法点都已被排除，因此约简后的二进制可行点集仍与原合法点集一致。
+函数\texttt{linear\_form(row,point)}计算不等式在指定点上的取值；若结果小于0，该点违反此不等式并被排除。候选行按系数顺序排列，使并列时的选择固定。每条保留约束均来自完整H表示，因而合法点仍满足所有保留约束；循环结束时全部非法点也均已排除。
 
-最后建立8个二进制变量，将全部等式以$h(x)=0$、筛选后的不等式以$h(x)\ge0$加入Gurobi，再按统一解池设置枚举全部可行点。
+最终模型使用八个二进制变量，将全部等式以$h(x)=0$、筛选后的不等式以$h(x)\ge0$加入模型，并按照统一的解池设置枚举全部可行点。
 
 \paragraph{实验结果与分析}
 
-SageMath计算完整凸包的输出如图~\ref{fig:lab4-task1-hull-build}所示。
+图~\ref{fig:lab4-task1-hull-build}展示了SageMath构造完整凸包并保存H表示的输出。DDT凸包包含145条不等式，LAT凸包包含134条不等式，两者的等式数均为0，与两组传播点集的仿射维数均为8相符。对完整H表示进行二进制点核对，分别得到72个和122个可行点，与原始表中的非零位置一致。
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/task1/hell_model.png}
-    \caption{SageMath建立DDT、LAT合法点集凸包并保存H表示}
+    \caption{SageMath构造DDT、LAT传播点集的凸包并保存H表示}
     \label{fig:lab4-task1-hull-build}
 \end{figure}
 
-DDT凸包共有145条不等式，LAT凸包共有134条不等式，两者等式数均为0。这与两组合法点集的仿射维数均为8相符。整数化后的约束与直接计算表进行核对时，完整H表示保留的二进制点分别为72个和122个，覆盖全部非零位置。
+图~\ref{fig:lab4-task1-convex-hull}给出约束筛选后的枚举结果。DDT模型从145条不等式中保留32条，LAT模型从134条中保留28条；由于两组模型均无等式，最终约束数分别为32和28，变量数均为8。枚举得到72个差分传播点和122个线性传播点，与其余三种方法及DDT、LAT的非零位置逐点相同。
 
-读取JSON并进行贪心筛选后，Gurobi运行结果如图~\ref{fig:lab4-task1-convex-hull}所示。
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/task1/Grubi_solve3_covex_hell.png}
-    \caption{凸包约束经贪心筛选后的Gurobi全解枚举结果}
+    \caption{凸包约束经贪心筛选后的全解枚举结果}
     \label{fig:lab4-task1-convex-hull}
 \end{figure}
 
-DDT模型从145条不等式中保留32条，LAT模型从134条中保留28条。由于没有等式，最终加入Gurobi的约束数分别就是32和28，两种模型的变量数均为8。枚举得到的72个差分输入输出对与122个线性掩码对，与前面三种方法及原始DDT、LAT的非零位置完全一致。
-
-进一步对全部256个二进制点逐一代入约束，完整H表示和筛选后的约束均没有遗漏合法点，也没有保留非法点，说明约束读取、整数化和贪心筛选过程保持了二进制解集。这里的32条和28条约束用于描述合法二进制点；筛选后的连续可行区域可能大于完整凸包，贪心选择也不保证约束数量全局最少。
+此外，对全部256个二进制点逐一代入约束后，完整H表示及筛选后的约束均未遗漏合法点，也未保留非法点。这验证了约束读取、整数化和贪心筛选对二进制解集的保持性。筛选后的连续可行域可能大于完整凸包；贪心过程减少了本次模型的约束数，但不保证约束数达到全局最少。
