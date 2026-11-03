@@ -1,42 +1,35 @@
-"""任务一one-hot方法：读取公共表格、建立模型、枚举并打印最终解。"""
-
+import gurobipy as gp
 import sys
 from pathlib import Path
 
-# 允许从任意工作目录直接运行此脚本，并避免生成公共模块的__pycache__文件。
+# 允许从任意工作目录直接运行
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-import gurobipy as gp
 from ddt_lat import SIZE, bits, compute_ddt, compute_lat
 
-
 def solve_one_hot(name, table, env):
-    """表格仅用于生成合法点；实际输出的解全部从Gurobi解池读取。"""
     # DDT与LAT都取非零位置，包含全零传播以及LAT的负数表项。
-    points = [(a, b) for a in range(SIZE) for b in range(SIZE)
-              if table[a][b] != 0]
-    point_bits = {point: bits(*point) for point in points}
+    V = [(a, b) for a in range(SIZE) for b in range(SIZE) if table[a][b] != 0]
 
     with gp.Model(name, env=env) as model:
         # 八个原始变量的顺序为(a3,a2,a1,a0,b3,b2,b1,b0)。
-        z = model.addVars(8, vtype=gp.GRB.BINARY, name="z")
+        x = model.addVars(8, vtype=gp.GRB.BINARY)
 
         # 第一步：每个合法输入输出对对应一个二进制选择变量。
-        lam = model.addVars(points, vtype=gp.GRB.BINARY, name="lambda")
+        lam = model.addVars(V, vtype=gp.GRB.BINARY)
 
         # 第二步：恰好选中一个合法点。
         model.addConstr(lam.sum() == 1)
 
-        # 第三步：按坐标恢复所选点；只有该位为1的点对坐标和有贡献。
+        # 第三步：按坐标恢复所选点；只有该位为1的点对坐标和有贡献
         for j in range(8):
-            model.addConstr(z[j] == gp.quicksum(
-                lam[point] for point in points if point_bits[point][j] == 1))
+            model.addConstr(x[j] == gp.quicksum(lam[p] for p in V if bits(*p)[j] == 1))
 
         # 常数目标保留所有可行传播，不按概率或相关度筛选。
         model.setObjective(0, gp.GRB.MINIMIZE)
         model.Params.PoolSearchMode = 2
-        # 八位点至多有2^8个，且每个点唯一确定lambda；容量取上界加1。
+        # 八位点至多有2^8个，且每个点唯一确定lambda；容量取上界加1
         capacity = 2**8 + 1
         model.Params.PoolSolutions = capacity
         model.Params.MIPGap = 0
@@ -52,7 +45,7 @@ def solve_one_hot(name, table, env):
         solutions = []
         for k in range(model.SolCount):
             model.Params.SolutionNumber = k
-            values = [int(round(z[j].getAttr(attribute))) for j in range(8)]
+            values = [int(round(x[j].getAttr(attribute))) for j in range(8)]
             # 前四位还原输入，后四位还原输出；与公共模块的高位优先编码一致。
             a = sum(values[j] << (3 - j) for j in range(4))
             b = sum(values[j + 4] << (3 - j) for j in range(4))

@@ -19,13 +19,13 @@ def solve_point_exclusion(name, table, env):
 
     with gp.Model(name, env=env) as model:
         # 八个二进制变量依次表示(a3,a2,a1,a0,b3,b2,b1,b0)。
-        z = model.addVars(8, vtype=gp.GRB.BINARY, name="z")
+        x = model.addVars(8, vtype=gp.GRB.BINARY)
 
         # 对每个非法点q添加汉明距离约束，要求当前点至少有一位不同于q。
         for point in forbidden:
             q = bits(*point)
             model.addConstr(gp.quicksum(
-                z[j] if q[j] == 0 else 1 - z[j] for j in range(8)
+                x[j] if q[j] == 0 else 1 - x[j] for j in range(8)
             ) >= 1)
 
         # 常数目标保留全部可行点，不按概率或相关度筛选。
@@ -47,7 +47,7 @@ def solve_point_exclusion(name, table, env):
         solutions = []
         for k in range(model.SolCount):
             model.Params.SolutionNumber = k
-            values = [int(round(z[j].getAttr(attribute))) for j in range(8)]
+            values = [int(round(x[j].getAttr(attribute))) for j in range(8)]
             # 前四位还原输入，后四位还原输出，位序与公共模块一致。
             a = sum(values[j] << (3 - j) for j in range(4))
             b = sum(values[j + 4] << (3 - j) for j in range(4))

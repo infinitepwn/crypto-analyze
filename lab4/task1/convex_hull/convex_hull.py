@@ -13,7 +13,7 @@ from ddt_lat import SIZE, bits, compute_ddt, compute_lat
 
 
 def linear_form(row, point):
-    """按常数项在前的系数顺序计算c0+sum(cj*zj)。"""
+    """按常数项在前的系数顺序计算c0+sum(cj*xj)。"""
     return row[0] + sum(coefficient * value
                         for coefficient, value in zip(row[1:], point))
 
@@ -49,12 +49,12 @@ def solve_convex_hull(name, table, hrep, env):
 
     with gp.Model(name, env=env) as model:
         # 八个变量依次表示(a3,a2,a1,a0,b3,b2,b1,b0)。
-        z = [model.addVar(vtype=gp.GRB.BINARY, name=f"z[{j}]")
+        x = [model.addVar(vtype=gp.GRB.BINARY, name=f"x[{j}]")
              for j in range(8)]
         for row in equations:
-            model.addConstr(linear_form(row, z) == 0)
+            model.addConstr(linear_form(row, x) == 0)
         for row in chosen:
-            model.addConstr(linear_form(row, z) >= 0)
+            model.addConstr(linear_form(row, x) >= 0)
 
         # 设置常数目标与解池搜索模式，枚举全部可行二进制点。
         model.setObjective(0, gp.GRB.MINIMIZE)
@@ -74,7 +74,7 @@ def solve_convex_hull(name, table, hrep, env):
         solutions = []
         for k in range(model.SolCount):
             model.Params.SolutionNumber = k
-            values = [int(round(variable.getAttr(attribute))) for variable in z]
+            values = [int(round(variable.getAttr(attribute))) for variable in x]
             # 前四位还原输入，后四位还原输出。
             a = sum(values[j] << (3 - j) for j in range(4))
             b = sum(values[j + 4] << (3 - j) for j in range(4))

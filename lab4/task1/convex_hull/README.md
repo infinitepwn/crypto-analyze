@@ -11,7 +11,7 @@ cd /mnt/d/DeskTop/CryptoAnalysis/crypto-analyze/lab4/task1
 
 程序分别用DDT、LAT的非零位置构造合法点集，以 `QQ` 精确计算凸包，将完整H表示保存到本目录的 `hull_constraints.json`。
 
-JSON的顶层键是 `DDT`、`LAT`，各自只包含 `inequalities` 和 `equations` 两个系数数组。每行 `[c0,c1,...,c8]` 对应 `c0 + c1*z0 + ... + c8*z7 >= 0` 或 `= 0`，系数均已转成整数。变量位序为 `(a3,a2,a1,a0,b3,b2,b1,b0)`。
+JSON的顶层键是 `DDT`、`LAT`，各自只包含 `inequalities` 和 `equations` 两个系数数组。每行 `[c0,c1,...,c8]` 对应 `c0 + c1*x0 + ... + c8*x7 >= 0` 或 `= 0`，系数均已转成整数。变量位序为 `(a3,a2,a1,a0,b3,b2,b1,b0)`。
 
 ## 2. 在Windows中筛选约束并求解
 

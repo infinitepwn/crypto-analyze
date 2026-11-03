@@ -4,49 +4,57 @@
 
 \paragraph{（1）算法建模与平台配置}
 
-本任务利用密码分析学课程实验平台，对 Cipherfour 算法分别进行六轮最优差分路线搜索和最优线性路线搜索，并结合任务一计算得到的差分分布表（DDT）和线性分布表（LAT）对搜索结果进行理论验证。
+本任务利用密码分析学课程实验平台，对 Cipherfour 算法分别进行六轮最优差分路线搜索和最优线性路线搜索
 
-Cipherfour 算法的分组长度为 $16$ bit，每轮包含 $4$ 个并行的 $4$ bit S 盒。根据实验要求，采用如下 S 盒：
-\[
-S=[9,8,0,1,E,B,C,D,3,2,5,7,F,A,6,4].
-\]
+首先我们先理解一下平台这个语法
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {figures/node.png}
+\end{figure}
+
+node后面跟着三数字，第一个就是轮数,这个很容易理解
+
+第二个就是层数，这里我们是拆了4层，第一层是进S盒之前，第二层是出S盒之后，要进行Decompose，那这个Decompose就是拆分bit
+
+因为后面拉线操作是bit级别的，然后第三层是Decompose之后的，第四层是拉线操作之后的,然后再经过一个Cascade,也就是把前面拆分的合起来，然后就是下一轮了
+
+每一轮本来还要异或轮密钥的，但是异或密钥对差分没有影响，所以说可以忽略
 
 在平台的配置文件中，首先通过 \texttt{PARAMETERS} 指定 S 盒参数，然后使用 \texttt{SBOX} 组件描述每轮的非线性替换操作，通过 \texttt{DECOMPOSE} 和 \texttt{CASCADE} 组件完成状态的拆分与重组，并使用 \texttt{EQ} 组件实现轮间比特置换。
 
-本实验采用的比特置换规则为
-\[
-\pi(4j+k)=4k+j,
-\qquad 0\le j,k<4.
-\]
+课件里已经给了示例，那这边改一改参数就好了
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {figures/diff.png}
+\end{figure}
+课件里算法是16个S盒并行，我们的Cipherfour只有4个,然后把S盒也修改一下
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]
+    {figures/cipherfour.png}
+\end{figure}
 
-其中，$\pi(i)$ 表示输入位置 $i$ 的比特被置换至输出位置 $\pi(i)$。模型共包含 $6$ 层 S 盒以及相邻轮之间的 $5$ 层比特置换，最后一轮 S 盒的输出直接作为搜索终点。
+Cipherfour最后一轮是没有P置换的，所以说我们最后的状态就取到过完S盒就行，也就是第2层
 
-在 \texttt{SETTINGS} 中，使用
-\begin{verbatim}
-START_NODES = [<node_0_1_i,4,i,0,4,1>]
-END_NODES = [<node_5_2_i,4,i,0,4,1>]
-DIFF_UP_BOUND = 128
-LINEAR_UP_BOUND = 64
-\end{verbatim}
-分别指定搜索的起始状态、终止状态及初始权重上界。
+\bf{所以末尾状态是node\_5\_2\_i}
 
-其中，\texttt{DIFF\_UP\_BOUND} 用于差分搜索，\texttt{LINEAR\_UP\_BOUND} 用于线性搜索。两种任务共用同一算法结构，平台根据任务类型自动选择对应的传播约束及优化方式。
 
+其中，\texttt{DIFF\_UP\_BOUND} 用于差分搜索，\texttt{LINEAR\_UP\_BOUND} 用于线性搜索。两种任务共用同一算法结构，平台根据任务类型自动选择对应的传播约束及优化方式
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {figures/start.png}
+\end{figure}
+这边start\_value和end\_value可以随便填，最后的结果和这个没关系，应该是其他任务使用的
 \paragraph{（2）提交任务与调试}
 
-完成配置文件编写后，将其保存为 UTF-8 编码的文本文件，上传至课程实验平台，并选择相应的分析任务。
+完成配置文件编写后，将其上传至课程实验平台，并选择相应的分析任务
 
-在首次提交六轮差分搜索任务时，平台显示任务失败，但未提供具体的错误日志。因此，初次无法直接判断失败原因。
+差分分析和线性分析只要换一下任务就行，可以用同一个文件
 
-随后，重新参考平台使用指南，逐项检查了配置文件中的 S 盒参数、变量命名、组件调用方式、循环范围及轮间连接关系，并对配置文件进行了调整。
-
-经过修改后，第二次差分任务成功运行，平台生成了搜索报告及对应的求解约束文件。
-
-在此基础上，由于线性分析与差分分析使用相同的密码算法结构，因此保留原有 S 盒、置换层和轮数配置，仅将任务类型切换为最优线性相关度搜索，重新提交任务。线性搜索也顺利完成。
-
-这一过程使我认识到，自动化密码分析不仅需要正确构造密码算法的数学模型，还必须确保模型能够被平台准确解析。尤其是轮间连接关系，一旦变量编号或比特位置出现偏差，就可能导致搜索失败，或者得到与实际算法不符的路线。
-
-本次实验最终成功完成两项搜索任务，平台申请记录如图~\ref{fig:cipherfour-platform} 所示。
+本次实验最终成功完成两项搜索任务，平台申请记录如图~\ref{fig:cipherfour-platform} 所示
 
 \begin{figure}[htbp]
     \centering
@@ -60,9 +68,35 @@ LINEAR_UP_BOUND = 64
 
 平台运行结束后，分别下载差分分析和线性分析对应的 \texttt{.rpt} 与 \texttt{.cvc} 文件。
 
-其中，\texttt{.rpt} 文件主要记录迭代过程、搜索状态、概率或相关度权重，以及各轮输入输出差分（或线性掩码）；\texttt{.cvc} 文件则记录平台生成的约束求解模型。
+其中，\texttt{.rpt} 文件主要记录迭代过程、搜索状态、概率或相关度权重，以及各轮输入输出差分（或线性掩码）
+
+第一轮迭代就是我们设置的上界128
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {figures/diff1.png}
+\end{figure}
+然后找到了一条$2^{-26}$概率的路线
+
+下一轮迭代就把$2^{-25}$作为上界继续迭代
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {figures/diff2.png}
+\end{figure}
+
+\texttt{.cvc} 文件则记录平台生成的约束求解模型。
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {figures/cvc.png}
+\end{figure}
+可以看到就是一些类似我们前面gurobi的约束，查了一下这是STP的语法
+
+所以说这个平台应该是用STP来求解的问题
 
 本实验主要根据 \texttt{.rpt} 文件提取最终搜索路线，并通过任务一计算的 DDT 与 LAT 验证局部 S 盒传播的可行性、轮间连接关系及最终权重。
+
 
 \subsubsection{实验结果及分析}
 
@@ -87,11 +121,11 @@ STATUS     : No.
 
 由此可知，在当前六轮差分搜索模型下，最优差分路线的权重为
 \[
-\boxed{W_D=6},
+W_D=6
 \]
 对应的差分路线概率为
 \[
-\boxed{P_{\mathrm{trail}}=2^{-6}=\frac{1}{64}}.
+P_{\mathrm{trail}}=2^{-6}=\frac{1}{64}
 \]
 
 从第 $9$ 次迭代的输出中提取六轮差分路线，如表~\ref{tab:cipherfour-diff-path} 所示。
@@ -113,7 +147,11 @@ STATUS     : No.
 \hline
 \end{tabular}
 \end{table}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]
+    {figures/diff_res.png}
+\end{figure}
 可以发现，该路线的六轮输入输出差分均为 \texttt{0x0001}。每轮只有最低四比特对应的 S 盒处于活跃状态，其余三个 S 盒的输入输出差分均为 $0$。
 
 根据任务一计算得到的 DDT，有
@@ -150,12 +188,7 @@ P_r=1\times1\times1\times\frac12
 
 综合六轮的传播概率，根据差分路线的概率乘积模型，有
 \[
-\begin{aligned}
-P_{\mathrm{trail}}
-&=\prod_{r=1}^{6}P_r\\
-&=\left(\frac12\right)^6\\
-&=\boxed{2^{-6}}.
-\end{aligned}
+P_{\mathrm{trail}}=\prod_{r=1}^{6}P_r=\left(\frac12\right)^6=2^{-6}
 \]
 
 因此，理论计算结果与平台报告的差分路线概率完全一致。
@@ -185,11 +218,15 @@ STATUS     : No.
 
 因此，平台在其内部整数权重模型下得到的最优值为
 \[
-\boxed{\widetilde{W}_L=3}.
+\widetilde{W}_L=3
 \]
 
 第 $9$ 次迭代输出的六轮线性路线如表~\ref{tab:cipherfour-linear-path} 所示。
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]
+    {figures/linear.png}
+\end{figure}
 \begin{table}[htbp]
 \centering
 \caption{Cipherfour 平台搜索得到的六轮线性路线}
@@ -279,7 +316,7 @@ $3$ 个相关度为 $1/2$ 的传播，
 &=\left(\frac34\right)^{10}
   \left(\frac12\right)^3\\
 &=\frac{59049}{8388608}\\
-&\approx \boxed{0.00703919}.
+&\approx 0.00703919
 \end{aligned}
 \]
 
@@ -288,7 +325,7 @@ $3$ 个相关度为 $1/2$ 的传播，
 \begin{aligned}
 W_L
 &=-\log_2|C_{\mathrm{trail}}|\\
-&\approx\boxed{7.1504}.
+&\approx 7.1504
 \end{aligned}
 \]
 
@@ -324,7 +361,7 @@ W_L
 \begin{aligned}
 \widetilde{W}_L
 &=10\times0+3\times1+11\times0\\
-&=\boxed{3}.
+&=3
 \end{aligned}
 \]
 
@@ -336,11 +373,11 @@ W_L
 
 \paragraph{（3）实验结果总结}
 
-本次实验利用课程自动化分析平台，完成了 Cipherfour 算法的六轮差分路线和六轮线性路线搜索，并根据任务一计算得到的 DDT 和 LAT 对搜索结果进行了独立验证。
+本次实验利用课程自动化分析平台，完成了 Cipherfour 算法的六轮差分路线和六轮线性路线搜索，并根据任务一计算得到的 DDT 和 LAT 对搜索结果进行了独立验证
 
 两项搜索结果汇总如表~\ref{tab:cipherfour-summary} 所示。
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Cipherfour 六轮差分与线性搜索结果汇总}
 \label{tab:cipherfour-summary}
@@ -353,9 +390,3 @@ W_L
 \hline
 \end{tabular}
 \end{table}
-
-对于差分分析，平台搜索结果与 DDT 理论计算完全一致，并且更高概率阈值下无可行路线，说明当前模型下的最优差分路线已得到确认。
-
-对于线性分析，平台搜索得到的路线满足 S 盒局部相关度非零及轮间掩码传播约束，但由于平台采用整数化权重，平台报告指标与精确相关度存在差异。通过进一步分析约束文件，可以解释该差异的来源。
-
-通过本次实验，我对自动化密码分析的理解也更加具体：自动化搜索并非直接代替密码分析的理论推导，而是将 S 盒传播、线性层连接与优化目标转化为约束求解问题。求解器能够高效搜索满足模型的路线，但最终结果是否准确反映密码算法的实际差分概率或线性相关度，仍然依赖于模型本身的正确性及目标权重的表示精度。

@@ -6,16 +6,16 @@
 
 逐点排除法先找出表中所有取值为0的位置，组成非法点列表\texttt{forbidden}。模型只设置8个原始二进制变量，然后对每个非法点添加一条排除不等式。由于LAT中正值和负值都属于合法表项，这里统一使用\texttt{table[a][b] == 0}提取非法点。
 
-对于非法点$q$，当$q_j=0$时，$z_j$表示当前点在第$j$位是否与它不同；当$q_j=1$时，则由$1-z_j$表示。因此，将这8项相加并要求结果至少为1，就能保证当前点至少有一位不同于$q$。实现代码如下：
+对于非法点$q$，当$q_j=0$时，$x_j$表示当前点在第$j$位是否与它不同；当$q_j=1$时，则由$1-x_j$表示。因此，将这8项相加并要求结果至少为1，就能保证当前点至少有一位不同于$q$。实现代码如下：
 \begin{lstlisting}
 forbidden = [(a, b) for a in range(SIZE) for b in range(SIZE)
              if table[a][b] == 0]
-z = model.addVars(8, vtype=gp.GRB.BINARY, name="z")
+x = model.addVars(8, vtype=gp.GRB.BINARY)
 
 for point in forbidden:
     q = bits(*point)
     model.addConstr(gp.quicksum(
-        z[j] if q[j] == 0 else 1 - z[j]
+        x[j] if q[j] == 0 else 1 - x[j]
         for j in range(8)
     ) >= 1)
 \end{lstlisting}

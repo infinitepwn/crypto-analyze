@@ -29,12 +29,12 @@ minimized, = espresso_exprs(forbidden_function)
 
 \paragraph{立方体到线性约束的转换}
 
-对于一个非法立方体，只要当前点有一个固定坐标与它不同，该点就位于立方体之外。因此，对固定为0的位置累加$z_j$，对固定为1的位置累加$1-z_j$，并要求总和至少为1。通配位不参与求和。关键代码为：
+对于一个非法立方体，只要当前点有一个固定坐标与它不同，该点就位于立方体之外。因此，对固定为0的位置累加$x_j$，对固定为1的位置累加$1-x_j$，并要求总和至少为1。通配位不参与求和。关键代码为：
 \begin{lstlisting}
-z = model.addVars(8, vtype=gp.GRB.BINARY, name="z")
+x = model.addVars(8, vtype=gp.GRB.BINARY)
 for cube in cubes:
     model.addConstr(gp.quicksum(
-        z[j] if value == 0 else 1 - z[j]
+        x[j] if value == 0 else 1 - x[j]
         for j, value in enumerate(cube) if value is not None
     ) >= 1)
 \end{lstlisting}

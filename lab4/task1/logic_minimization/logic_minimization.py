@@ -54,12 +54,12 @@ def solve_logic_minimization(name, table, env):
 
     with gp.Model(name, env=env) as model:
         # 八个二进制变量依次表示(a3,a2,a1,a0,b3,b2,b1,b0)。
-        z = model.addVars(8, vtype=gp.GRB.BINARY, name="z")
+        x = model.addVars(8, vtype=gp.GRB.BINARY, name="x")
 
         # 对每个立方体，要求至少一个固定文字取反，从而排除该立方体。
         for cube in cubes:
             model.addConstr(gp.quicksum(
-                z[j] if value == 0 else 1 - z[j]
+                x[j] if value == 0 else 1 - x[j]
                 for j, value in enumerate(cube) if value is not None
             ) >= 1)
 
@@ -82,7 +82,7 @@ def solve_logic_minimization(name, table, env):
         solutions = []
         for k in range(model.SolCount):
             model.Params.SolutionNumber = k
-            values = [int(round(z[j].getAttr(attribute))) for j in range(8)]
+            values = [int(round(x[j].getAttr(attribute))) for j in range(8)]
             # 前四位还原输入，后四位还原输出，位序与公共模块一致。
             a = sum(values[j] << (3 - j) for j in range(4))
             b = sum(values[j + 4] << (3 - j) for j in range(4))

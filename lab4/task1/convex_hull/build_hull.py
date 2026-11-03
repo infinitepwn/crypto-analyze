@@ -30,7 +30,7 @@ def build_hull(table):
     # QQ使用精确有理数；坐标依次为(a3,a2,a1,a0,b3,b2,b1,b0)。
     hull = Polyhedron(vertices=points, base_ring=QQ)
 
-    # 每行按[c0,c1,...,c8]保存，对应c0+sum(cj*zj)>=0或=0。
+    # 每行按[c0,c1,...,c8]保存，对应c0+sum(cj*xj)>=0或=0。
     return {
         "inequalities": sorted(integer_row(row)
                                for row in hull.inequalities_list()),
