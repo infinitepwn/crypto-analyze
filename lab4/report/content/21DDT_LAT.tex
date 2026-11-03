@@ -1,26 +1,33 @@
 \subsection{DDT与LAT}
-根据课程所学的差分分析和线性分析，这里简单复述一下S盒的差分分布表(DDT)和线性分布表(LAT)。
 
-\subsubsection{DDT}
-对于一个$m \times n$的S盒，即映射$S:\mathbb{F}_2^m \to \mathbb{F}_2^n$，记满足输入差分$\alpha$、输出差分$\beta$的输入集合为
-$$
-IN_S(\alpha ,\beta) = \{X \in \mathbb{F}_2^m :S(X) \oplus S(X \oplus \alpha) = \beta\}.
-$$
-DDT中的表项为该集合的元素个数，即
-$$
-\operatorname{DDT}[\alpha][\beta] = \# IN_S(\alpha,\beta).
-$$
+差分分布表（Differential Distribution Table，DDT）和线性分布表（Linear Approximation Table，LAT）分别记录 S 盒的差分传播关系与线性掩码关系。对于一个输入$m$比特、输出$n$比特的 S 盒$S:\mathbb{F}_2^m\to\mathbb{F}_2^n$，两张表的输入、输出索引分别取遍相应向量空间。
 
-\subsubsection{LAT}
+\subsubsection{差分分布表}
 
-对于同一个$m \times n$的S盒，LAT是一个$2^m \times 2^n$的表，其中第$\alpha$行第$\beta$列的表项为
-$$
+给定输入差分$\alpha\in\mathbb{F}_2^m$和输出差分$\beta\in\mathbb{F}_2^n$，定义
+\[
+IN_S(\alpha,\beta)
+=\{x\in\mathbb{F}_2^m\mid S(x)\oplus S(x\oplus\alpha)=\beta\}.
+\]
+DDT表项是满足该传播关系的输入个数：
+\[
+\operatorname{DDT}[\alpha][\beta]
+=\#IN_S(\alpha,\beta).
+\]
+因此，$\operatorname{DDT}[\alpha][\beta]>0$表示该差分传播可达，表项的数值则记录其出现次数。
+
+\subsubsection{线性分布表}
+
+对于输入掩码$\alpha\in\mathbb{F}_2^m$和输出掩码$\beta\in\mathbb{F}_2^n$，定义
+\[
 \operatorname{LAT}[\alpha][\beta]
-=\#\{x\in\mathbb{F}_2^m\mid \alpha\cdot x\oplus\beta\cdot S(x)=0\}-2^{m-1}.
-$$
-这里$\cdot$表示模$2$内积。该表项是输入、输出掩码为$\alpha,\beta$时，使线性表达式$\alpha\cdot x\oplus\beta\cdot S(x)$等于$0$的输入个数与$2^{m-1}$的差，其值与输入总数$2^m$的比值恰好为线性近似的偏差：
-$$
+=\#\{x\in\mathbb{F}_2^m\mid
+\alpha\cdot x\oplus\beta\cdot S(x)=0\}-2^{m-1},
+\]
+其中$\cdot$表示模2内积。该表项等于满足线性关系的输入数与均匀随机基准值$2^{m-1}$之差。相应的线性偏差为
+\[
 \epsilon(\alpha,\beta)
-=\Pr[\alpha\cdot x=\beta\cdot S(x)]-\frac{1}{2}
+=\Pr[\alpha\cdot x=\beta\cdot S(x)]-\frac12
 =\frac{\operatorname{LAT}[\alpha][\beta]}{2^m}.
-$$
+\]
+偏差的符号表示线性关系成立频率高于或低于$1/2$；判断传播是否可达时，应保留所有非零表项，包括负值。
