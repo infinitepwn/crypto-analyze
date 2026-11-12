@@ -12,7 +12,7 @@ from pyeda.boolalg.bfarray import exprvars
 from pyeda.boolalg.expr import And, Or
 from pyeda.boolalg.minimization import espresso_exprs
 
-from ddt_lat import SIZE, bits, compute_ddt, compute_lat
+from lab4.code.task1.ddt_lat import SIZE, bits, compute_ddt, compute_lat
 
 
 def simplify_forbidden_points(table):

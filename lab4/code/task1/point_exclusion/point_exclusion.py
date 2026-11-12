@@ -8,7 +8,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import gurobipy as gp
-from ddt_lat import SIZE, bits, compute_ddt, compute_lat
+from lab4.code.task1.ddt_lat import SIZE, bits, compute_ddt, compute_lat
 
 
 def solve_point_exclusion(name, table, env):

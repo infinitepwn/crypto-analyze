@@ -6,7 +6,7 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from ddt_lat import SIZE, bits, compute_ddt, compute_lat
+from lab4.code.task1.ddt_lat import SIZE, bits, compute_ddt, compute_lat
 
 def solve_one_hot(name, table, env):
     # DDT与LAT都取非零位置，包含全零传播以及LAT的负数表项。

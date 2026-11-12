@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from sage.all import Polyhedron, QQ
 
-from ddt_lat import SIZE, bits, compute_ddt, compute_lat
+from lab4.code.task1.ddt_lat import SIZE, bits, compute_ddt, compute_lat
 
 
 def integer_row(row):
