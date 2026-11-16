@@ -23,8 +23,8 @@ __pycache__/
 *.xdv
 
 # Generated report output and temporary render files
-lab1/report/output/
-lab1/report/tmp/
+labs/lab1/report/output/
+labs/lab1/report/tmp/
 
 # Editor and operating-system temporary files
 .vscode/
