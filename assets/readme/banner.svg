@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="390" viewBox="0 0 1280 390" role="img" aria-labelledby="title desc">
+  <title id="title">Crypto Analyze · 密码分析学</title>
+  <desc id="desc">从区分器到密钥恢复。课程笔记、算法推导与实验复现。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0C1930"/><stop offset="1" stop-color="#142D3D"/></linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#9AC6DC" stroke-opacity=".055"/></pattern>
+  </defs>
+  <rect width="1280" height="390" rx="20" fill="url(#bg)"/>
+  <rect width="1280" height="390" rx="20" fill="url(#grid)"/>
+  <path d="M0 367H1280" stroke="#61E0C1" stroke-opacity=".12"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif">
+    <rect x="62" y="58" width="6" height="19" rx="3" fill="#61E0C1"/>
+    <text x="83" y="73" fill="#8DB4C4" font-size="15" font-weight="600" letter-spacing="4">CRYPTO ANALYZE</text>
+    <text x="58" y="157" fill="#F0F7FA" font-size="62" font-weight="700" letter-spacing="3">密码分析学</text>
+    <text x="62" y="208" fill="#B6CBD5" font-size="24">从区分器到密钥恢复</text>
+    <path d="M62 242H602" stroke="#98B4C9" stroke-opacity=".22"/>
+    <text x="62" y="281" fill="#77DEC4" font-size="16" letter-spacing="2">NOTES</text>
+    <circle cx="151" cy="275" r="2" fill="#547586"/>
+    <text x="174" y="281" fill="#A7C7D5" font-size="16" letter-spacing="2">DERIVATIONS</text>
+    <circle cx="326" cy="275" r="2" fill="#547586"/>
+    <text x="349" y="281" fill="#A7C7D5" font-size="16" letter-spacing="2">EXPERIMENTS</text>
+    <text x="62" y="332" fill="#7296A8" font-size="15">课程笔记 / 算法推导 / 实验复现</text>
+    <g transform="translate(755 64)">
+      <text x="25" y="0" fill="#7296A8" font-size="12" letter-spacing="3">FOLLOW THE STRUCTURE</text>
+      <path d="M68 47V77M308 47V77M68 127V160M308 127V160M68 210V250H188M308 210V250H188" fill="none" stroke="#5E8799" stroke-width="2"/>
+      <path d="M68 127L308 160M308 127L68 160" fill="none" stroke="#61E0C1" stroke-opacity=".45" stroke-width="2"/>
+      <g fill="#132B3B" stroke="#436476" stroke-width="1.5">
+        <rect x="8" y="17" width="120" height="40" rx="8"/>
+        <rect x="248" y="17" width="120" height="40" rx="8"/>
+        <rect x="8" y="77" width="120" height="50" rx="9"/>
+        <rect x="248" y="77" width="120" height="50" rx="9"/>
+        <rect x="8" y="160" width="120" height="50" rx="9"/>
+        <rect x="248" y="160" width="120" height="50" rx="9"/>
+      </g>
+      <g text-anchor="middle" fill="#C7DFE9" font-size="18" font-family="'SFMono-Regular',Consolas,monospace">
+        <text x="68" y="44">P</text><text x="308" y="44">P′</text>
+        <text x="68" y="109">S</text><text x="308" y="109">S</text>
+        <text x="68" y="192">S</text><text x="308" y="192">S</text>
+      </g>
+      <rect x="133" y="228" width="110" height="44" rx="22" fill="#173E43" stroke="#61E0C1" stroke-width="1.5"/>
+      <text x="188" y="256" fill="#9FE9D2" text-anchor="middle" font-size="17">Δ → Key</text>
+      <path d="M145 37H231" stroke="#E4BF78" stroke-width="1.5" stroke-dasharray="4 5"/>
+      <text x="188" y="28" fill="#E4BF78" font-size="14" text-anchor="middle">Δ</text>
+    </g>
+  </g>
+</svg>
