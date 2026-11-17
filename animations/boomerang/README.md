@@ -19,7 +19,7 @@ python3.12 -m venv /tmp/boomerang-manim
   animations/boomerang/classic_boomerang.py ClassicBoomerang
 ```
 
-四轨立体图解版可将上方命令中的脚本和场景名换成 `animations/boomerang/continuous_boomerang.py BoomerangContinuous`；旁白在 `narration-v2/`，使用本地中文系统声音，按课件画出四条完整轨道和对应的 γ、φ 边。
+四轨立体图解版可将上方命令中的脚本和场景名换成 `animations/boomerang/continuous_boomerang.py BoomerangContinuous`；旁白在 `narration-v2/`，使用微软中文神经语音 Xiaoxiao，按课件画出四条完整轨道和对应的 γ、φ 边。
 
 脚本自动读取旁白文件，并根据对应音频长度安排镜头。原版需要静音时，可暂时将 `narration/` 中的 MP3 移出；此时画面使用默认停留时间。四轨版需要保留 `narration-v2/` 中的音频。
 
