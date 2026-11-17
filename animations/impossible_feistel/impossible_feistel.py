@@ -77,14 +77,16 @@ class ImpossibleFeistel(Scene):
         else:self.play(FadeIn(obj),run_time=.5)
         self.highlight=obj
     def flow(self, rounds, reverse=False):
-        # Two tokens follow the actual Feistel swap wires, one round at a time.
+        # Two tokens follow the Feistel branches, one round at a time.
         xL, xR = -5.42, -2.70
         for i in rounds:
             top, bottom = self.bounds[i], self.bounds[i+1]
             mid = (top + bottom) / 2
+            # The first five rounds exchange branches; round six does not.
+            out_l, out_r = (xR, xL) if i < 5 else (xL, xR)
             paths = [
-                [[xL,top,0], [xL,mid,0], [xR,bottom,0]],
-                [[xR,top,0], [xR,mid,0], [xL,bottom,0]],
+                [[xL,top,0], [xL,mid,0], [out_l,bottom,0]],
+                [[xR,top,0], [xR,mid,0], [out_r,bottom,0]],
             ]
             if reverse:
                 paths = [list(reversed(path)) for path in paths]
@@ -99,24 +101,27 @@ class ImpossibleFeistel(Scene):
         self.add(Line([-6.5,3.13,0],[6.5,3.13,0],color=EDGE,stroke_width=1))
         xL=-5.42; xR=-2.70; xf=-3.90
         bounds=[2.28-i*.67 for i in range(7)]
-        self.add(tx('L₀',xL,2.55,24,TEAL),tx('R₀',xR,2.55,24,TEAL))
-        self.add(fit(text('每轮函数 Fᵢ 为双射',19,MUTED),3.8).move_to([-4.06,2.83,0]))
+        self.add(tx('mᵢᴸ',xL,2.55,24,TEAL),tx('mᵢᴿ',xR,2.55,24,TEAL))
+        self.add(fit(text('每个 f(·, kᵢ) 为双射',19,MUTED),3.8).move_to([-4.06,2.83,0]))
         for i in range(6):
             top=bounds[i];bottom=bounds[i+1];mid=(top+bottom)/2; col=TEAL if i<5 else AMBER
-            # Right branch feeds F and is swapped to the left; left branch is XORed with F and swapped to the right.
-            pieces=[wire((xL,top),(xL,mid+.11)),wire((xR,top),(xR,mid)),wire((xR,mid),(xf+.38,mid)),wire((xf-.38,mid),(xL+.13,mid)),wire((xL,mid-.11),(xR,bottom)),wire((xR,mid),(xL,bottom))]
+            # f takes the right branch; its output is XORed into the left.
+            # The first five rounds swap; the sixth goes straight to ciphertext.
+            out_l, out_r = (xR, xL) if i < 5 else (xL, xR)
+            pieces=[wire((xL,top),(xL,mid+.11)),wire((xR,top),(xR,mid)),wire((xR,mid),(xf+.38,mid)),wire((xf-.38,mid),(xL+.13,mid)),wire((xL,mid-.11),(out_l,bottom)),wire((xR,mid),(out_r,bottom))]
             self.add(*pieces)
             self.add(Dot([xR,mid,0],radius=.033,color=col))
             xor=Circle(radius=.11,stroke_color=col,stroke_width=1.6,fill_color=config.background_color,fill_opacity=1).move_to([xL,mid,0])
             cross=tx('+',xL,mid,18,col)
-            self.add(xor,cross,block('F'+'₁₂₃₄₅₆'[i],xf,mid,col))
+            self.add(xor,cross,block('f',xf,mid,col))
+            self.add(tx('k'+'₁₂₃₄₅₆'[i],xf,mid+.28,15,col))
             self.add(tx(f'第 {i+1} 轮',-6.25,mid,19,col))
-        self.add(tx('L₆',xL,-1.99,22,AMBER),tx('R₆',xR,-1.99,22,AMBER))
-        self.add(fit(text('密文输出交换：C = (R₆, L₆)',20,MUTED),4.8).move_to([-4.06,-2.36,0]))
+        self.add(tx('cᵢᴸ',xL,-1.99,22,AMBER),tx('cᵢᴿ',xR,-1.99,22,AMBER))
+        self.add(fit(text('第六轮不交换，直接输出密文',20,MUTED),4.8).move_to([-4.06,-2.36,0]))
         self.bounds=bounds
     def construct(self):
         self.diagram(); b=self.bounds
-        self.panel_stage(1,'先找五轮的禁忌',['目标：恢复第六轮子密钥','前五轮构成不可能差分区分器','第六轮用候选密钥逆推'],['五轮： (α, 0) ↛ (0, α)','状态顺序始终记为 (L, R)'],'先证明五轮差分不可能，再用它排除第六轮错误子密钥。')
+        self.panel_stage(1,'先找五轮的禁忌',['单独五轮：第 5 轮不交换','扩展六轮：第 5 轮后交叉','分析第 5 轮交叉后的状态'],['单独五轮： (α, 0) ↛ (α, 0)','六轮中前五轮： (α, 0) ↛ (0, α)'],'单独五轮与扩展六轮的观察位置不同：第 5 轮之后是否交叉。')
         self.marker(b[0]+.07,b[5]-.04,TEAL,'五轮核心')
         self.cue(.20);self.reveal_body(1)
         self.cue(.40);self.reveal_body(2)
@@ -142,27 +147,28 @@ class ImpossibleFeistel(Scene):
         self.cue(.85);self.reveal_eq(1);self.cue(1)
         self.play(FadeOut(self.forward_proof),FadeOut(self.reverse_proof),run_time=.3)
 
-        self.panel_stage(4,'扩展一轮并采样',['固定明文右半边，选不同左半边','明文对满足 ΔP = (α, 0)','查询完整六轮加密，得到 C、C′'],['C = (R₆, L₆)  ·  末尾交换'],'选择明文对并加密；密文采用课件的末尾交换顺序。')
+        self.panel_stage(4,'扩展一轮并采样',['选择明文 mᵢ、mⱼ','明文对差分：mᵢ ⊕ mⱼ = (α, 0)','查询六轮加密得到 cᵢ、cⱼ'],['前五轮交叉，第六轮不交换'],'选择明文对并加密；第六轮两支直接输出为密文。')
         self.marker(b[0]+.07,b[6]-.04,BLUE,'六轮加密')
         self.cue(.20);self.reveal_body(1)
         self.cue(.35);self.flow(range(6));self.reveal_body(2)
         self.cue(.74);self.reveal_eq(0);self.cue(1)
 
-        self.panel_stage(5,'先筛选数据对',['先检查密文右半支差分','不符合条件的数据对直接跳过','此时还没有猜测任何密钥'],['ΔR₅ = ΔCᴿ','只保留： ΔCᴿ = α'],'只有密文右半边差分为 α 的数据对，才可能触发禁忌差分。')
+        self.panel_stage(5,'先筛选数据对',['先检查密文右半支差分','不符合条件的数据对直接跳过','此时还没有猜测任何密钥'],['ΔR₅ = cᵢᴿ ⊕ cⱼᴿ','只保留： cᵢᴿ ⊕ cⱼᴿ = α'],'只有密文右半边差分为 α 的数据对，才可能触发禁忌差分。')
         self.marker(b[5]+.05,b[6]-.04,AMBER,'数据预筛')
         self.cue(.18);self.reveal_body(1)
         self.cue(.30);self.reveal_eq(0)
         self.cue(.58);self.reveal_eq(1)
         self.cue(.75);self.reveal_body(2);self.cue(1)
 
-        self.panel_stage(6,'猜测末轮子密钥',['枚举每个候选值 κ','用候选值逆去两个密文的第六轮','再检查第五轮末的左支差分'],['R₅ = Cᴿ','L₅ = Cᴸ ⊕ Fκ(Cᴿ)'],'对每个子密钥候选，逆推末轮并检查左半支差分。')
+        self.panel_stage(6,'猜测末轮子密钥',['枚举第六轮子密钥候选 k₆','用候选值逆去 cᵢ 和 cⱼ 的第六轮','左支差分为 0 时，删除候选'],['R₅,ᵢ = cᵢᴿ','L₅,ᵢ = cᵢᴸ ⊕ f(cᵢᴿ, k₆)','f(cᵢᴿ,k₆) ⊕ f(cⱼᴿ,k₆) = cᵢᴸ ⊕ cⱼᴸ'],'对每个子密钥候选，逆推末轮并检查左半支差分。')
         self.marker(b[5]+.05,b[6]-.04,VIOLET,'逆推末轮')
         self.cue(.26);self.reveal_body(1);self.flow([5],True)
         self.cue(.48);self.reveal_eq(0)
         self.cue(.62);self.reveal_body(2)
-        self.cue(.73);self.reveal_eq(1);self.cue(1)
+        self.cue(.68);self.reveal_eq(1)
+        self.cue(.84);self.reveal_eq(2);self.cue(1)
 
-        self.panel_stage(7,'具体算一对数据',['四比特半支；数字均为十六进制','P = (0,0)，P′ = (9,0)，α = 9','C = (3,1)，C′ = (F,8)'],['ΔCᴿ = 1 ⊕ 8 = 9','κ = 6：Fκ(1) ⊕ Fκ(8) = D ⊕ 1 = C','ΔCᴸ = 3 ⊕ F = C'],'通过数据预筛后，候选 6 满足末轮排除方程。')
+        self.panel_stage(7,'具体算一对数据',['四比特半支；数字均为十六进制','mᵢ = (0,0)，mⱼ = (9,0)，α = 9','cᵢ = (3,1)，cⱼ = (F,8)'],['cᵢᴿ ⊕ cⱼᴿ = 1 ⊕ 8 = 9','k₆ = 6：f(1,6) ⊕ f(8,6) = D ⊕ 1 = C','cᵢᴸ ⊕ cⱼᴸ = 3 ⊕ F = C'],'通过数据预筛后，候选 6 满足末轮排除方程。')
         self.cue(.13);self.reveal_body(1)
         self.cue(.28);self.reveal_body(2)
         self.cue(.46);self.reveal_eq(0)
@@ -171,8 +177,8 @@ class ImpossibleFeistel(Scene):
         flag=fit(text('命中排除方程',19,RED,True),1.8).move_to([-1.24,-.99,0])
         self.play(FadeIn(flag),run_time=.4);self.cue(1);self.play(FadeOut(flag),run_time=.2)
 
-        self.panel_stage(8,'命中禁忌：删除',['κ = 6 时逆推得 (E,1)、(E,8)','第五轮末差分变成 (0,9)','与五轮不可能差分矛盾'],['ΔL₅ = 0，ΔR₅ = 9','因此删除候选 κ = 6'],'触发禁忌差分的候选密钥一定错误，直接删除。')
-        self.marker(b[5]+.05,b[6]-.04,RED,'删除 κ = 6')
+        self.panel_stage(8,'命中禁忌：删除',['猜测 k₆ = 6：逆推得 (E,1)、(E,8)','第五轮末差分变成 (0,9)','与五轮不可能差分矛盾'],['ΔL₅ = 0，ΔR₅ = 9','因此删除候选 k₆ = 6'],'触发禁忌差分的候选密钥一定错误，直接删除。')
+        self.marker(b[5]+.05,b[6]-.04,RED,'删除 k₆ = 6')
         self.cue(.26);self.reveal_body(1);self.reveal_eq(0)
         self.cue(.56);self.reveal_body(2)
         self.cue(.78);self.reveal_eq(1)
