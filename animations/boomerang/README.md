@@ -2,7 +2,9 @@
 
 视频按课件的经典飞去来器区分器，展示选择明文、加密、构造密文差分、查询解密、中间四元组连接、差分回传与统计判定。中文旁白放在 `narration/`，对应文本为 `narration/script.json`。
 
-- [观看动画](../../assets/animations/classic-boomerang.mp4)
+- [观看四轨立体图解版](../../assets/animations/classic-boomerang-diagram.mp4)
+- [四轨立体图解版源码](continuous_boomerang.py)
+- [观看原版动画](../../assets/animations/classic-boomerang.mp4)
 - [动画源码](classic_boomerang.py)
 - [飞去来器攻击笔记](../../notes/03-差分分析/飞去来器攻击.md)
 
@@ -17,7 +19,9 @@ python3.12 -m venv /tmp/boomerang-manim
   animations/boomerang/classic_boomerang.py ClassicBoomerang
 ```
 
-脚本自动读取旁白文件，并根据对应音频长度安排镜头。需要静音版本时，暂时将 `narration/` 中的 MP3 移出；此时画面使用默认停留时间。
+四轨立体图解版可将上方命令中的脚本和场景名换成 `animations/boomerang/continuous_boomerang.py BoomerangContinuous`；旁白在 `narration-v2/`，使用本地中文系统声音，按课件画出四条完整轨道和对应的 γ、φ 边。
+
+脚本自动读取旁白文件，并根据对应音频长度安排镜头。原版需要静音时，可暂时将 `narration/` 中的 MP3 移出；此时画面使用默认停留时间。四轨版需要保留 `narration-v2/` 中的音频。
 
 ## 符号
 
